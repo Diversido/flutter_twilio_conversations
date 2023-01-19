@@ -1,0 +1,3 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="twilio.flutter.flutter_twilio_conversations">
+</manifest>
