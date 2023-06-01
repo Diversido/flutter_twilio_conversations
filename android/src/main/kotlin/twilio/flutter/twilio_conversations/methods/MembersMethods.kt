@@ -5,6 +5,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import twilio.flutter.twilio_conversations.Mapper
 import twilio.flutter.twilio_conversations.TwilioConversationsPlugin
+import com.twilio.util.ErrorInfo
 import android.util.Log
 
 object MembersMethods {

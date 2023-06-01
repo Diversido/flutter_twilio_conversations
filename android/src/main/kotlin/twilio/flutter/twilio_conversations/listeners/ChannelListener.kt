@@ -4,7 +4,7 @@ import com.twilio.conversations.*
 import com.twilio.conversations.ConversationListener as TwilioChannelListener
 import io.flutter.plugin.common.EventChannel
 import twilio.flutter.twilio_conversations.Mapper
-import twilio.flutter.twilio_conversations.TwilioConversationsPlugin
+import com.twilio.util.ErrorInfo
 import android.util.Log
 
 class ChannelListener(private val events: EventChannel.EventSink) : TwilioChannelListener {

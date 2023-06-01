@@ -2,7 +2,7 @@ package twilio.flutter.twilio_conversations.methods
 
 import com.twilio.conversations.CallbackListener
 import com.twilio.conversations.Conversation
-import com.twilio.conversations.ErrorInfo
+import com.twilio.util.ErrorInfo
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import twilio.flutter.twilio_conversations.Mapper

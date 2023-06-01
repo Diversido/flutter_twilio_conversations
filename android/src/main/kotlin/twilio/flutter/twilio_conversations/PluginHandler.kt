@@ -5,7 +5,7 @@ import androidx.annotation.NonNull
 import android.util.Log
 import com.twilio.conversations.CallbackListener
 import com.twilio.conversations.ConversationsClient
-import com.twilio.conversations.ErrorInfo
+import com.twilio.util.ErrorInfo
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
