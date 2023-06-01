@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:redux/redux.dart';
+import 'package:flutter_twilio_conversations_example/redux/actions/channel_actions.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/init_actions.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/messages_actions.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/ui_actions.dart';
@@ -17,6 +18,8 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
       getConversationMessages(store, action);
     } else if (action is SubscribeToConversationsUpdatesAction) {
       handleNewMessagesSubscription(store, action);
+    } else if (action is SubscribeToMembersTypingStatus) {
+      handleTypingStatusSubscription(store, action);
     }
 
     next(action);
@@ -51,6 +54,7 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
           for (var conversation
               in store.state.chatClient!.channels!.subscribedChannels) {
             store.dispatch(GetConversationMessagesAction(conversation));
+            store.dispatch(SubscribeToMembersTypingStatus(conversation));
           }
 
           store.dispatch(
@@ -62,6 +66,25 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
           store.dispatch(SubscribeToConversationsUpdatesAction());
         }
       });
+    }
+  }
+
+  void handleTypingStatusSubscription(
+    Store<AppState> store,
+    SubscribeToMembersTypingStatus action,
+  ) {
+    try {
+      action.channel.onTypingStarted?.listen((event) {
+        print('Typing started: $event');
+        store.dispatch(TypingStarted(event));
+      });
+
+      action.channel.onTypingEnded?.listen((event) {
+        print('Typing ended: $event');
+        store.dispatch(TypingEnded(event));
+      });
+    } catch (e) {
+      print('Failed to handleTypingStatusSubscription: $e');
     }
   }
 

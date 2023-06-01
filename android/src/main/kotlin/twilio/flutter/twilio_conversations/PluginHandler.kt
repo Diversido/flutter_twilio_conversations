@@ -19,8 +19,6 @@ import twilio.flutter.twilio_conversations.methods.MessageMethods
 import twilio.flutter.twilio_conversations.methods.MessagesMethods
 import twilio.flutter.twilio_conversations.methods.UserMethods
 import twilio.flutter.twilio_conversations.methods.UsersMethods
-import java.util.*
-import kotlin.concurrent.schedule
 
 class PluginHandler(private val applicationContext: Context) : MethodCallHandler {
 
