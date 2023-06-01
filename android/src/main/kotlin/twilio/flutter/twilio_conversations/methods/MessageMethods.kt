@@ -3,7 +3,7 @@ package twilio.flutter.twilio_conversations.methods
 import com.twilio.conversations.*
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import java.io.File
+import com.twilio.util.ErrorInfo
 import org.json.JSONException
 import twilio.flutter.twilio_conversations.Mapper
 import twilio.flutter.twilio_conversations.TwilioConversationsPlugin

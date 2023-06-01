@@ -6,7 +6,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.annotation.NonNull
 import com.twilio.conversations.ConversationsClient
-import com.twilio.conversations.ErrorInfo
+import com.twilio.util.ErrorInfo
 import com.twilio.conversations.StatusListener
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.BinaryMessenger

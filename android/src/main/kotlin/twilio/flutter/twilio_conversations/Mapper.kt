@@ -2,12 +2,12 @@ package twilio.flutter.twilio_conversations
 
 import android.util.Log
 import com.twilio.conversations.*
+import com.twilio.util.ErrorInfo
 import io.flutter.plugin.common.EventChannel
 import java.text.SimpleDateFormat
 import org.json.JSONArray
 import org.json.JSONObject
 import twilio.flutter.twilio_conversations.listeners.ChannelListener
-import twilio.flutter.twilio_conversations.TwilioConversationsPlugin
 import java.util.*
 
 object Mapper {

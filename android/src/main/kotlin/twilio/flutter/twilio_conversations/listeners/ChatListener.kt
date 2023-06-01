@@ -3,7 +3,7 @@ package twilio.flutter.twilio_conversations.listeners
 import com.twilio.conversations.*
 import io.flutter.plugin.common.EventChannel
 import twilio.flutter.twilio_conversations.Mapper
-import twilio.flutter.twilio_conversations.TwilioConversationsPlugin
+import com.twilio.util.ErrorInfo
 import android.util.Log
 
 class ChatListener(val properties: ConversationsClient.Properties) : ConversationsClientListener {
