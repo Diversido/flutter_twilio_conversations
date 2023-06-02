@@ -136,7 +136,7 @@ object MessagesMethods {
     }
 
     fun getMessagesBefore(call: MethodCall, result: MethodChannel.Result) {
-        val index = call.argument<Long>("index")
+        val index = call.argument<Int>("index")?.toLong()
                 ?: return result.error("ERROR", "Missing 'index'", null)
         val count = call.argument<Int>("count")
                 ?: return result.error("ERROR", "Missing 'count'", null)
