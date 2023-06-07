@@ -24,6 +24,12 @@ public class MessagesMethods {
                 if (options["body"] != nil) {
                     messagePreparator.setBody(options["body"] as? String)
                 }
+
+                if (options["attributes"] as? [String: Any?] != nil) {
+                    let attributesDict = options["attributes"] as? [String: Any?]
+                    let attributes = TCHJsonAttributes.init(dictionary: attributesDict! as [AnyHashable: Any])
+                    messagePreparator.setAttributes(attributes, error: nil)
+                }
                 
                 if (options["input"] != nil && options["mimeType"] as? String != nil) {
                     let input = options["input"] as? String

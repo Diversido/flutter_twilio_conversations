@@ -47,8 +47,10 @@ class TwilioMiddleware extends EpicMiddleware<AppState> {
       ) =>
           stream.asyncExpand((action) async* {
             try {
-              final request = await action.channel.messages
-                  ?.sendMessage(MessageOptions()..withBody(action.text));
+              final request =
+                  await action.channel.messages?.sendMessage(MessageOptions()
+                    ..withBody(action.text)
+                    ..withAttributes({'customKey': 'customValue'}));
 
               if (request != null) {
                 print(
