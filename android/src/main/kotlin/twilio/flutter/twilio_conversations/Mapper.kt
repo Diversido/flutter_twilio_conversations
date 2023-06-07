@@ -92,11 +92,33 @@ object Mapper {
         )
     }
 
-    fun attributesToMap(attributes: Attributes): Map<String, Any> {
-        return mapOf(
-                "type" to "name.string",
-                "data" to "User"
-        )
+    fun attributesToMap(attributes: Attributes): Map<String, Any?> {
+        return when {
+            attributes.boolean != null -> mapOf(
+                "type" to "boolean",
+                "data" to attributes.boolean!!,
+            )
+            attributes.number != null -> mapOf(
+                "type" to "number",
+                "data" to attributes.number!!,
+            )
+            attributes.string != null -> mapOf(
+                "type" to "string",
+                "data" to attributes.string!!,
+            )
+            attributes.jsonArray != null -> mapOf(
+                "type" to "array",
+                "data" to "${attributes.jsonArray}",
+            )
+            attributes.jsonObject != null -> mapOf(
+                "type" to "object",
+                "data" to "${attributes.jsonObject}",
+            )
+            else -> mapOf(
+                "type" to "null",
+                "data" to null,
+            )
+        }
     }
 
     private fun channelsToMap(channels: List<Conversation>): Map<String, Any> {
