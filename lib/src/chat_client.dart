@@ -102,12 +102,6 @@ class ChatClient {
   /// Called when the current user was invited to a channel, channel status is [ChannelStatus.INVITED].
   Stream<Channel>? onChannelInvited;
 
-  final StreamController<Channel> _onChannelJoinedCtrl =
-      StreamController<Channel>.broadcast();
-
-  /// Called when the current user either joined or was added into a channel, channel status is [ChannelStatus.JOINED].
-  Stream<Channel>? onChannelJoined;
-
   final StreamController<Channel> _onChannelSynchronizationChangeCtrl =
       StreamController<Channel>.broadcast();
 
@@ -235,7 +229,6 @@ class ChatClient {
     onChannelAdded = _onChannelAddedCtrl.stream;
     onChannelDeleted = _onChannelDeletedCtrl.stream;
     onChannelInvited = _onChannelInvitedCtrl.stream;
-    onChannelJoined = _onChannelJoinedCtrl.stream;
     onChannelSynchronizationChange = _onChannelSynchronizationChangeCtrl.stream;
     onChannelUpdated = _onChannelUpdatedCtrl.stream;
     onClientSynchronization = _onClientSynchronizationCtrl.stream;
@@ -432,11 +425,6 @@ class ChatClient {
         assert(channelMap != null);
         Channels._updateChannelFromMap(channelMap!);
         _onChannelInvitedCtrl.add(Channels._channelsMap[channelMap['sid']]!);
-        break;
-      case 'channelJoined':
-        assert(channelMap != null);
-        Channels._updateChannelFromMap(channelMap!);
-        _onChannelJoinedCtrl.add(Channels._channelsMap[channelMap['sid']]!);
         break;
       case 'channelSynchronizationChange':
         assert(channelMap != null);

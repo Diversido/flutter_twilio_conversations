@@ -19,20 +19,15 @@ public class ChatListener: NSObject, TwilioConversationsClientDelegate {
         sendEvent("addedToChannelNotification", data: ["channelSid": channelSid])
     }
 
-    // onChannelAdded / onChannelInvited
-    public func conversationsClient(_ client: TwilioConversationsClient, channelAdded channel: TCHConversation) {
-        if channel.status == TCHConversationStatus.joined {
-            SwiftTwilioConversationsPlugin.debug("ChatListener.onChannelJoined => channelSid is \(String(describing: channel.sid))'")
-            sendEvent("channelJoined", data: ["channel": Mapper.channelToDict(channel) as Any])
-        } else {
-            SwiftTwilioConversationsPlugin.debug("ChatListener.onChannelAdded => channelSid is \(String(describing: channel.sid))'")
-            sendEvent("channelAdded", data: ["channel": Mapper.channelToDict(channel) as Any])
-        }
+    // onChannelAdded
+    public func conversationsClient(_ client: TwilioConversationsClient, conversationAdded channel: TCHConversation) {
+        SwiftTwilioConversationsPlugin.debug("ChatListener.conversationAdded => channelSid is \(String(describing: channel.sid))'")
+        sendEvent("channelAdded", data: ["channel": Mapper.channelToDict(channel) as Any])
     }
 
     // onChannelDeleted
-    public func conversationsClient(_ client: TwilioConversationsClient, channelDeleted channel: TCHConversation) {
-        SwiftTwilioConversationsPlugin.debug("ChatListener.onChannelDeleted => channelSid is \(String(describing: channel.sid))'")
+    public func conversationsClient(_ client: TwilioConversationsClient, conversationDeleted channel: TCHConversation) {
+        SwiftTwilioConversationsPlugin.debug("ChatListener.conversationDeleted => channelSid is \(String(describing: channel.sid))'")
         sendEvent("channelDeleted", data: ["channel": Mapper.channelToDict(channel) as Any])
     }
 
