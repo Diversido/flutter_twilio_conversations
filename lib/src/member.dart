@@ -54,6 +54,13 @@ class Member {
       : assert(_channelSid != null),
         assert(_attributes != null);
 
+  static Member? fromMap(Map<String, dynamic>? map) {
+    if (map == null) {
+      return null;
+    }
+    return Member._fromMap(map);
+  }
+
   /// Construct from a map.
   factory Member._fromMap(Map<String, dynamic> map) {
     var member = Member(

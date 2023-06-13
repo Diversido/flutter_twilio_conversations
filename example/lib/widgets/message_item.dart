@@ -31,7 +31,8 @@ class MessageItem extends StatelessWidget {
               padding: const EdgeInsets.only(
                 bottom: 6,
               ),
-              child: Text('${message.author} @ ${message.dateCreated}'),
+              child: Text(
+                  '${message.author} @ ${message.dateCreated} with ${message.attributes?.getJSONObject()}}'),
             ),
             Container(
               decoration: BoxDecoration(
