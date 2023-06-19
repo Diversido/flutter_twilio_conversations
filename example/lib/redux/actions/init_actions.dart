@@ -23,6 +23,12 @@ class SubscribeToChatClientSyncAction {}
 
 class SubscribeToConversationsUpdatesAction {}
 
+class SubscribeToMembersTypingStatus {
+  final Channel channel;
+
+  SubscribeToMembersTypingStatus(this.channel);
+}
+
 class UpdateIndicatorsAction {
   final bool? isTwilioInitializing;
   final bool? isClientSyncing;

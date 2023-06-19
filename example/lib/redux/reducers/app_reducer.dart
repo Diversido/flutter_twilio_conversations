@@ -1,3 +1,4 @@
+import 'package:flutter_twilio_conversations_example/redux/actions/channel_actions.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/init_actions.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/messages_actions.dart';
@@ -16,6 +17,8 @@ class AppReducer extends ReducerClass<AppState> {
           TypedReducer(_updateChatMessages),
           TypedReducer(_openConversation),
           TypedReducer(_closeConversation),
+          TypedReducer(_typingStarted),
+          TypedReducer(_typingEnded),
         ],
       )(state, action);
 
@@ -77,6 +80,42 @@ class AppReducer extends ReducerClass<AppState> {
       state.copyWith(
         selectedDialog: Nullable(action.dialog),
         navigationState: state.navigationState.copyWith(isDialogOpened: true),
+      );
+
+  AppState _typingStarted(
+    AppState state,
+    TypingStarted action,
+  ) =>
+      state.copyWith(
+        dialogs: state.dialogs
+            .map((dialog) => dialog.channel.sid == action.event.channel.sid
+                ? dialog.addTypingMember(action.event.member)
+                : dialog)
+            .toList(),
+        selectedDialog:
+            state.selectedDialog?.channel.sid == action.event.channel.sid
+                ? Nullable(
+                    state.selectedDialog?.addTypingMember(action.event.member),
+                  )
+                : Nullable(state.selectedDialog),
+      );
+
+  AppState _typingEnded(
+    AppState state,
+    TypingEnded action,
+  ) =>
+      state.copyWith(
+        dialogs: state.dialogs
+            .map((dialog) => dialog.channel.sid == action.event.channel.sid
+                ? dialog.removeTypingMember(action.event.member)
+                : dialog)
+            .toList(),
+        selectedDialog: state.selectedDialog?.channel.sid ==
+                action.event.channel.sid
+            ? Nullable(
+                state.selectedDialog?.removeTypingMember(action.event.member),
+              )
+            : Nullable(state.selectedDialog),
       );
 
   AppState _closeConversation(
