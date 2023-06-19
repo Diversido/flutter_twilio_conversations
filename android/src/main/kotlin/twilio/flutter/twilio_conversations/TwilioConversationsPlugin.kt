@@ -51,6 +51,8 @@ class TwilioConversationsPlugin : FlutterPlugin {
         @JvmStatic
         lateinit var instance: TwilioConversationsPlugin
 
+        private var initialized = false
+
         var chatClient: ConversationsClient? = null
 
         val LOG_TAG = "Twilio_PChat"
@@ -82,6 +84,14 @@ class TwilioConversationsPlugin : FlutterPlugin {
     }
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        if (initialized) {
+            debug("TwilioConversationsPlugin.onAttachedToEngine => return")
+            return
+        } else {
+            debug("TwilioConversationsPlugin.onAttachedToEngine => initializing")
+        }
+
+        initialized = true
         instance = this
         onAttachedToEngine(binding.applicationContext, binding.binaryMessenger)
     }
@@ -153,6 +163,7 @@ class TwilioConversationsPlugin : FlutterPlugin {
         loggingChannel.setStreamHandler(null)
         notificationChannel.setStreamHandler(null)
         mediaProgressChannel.setStreamHandler(null)
+        initialized = false
     }
 
     fun registerForNotification(call: MethodCall, result: MethodChannel.Result) {
