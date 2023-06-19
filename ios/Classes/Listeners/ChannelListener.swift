@@ -9,22 +9,21 @@ public class ChannelListener: NSObject, TCHConversationDelegate {
     }
 
     // onMessageAdded
-    public func conversationsClient(_ client: TwilioConversationsClient, channel: TCHConversation, messageAdded message: TCHMessage) {
+    public func conversationsClient(_ client: TwilioConversationsClient, conversation: TCHConversation, messageAdded message: TCHMessage) {
         SwiftTwilioConversationsPlugin.debug(
             "ChannelListener.onMessageAdded => messageSid = \(String(describing: message.sid))")
         sendEvent("messageAdded", data: [
-            "message": Mapper.messageToDict(message, channelSid: channel.sid)
+            "message": Mapper.messageToDict(message, channelSid: conversation.sid)
         ])
     }
 
     // onMessageUpdated
-    public func conversationsClient(
-        _ client: TwilioConversationsClient, conversation channel: TCHConversation, message: TCHMessage, updated: TCHMessageUpdate) {
+    public func conversationsClient(_ client: TwilioConversationsClient, conversation: TCHConversation, message: TCHMessage, updated: TCHMessageUpdate) {
         SwiftTwilioConversationsPlugin.debug(
             "ChannelListener.onMessageUpdated => messageSid = \(String(describing: message.sid)), " +
             "updated = \(String(describing: updated))")
         sendEvent("messageUpdated", data: [
-            "message": Mapper.messageToDict(message, channelSid: channel.sid),
+            "message": Mapper.messageToDict(message, channelSid: conversation.sid),
             "reason": [
                 "type": "message",
                 "value": Mapper.messageUpdateToString(updated)
@@ -33,31 +32,30 @@ public class ChannelListener: NSObject, TCHConversationDelegate {
     }
 
     // onMessageDeleted
-    public func conversationsClient(_ client: TwilioConversationsClient, conversation channel: TCHConversation, messageDeleted message: TCHMessage) {
+    public func conversationsClient(_ client: TwilioConversationsClient, conversation: TCHConversation, messageDeleted message: TCHMessage) {
         SwiftTwilioConversationsPlugin.debug(
             "ChannelListener.onMessageDeleted => messageSid = \(String(describing: message.sid))")
         sendEvent("messageDeleted", data: [
-            "message": Mapper.messageToDict(message, channelSid: channel.sid)
+            "message": Mapper.messageToDict(message, channelSid: conversation.sid)
         ])
     }
 
     // onMemberAdded
-    public func conversationsClient(_ client: TwilioConversationsClient, channel: TCHConversation, memberJoined member: TCHParticipant) {
+    public func conversationsClient(_ client: TwilioConversationsClient, conversation: TCHConversation, participantJoined participant: TCHParticipant) {
         SwiftTwilioConversationsPlugin.debug(
-            "ChannelListener.onMemberAdded => memberSid = \(String(describing: member.sid))")
+            "ChannelListener.onMemberAdded => memberSid = \(String(describing: participant.sid))")
         sendEvent("memberAdded", data: [
-            "member": Mapper.memberToDict(member, channelSid: channel.sid) as Any
+            "member": Mapper.memberToDict(participant, channelSid: conversation.sid) as Any
         ])
     }
 
     // onMemberUpdated
-    public func conversationsClient(_ client: TwilioConversationsClient, channel: TCHConversation,
-                           member: TCHParticipant, updated: TCHParticipantUpdate) {
+    public func conversationsClient(_ client: TwilioConversationsClient, conversation: TCHConversation, participant: TCHParticipant, updated: TCHParticipantUpdate) {
         SwiftTwilioConversationsPlugin.debug(
-            "ChannelListener.onMemberUpdated => memberSid = \(String(describing: member.sid)), " +
+            "ChannelListener.onMemberUpdated => memberSid = \(String(describing: participant.sid)), " +
             "updated = \(String(describing: updated))")
         sendEvent("memberUpdated", data: [
-            "member": Mapper.memberToDict(member, channelSid: channel.sid) as Any,
+            "member": Mapper.memberToDict(participant, channelSid: conversation.sid) as Any,
             "reason": [
                 "type": "member",
                 "value": Mapper.memberUpdateToString(updated)
@@ -66,39 +64,39 @@ public class ChannelListener: NSObject, TCHConversationDelegate {
     }
 
     // onMemberDeleted
-    public func conversationsClient(_ client: TwilioConversationsClient, channel: TCHConversation, memberLeft member: TCHParticipant) {
+    public func conversationsClient(_ client: TwilioConversationsClient, conversation: TCHConversation, participantLeft participant: TCHParticipant) {
         SwiftTwilioConversationsPlugin.debug(
-            "ChannelListener.onMemberDeleted => memberSid = \(String(describing: member.sid))")
+            "ChannelListener.onMemberDeleted => memberSid = \(String(describing: participant.sid))")
         sendEvent("memberDeleted", data: [
-            "member": Mapper.memberToDict(member, channelSid: channel.sid) as Any
+            "member": Mapper.memberToDict(participant, channelSid: conversation.sid) as Any
         ])
     }
 
     // onTypingStarted
-    public func conversationsClient(_ client: TwilioConversationsClient, typingStartedOn channel: TCHConversation, member: TCHParticipant) {
+    public func conversationsClient(_ client: TwilioConversationsClient, typingStartedOn conversation: TCHConversation, participant: TCHParticipant) {
         SwiftTwilioConversationsPlugin.debug(
-            "ChannelListener.onTypingStarted => channelSid = \(String(describing: channel.sid)), " +
-            "memberSid = \(String(describing: member.sid))")
+            "ChannelListener.onTypingStarted => channelSid = \(String(describing: conversation.sid)), " +
+            "memberSid = \(String(describing: participant.sid))")
         sendEvent("typingStarted", data: [
-            "channel": Mapper.channelToDict(channel) as Any,
-            "member": Mapper.memberToDict(member, channelSid: channel.sid) as Any
+            "channel": Mapper.channelToDict(conversation) as Any,
+            "member": Mapper.memberToDict(participant, channelSid: conversation.sid) as Any
         ])
     }
 
     // onTypingEnded
-    public func conversationsClient(_ client: TwilioConversationsClient, typingEndedOn channel: TCHConversation, member: TCHParticipant) {
+    public func conversationsClient(_ client: TwilioConversationsClient, typingEndedOn conversation: TCHConversation, participant: TCHParticipant)  {
         SwiftTwilioConversationsPlugin.debug(
-            "ChannelListener.onTypingEnded => channelSid = \(String(describing: channel.sid)), " +
-            "memberSid = \(String(describing: member.sid))")
+            "ChannelListener.onTypingEnded => channelSid = \(String(describing: conversation.sid)), " +
+            "memberSid = \(String(describing: participant.sid))")
         sendEvent("typingEnded", data: [
-            "channel": Mapper.channelToDict(channel) as Any,
-            "member": Mapper.memberToDict(member, channelSid: channel.sid) as Any
+            "channel": Mapper.channelToDict(conversation) as Any,
+            "member": Mapper.memberToDict(participant, channelSid: conversation.sid) as Any
         ])
     }
 
     // onSynchronizationChanged
     public func conversationsClient(_ client: TwilioConversationsClient, conversation: TCHConversation,
-                           synchronizationStatusUpdated status: TCHConversationSynchronizationStatus) {
+        synchronizationStatusUpdated status: TCHConversationSynchronizationStatus) {
         SwiftTwilioConversationsPlugin.debug(
             "ChannelListener.onSynchronizationChanged => channelSid = \(String(describing: conversation.sid))")
         sendEvent("synchronizationChanged", data: [
