@@ -43,7 +43,10 @@ class ChatListener(val properties: ConversationsClient.Properties) : Conversatio
     }
 
     override fun onAddedToConversationNotification(conversationSid: String?) {
-        TODO("Not yet implemented")
+        Log.d("TwilioInfo", "ChatListener.onAddedToConversationNotification => added to '${conversationSid}'")
+        sendEvent("addedToChannelNotification", mapOf(
+            "channelSid" to conversationSid
+        ))
     }
 
     override fun onNotificationSubscribed() {
@@ -105,11 +108,17 @@ class ChatListener(val properties: ConversationsClient.Properties) : Conversatio
     }
 
     override fun onConversationDeleted(conversation: Conversation?) {
-        TODO("Not yet implemented")
+        Log.d("TwilioInfo", "ChatListener.onConversationDeleted => conversation '${conversation?.sid}' deleted")
+        sendEvent("channelDeleted", mapOf(
+            "channel" to Mapper.channelToMap(conversation!!)
+        ))
     }
 
     override fun onRemovedFromConversationNotification(conversationSid: String?) {
-        TODO("Not yet implemented")
+        Log.d("TwilioInfo", "ChatListener.onRemovedFromConversationNotification => removed from '${conversationSid}'")
+        sendEvent("removedFromChannelNotification", mapOf(
+            "channelSid" to conversationSid
+        ))
     }
 
     private fun sendEvent(name: String, data: Any?, e: ErrorInfo? = null) {
