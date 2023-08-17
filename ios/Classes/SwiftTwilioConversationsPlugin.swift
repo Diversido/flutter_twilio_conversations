@@ -182,7 +182,7 @@ public class SwiftTwilioConversationsPlugin: NSObject, FlutterPlugin {
         SwiftTwilioConversationsPlugin.sendNotificationEvent("registered", data: ["result": false], error: error)
     }
 
-    private static func sendNotificationEvent(_ name: String, data: [String: Any]? = nil, error: Error? = nil) {
+    public static func sendNotificationEvent(_ name: String, data: [String: Any]? = nil, error: Error? = nil) {
         let eventData = ["name": name, "data": data, "error": Mapper.errorToDict(error)] as [String: Any?]
 
         if let notificationSink = SwiftTwilioConversationsPlugin.notificationSink {
