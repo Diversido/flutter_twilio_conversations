@@ -1,11 +1,11 @@
 name: flutter_twilio_conversations
 description: Integrate the Twilio Conversations SDK with your Flutter app using this Twilio Conversations Flutter plugin
-version: 1.0.0+1
+version: 1.1.0+2
 repository: https://github.com/Diversido/flutter_twilio_conversations
 issue_tracker: https://github.com/Diversido/flutter_twilio_conversations/issues
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.14.0 <4.0.0"
   flutter: '>=1.17.0'
 
 dependencies:
