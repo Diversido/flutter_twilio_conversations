@@ -163,6 +163,8 @@ class TwilioConversationsPlugin : FlutterPlugin {
         loggingChannel.setStreamHandler(null)
         notificationChannel.setStreamHandler(null)
         mediaProgressChannel.setStreamHandler(null)
+        channelChannels.clear()
+        channelListeners.clear()
         initialized = false
     }
 
