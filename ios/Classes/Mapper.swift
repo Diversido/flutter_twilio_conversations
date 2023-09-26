@@ -354,7 +354,7 @@ public class Mapper {
     public static func dateToString(_ date: Date?) -> String? {
         if let date = date {
             let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             return formatter.string(from: date)
         }
         return nil
