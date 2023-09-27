@@ -307,7 +307,7 @@ object Mapper {
 
     private fun dateToString(date: Date?): String? {
         if (date == null) return null
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         return dateFormat.format(date)
     }
 }
