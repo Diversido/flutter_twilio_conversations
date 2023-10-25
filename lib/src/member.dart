@@ -15,6 +15,7 @@ class Member {
 
   String? _identity;
 
+  /// Also known as channelType
   final MemberType _type;
   //#endregion
 
@@ -39,7 +40,7 @@ class Member {
     return _identity;
   }
 
-  /// Returns [MemberType] of current member.
+  /// Returns [MemberType] of current member. Also known as channelType.
   MemberType get type {
     return _type;
   }

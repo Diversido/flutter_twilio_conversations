@@ -196,7 +196,7 @@ public class Mapper {
             "lastConsumptionTimestamp": member.lastReadTimestamp,
             "channelSid": channelSid,
             "identity": member.identity,
-            "type": memberTypeToString(member.type),
+            "type": memberTypeToString(member.channelType),
             "attributes": attributesToDict(member.attributes())
         ]
     }
@@ -294,12 +294,10 @@ public class Mapper {
         return syncStatusString
     }
 
-    public static func memberTypeToString(_ memberType: TCHParticipantType) -> String {
+    public static func memberTypeToString(_ memberType: TCHParticipant.ParticipantChannelType?) -> String {
         let memberTypeString: String
 
         switch memberType {
-        case .unset:
-            memberTypeString = "UNSET"
         case .other:
             memberTypeString = "OTHER"
         case .chat:
@@ -307,9 +305,9 @@ public class Mapper {
         case .sms:
             memberTypeString = "SMS"
         case .whatsapp:
-            memberTypeString = "CHAT"
+            memberTypeString = "WHATSAPP"
         @unknown default:
-            memberTypeString = "UNKNOWN"
+            memberTypeString = "OTHER"
         }
 
         return memberTypeString
