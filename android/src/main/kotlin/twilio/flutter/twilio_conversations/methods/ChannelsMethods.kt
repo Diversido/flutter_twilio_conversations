@@ -42,12 +42,12 @@ object ChannelsMethods {
 
         TwilioConversationsPlugin.chatClient?.createConversation(friendlyName, object : CallbackListener<Conversation> {
             override fun onSuccess(newChannel: Conversation) {
-                Log.d("TwilioInfo", "ChannelsMethods.getChannel => onSuccess")
+                Log.d("TwilioInfo", "ChannelsMethods.createChannel => onSuccess")
                 result.success(Mapper.channelToMap(newChannel))
             }
 
             override fun onError(errorInfo: ErrorInfo) {
-                Log.d("TwilioInfo", "ChannelsMethods.getChannel => onError: $errorInfo")
+                Log.d("TwilioInfo", "ChannelsMethods.createChannel => onError: $errorInfo")
                 result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
             }
         })
