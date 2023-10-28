@@ -58,7 +58,8 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
                 "Channels#getChannel" -> ChannelsMethods.getChannel(call, result)
                 "Channels#getPublicChannelsList" -> ChannelsMethods.getPublicChannelsList(call, result)
                 "Channels#getUserChannelsList" -> ChannelsMethods.getUserChannelsList(call, result)
-    
+                "Channels#createChannel" -> ChannelsMethods.createChannel(call, result)
+
                 "Member#getUserDescriptor" -> MemberMethods.getUserDescriptor(call, result)
                 "Member#getAndSubscribeUser" -> MemberMethods.getAndSubscribeUser(call, result)
                 "Member#setAttributes" -> MemberMethods.setAttributes(call, result)
