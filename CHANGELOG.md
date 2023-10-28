@@ -1,3 +1,6 @@
+## 1.1.3+5 — Sep 27, 2023
+* Fixed issue [#15](https://github.com/Diversido/flutter_twilio_conversations/issues/15)
+
 ## 1.1.2+4 — Sep 27, 2023
 * Fixed issue [#12](https://github.com/Diversido/flutter_twilio_conversations/issues/12)
 
