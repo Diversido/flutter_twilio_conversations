@@ -224,6 +224,11 @@ class TwilioConversationsPlugin : FlutterPlugin {
         })
     }
 
+    // This is a no-op for a method needed on iOS
+    fun handleReceivedNotification(call: MethodCall, result: MethodChannel.Result) {
+        result.success(null)
+    }
+
     private fun sendNotificationEvent(name: String, data: Any?, e: ErrorInfo? = null) {
         val eventData = mapOf("name" to name, "data" to data, "error" to Mapper.errorInfoToMap(e))
         notificationSink?.success(eventData)
