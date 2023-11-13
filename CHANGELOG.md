@@ -1,3 +1,6 @@
+## 1.1.6+8  
+* Fixed issue [#21](https://github.com/Diversido/flutter_twilio_conversations/issues/21)
+
 ## 1.1.5+7  
 * Fixed issue [#19](https://github.com/Diversido/flutter_twilio_conversations/issues/19)
 
