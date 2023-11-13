@@ -15,6 +15,8 @@ public class PluginHandler {
             SwiftTwilioConversationsPlugin.instance?.registerForNotification(call, flutterResult: result)
         case "unregisterForNotification":
             SwiftTwilioConversationsPlugin.instance?.unregisterForNotification(call, flutterResult: result)
+        case "handleReceivedNotification":
+            SwiftTwilioConversationsPlugin.instance?.handleReceivedNotification(call, flutterResult: result)
         case "ChatClient#updateToken":
             ChatClientMethods.updateToken(call, result: result)
         case "ChatClient#shutdown":

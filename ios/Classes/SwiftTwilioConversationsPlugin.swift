@@ -132,6 +132,30 @@ public class SwiftTwilioConversationsPlugin: NSObject, FlutterPlugin {
         flutterResult(nil)
     }
 
+    // This is called after the client is initialized,
+    // to check whether the app was opened via a notification
+    public func handleReceivedNotification(_ call: FlutterMethodCall, flutterResult: @escaping FlutterResult) {
+      if receivedNotification != nil {
+        if SwiftTwilioConversationsPlugin.chatListener?.chatClient != nil {
+          // If your reference to the Conversations client exists
+          // and is initialized, send the notification to it
+          SwiftTwilioConversationsPlugin.chatListener?.chatClient?.handleNotification(receivedNotification!) { (result) in
+            SwiftTwilioConversationsPlugin.debug("Handling Twilio notification: \(String(describing: self.receivedNotification))")
+            if !result.isSuccessful {
+              // Handling of notification was not successful, retry?
+              SwiftTwilioConversationsPlugin.debug("Failed to handle Twilio notification")
+              flutterResult("Failed to handle Twilio notification")
+            } else {
+              SwiftTwilioConversationsPlugin.debug("Succeeded to handle Twilio notification: \(String(describing: self.receivedNotification))")
+              flutterResult("Succeeded to handle Twilio notification: \(String(describing: self.receivedNotification))")
+            }
+          }
+        }
+      } else {
+        flutterResult(nil)
+      }
+    }
+
     public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         globalToken = deviceToken
         SwiftTwilioConversationsPlugin.debug("didRegisterForRemoteNotificationsWithDeviceToken => onSuccess: \((deviceToken as NSData).description)")

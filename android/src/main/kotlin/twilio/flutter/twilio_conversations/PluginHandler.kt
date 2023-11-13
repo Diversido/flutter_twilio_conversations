@@ -30,7 +30,8 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
                 "create" -> create(call, result)
                 "registerForNotification" -> TwilioConversationsPlugin.instance.registerForNotification(call, result)
                 "unregisterForNotification" -> TwilioConversationsPlugin.instance.unregisterForNotification(call, result)
-    
+                "handleReceivedNotification" -> TwilioConversationsPlugin.instance.handleReceivedNotification(call, result)
+
                 "ChatClient#updateToken" -> ChatClientMethods.updateToken(call, result)
                 "ChatClient#shutdown" -> ChatClientMethods.shutdown(call, result)
     
