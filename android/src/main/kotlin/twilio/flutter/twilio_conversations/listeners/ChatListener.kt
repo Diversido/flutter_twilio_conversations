@@ -5,8 +5,9 @@ import io.flutter.plugin.common.EventChannel
 import twilio.flutter.twilio_conversations.Mapper
 import com.twilio.util.ErrorInfo
 import android.util.Log
+import twilio.flutter.twilio_conversations.TwilioConversationsPlugin
 
-class ChatListener(val properties: ConversationsClient.Properties) : ConversationsClientListener {
+class ChatListener(private val pluginInstance: TwilioConversationsPlugin, val properties: ConversationsClient.Properties) : ConversationsClientListener {
     var events: EventChannel.EventSink? = null
 
     override fun onClientSynchronization(synchronizationStatus: ConversationsClient.SynchronizationStatus) {
@@ -16,7 +17,7 @@ class ChatListener(val properties: ConversationsClient.Properties) : Conversatio
 
     override fun onConversationSynchronizationChange(conversation: Conversation?) {
         Log.d("TwilioInfo", "ChatListener.onConversationSynchronizationChange => conversation = '${conversation?.sid}' ")
-        sendEvent("channelSynchronizationChange", mapOf("channel" to Mapper.channelToMap(conversation!!)))
+        sendEvent("channelSynchronizationChange", mapOf("channel" to Mapper.channelToMap(pluginInstance, conversation!!)))
     }
 
     override fun onConnectionStateChange(connectionState: ConversationsClient.ConnectionState) {
@@ -27,11 +28,6 @@ class ChatListener(val properties: ConversationsClient.Properties) : Conversatio
     override fun onError(errorInfo: ErrorInfo) {
         sendEvent("error", null, errorInfo)
     }
-
-//    override fun onInvitedToChannelNotification(channelSid: String) {
-//        Log.d("TwilioInfo", "ChatListener.onInvitedToChannelNotification => channelSid = $channelSid")
-//        sendEvent("invitedToChannelNotification", mapOf("channelSid" to channelSid))
-//    }
 
     override fun onNewMessageNotification(channelSid: String?, messageSid: String?, messageIndex: Long) {
         Log.d("TwilioInfo", "ChatListener.onNewMessageNotification => channelSid = $channelSid, messageSid = $messageSid, messageIndex = $messageIndex")
@@ -81,7 +77,7 @@ class ChatListener(val properties: ConversationsClient.Properties) : Conversatio
     override fun onConversationUpdated(conversation: Conversation?, reason: Conversation.UpdateReason?) {
         Log.d("TwilioInfo", "ChatListener.onConversationUpdated => conversation '${conversation?.sid}' updated, $reason")
         sendEvent("channelUpdated", mapOf(
-                "channel" to Mapper.channelToMap(conversation!!),
+                "channel" to Mapper.channelToMap(pluginInstance, conversation!!),
                 "reason" to mapOf(
                     "type" to "channel",
                     "value" to reason.toString()
@@ -92,7 +88,7 @@ class ChatListener(val properties: ConversationsClient.Properties) : Conversatio
     override fun onConversationAdded(conversation: Conversation?) {
         Log.d("TwilioInfo", "ChatListener.onConversationAdded => conversation '${conversation?.sid}' added")
         sendEvent("channelAdded", mapOf(
-                "channel" to Mapper.channelToMap(conversation!!)
+                "channel" to Mapper.channelToMap(pluginInstance, conversation!!)
         ))
     }
 
@@ -110,7 +106,7 @@ class ChatListener(val properties: ConversationsClient.Properties) : Conversatio
     override fun onConversationDeleted(conversation: Conversation?) {
         Log.d("TwilioInfo", "ChatListener.onConversationDeleted => conversation '${conversation?.sid}' deleted")
         sendEvent("channelDeleted", mapOf(
-            "channel" to Mapper.channelToMap(conversation!!)
+            "channel" to Mapper.channelToMap(pluginInstance, conversation!!)
         ))
     }
 

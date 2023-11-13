@@ -10,14 +10,14 @@ import com.twilio.util.ErrorInfo
 import android.util.Log
 
 object MessagesMethods {
-    fun sendMessage(call: MethodCall, result: MethodChannel.Result) {
+    fun sendMessage(pluginInstance: TwilioConversationsPlugin, call: MethodCall, result: MethodChannel.Result) {
         val options = call.argument<Map<String, Any>>("options")
                 ?: return result.error("ERROR", "Missing 'options'", null)
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)
 
         Log.d("TwilioInfo", "MessagesMethods.sendMessage => started")
-        
+
         TwilioConversationsPlugin.chatClient?.getConversation(channelSid, object : CallbackListener<Conversation> {
             override fun onSuccess(channel: Conversation) {
                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Channels.getChannel) => onSuccess")
@@ -40,7 +40,7 @@ object MessagesMethods {
                             channel.prepareMessage().addMedia(FileInputStream(input), mimeType, "image.jpeg", object : MediaUploadListener {
                                 override fun onCompleted(mediaSid: String) {
                                     Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
-                                    TwilioConversationsPlugin.mediaProgressSink?.success({
+                                    pluginInstance.mediaProgressSink?.success({
                                         "mediaProgressListenerId" to options["mediaProgressListenerId"]
                                         "name" to "completed"
                                         "data" to mediaSid
@@ -49,7 +49,7 @@ object MessagesMethods {
     
                                 override fun onStarted() {
                                     Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onStarted")
-                                    TwilioConversationsPlugin.mediaProgressSink?.success({
+                                    pluginInstance.mediaProgressSink?.success({
                                         "mediaProgressListenerId" to options["mediaProgressListenerId"]
                                         "name" to "started"
                                     })        

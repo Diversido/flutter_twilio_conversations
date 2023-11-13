@@ -10,15 +10,14 @@ import twilio.flutter.twilio_conversations.TwilioConversationsPlugin
 import android.util.Log
 
 object ChannelsMethods {
-
-    fun getChannel(call: MethodCall, result: MethodChannel.Result) {
+    fun getChannel(pluginInstance: TwilioConversationsPlugin, call: MethodCall, result: MethodChannel.Result) {
         val channelSidOrUniqueName = call.argument<String>("channelSidOrUniqueName")
                 ?: return result.error("ERROR", "Missing 'channelSidOrUniqueName'", null)
 
         TwilioConversationsPlugin.chatClient?.getConversation(channelSidOrUniqueName, object : CallbackListener<Conversation> {
             override fun onSuccess(newChannel: Conversation) {
                 Log.d("TwilioInfo", "ChannelsMethods.getChannel => onSuccess")
-                result.success(Mapper.channelToMap(newChannel))
+                result.success(Mapper.channelToMap(pluginInstance, newChannel))
             }
 
             override fun onError(errorInfo: ErrorInfo) {
@@ -36,14 +35,14 @@ object ChannelsMethods {
         result.success(TwilioConversationsPlugin.chatClient?.myConversations)
     }
 
-    fun createChannel(call: MethodCall, result: MethodChannel.Result) {
+    fun createChannel(pluginInstance: TwilioConversationsPlugin, call: MethodCall, result: MethodChannel.Result) {
         val friendlyName = call.argument<String>("friendlyName")
             ?: return result.error("ERROR", "Missing 'friendlyName'", null)
 
         TwilioConversationsPlugin.chatClient?.createConversation(friendlyName, object : CallbackListener<Conversation> {
             override fun onSuccess(newChannel: Conversation) {
                 Log.d("TwilioInfo", "ChannelsMethods.createChannel => onSuccess")
-                result.success(Mapper.channelToMap(newChannel))
+                result.success(Mapper.channelToMap(pluginInstance, newChannel))
             }
 
             override fun onError(errorInfo: ErrorInfo) {

@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.annotation.NonNull
 import com.twilio.conversations.ConversationsClient
 import com.twilio.util.ErrorInfo
 import com.twilio.conversations.StatusListener
@@ -13,12 +12,20 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.PluginRegistry.Registrar
 import twilio.flutter.twilio_conversations.listeners.ChannelListener
 import twilio.flutter.twilio_conversations.listeners.ChatListener
 
 /** TwilioConversationsPlugin */
 class TwilioConversationsPlugin : FlutterPlugin {
+    companion object {
+        const val LOG_TAG = "Twilio_PChat"
+
+        // One Twilio conversation client and each Flutter engine will have it's own listener
+        var chatClient: ConversationsClient? = null
+        var chatClientRegion: String? = null
+        var chatClientDeferCA: Boolean? = null
+    }
+
     private lateinit var methodChannel: MethodChannel
 
     private lateinit var chatChannel: EventChannel
@@ -29,76 +36,40 @@ class TwilioConversationsPlugin : FlutterPlugin {
 
     private lateinit var notificationChannel: EventChannel
 
-    // This static function is optional and equivalent to onAttachedToEngine. It supports the old
-    // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
-    // plugin registration via this function while apps migrate to use the new Android APIs
-    // post-flutter-1.12 via https://flutter.dev/go/android-project-migration.
-    //
-    // It is encouraged to share logic between onAttachedToEngine and registerWith to keep
-    // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
-    // depending on the user's project. onAttachedToEngine or registerWith must both be defined
-    // in the same class.
-    companion object {
-        @Suppress("unused")
-        @JvmStatic
-        fun registerWith(registrar: Registrar) {
-            instance = TwilioConversationsPlugin()
-            instance.onAttachedToEngine(registrar.context(), registrar.messenger())
-        }
+    lateinit var messenger: BinaryMessenger
 
-        lateinit var messenger: BinaryMessenger
+    lateinit var chatListener: ChatListener
 
-        @JvmStatic
-        lateinit var instance: TwilioConversationsPlugin
+    var mediaProgressSink: EventChannel.EventSink? = null
 
-        private var initialized = false
+    var loggingSink: EventChannel.EventSink? = null
 
-        var chatClient: ConversationsClient? = null
+    var notificationSink: EventChannel.EventSink? = null
 
-        val LOG_TAG = "Twilio_PChat"
+    var handler = Handler(Looper.getMainLooper())
 
-        var mediaProgressSink: EventChannel.EventSink? = null
+    var channelChannels: HashMap<String, EventChannel> = hashMapOf()
+    var channelListeners: HashMap<String, ChannelListener> = hashMapOf()
 
-        var loggingSink: EventChannel.EventSink? = null
+    var nativeDebug: Boolean = false
 
-        var notificationSink: EventChannel.EventSink? = null
-
-        var handler = Handler(Looper.getMainLooper())
-
-        var nativeDebug: Boolean = false
-
-        lateinit var chatListener: ChatListener
-
-        var channelChannels: HashMap<String, EventChannel> = hashMapOf()
-        var channelListeners: HashMap<String, ChannelListener> = hashMapOf()
-
-        @JvmStatic
-        fun debug(msg: String) {
-            if (nativeDebug) {
-                Log.d(LOG_TAG, msg)
-                handler.post(Runnable {
-                    loggingSink?.success(msg)
-                })
+    fun debug(msg: String) {
+        if (nativeDebug) {
+            Log.d(LOG_TAG, msg)
+            handler.post {
+                loggingSink?.success(msg)
             }
         }
     }
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        if (initialized) {
-            debug("TwilioConversationsPlugin.onAttachedToEngine => return")
-            return
-        } else {
-            debug("TwilioConversationsPlugin.onAttachedToEngine => initializing")
-        }
-
-        initialized = true
-        instance = this
         onAttachedToEngine(binding.applicationContext, binding.binaryMessenger)
     }
 
-    private fun onAttachedToEngine(applicationContext: Context, messenger: BinaryMessenger) {
-        TwilioConversationsPlugin.messenger = messenger
-        val pluginHandler = PluginHandler(applicationContext)
+    private fun onAttachedToEngine(applicationContext: Context, binaryMessenger: BinaryMessenger) {
+        messenger = binaryMessenger
+
+        val pluginHandler = PluginHandler(this, applicationContext)
         methodChannel = MethodChannel(messenger, "flutter_twilio_conversations")
         methodChannel.setMethodCallHandler(pluginHandler)
 
@@ -156,7 +127,7 @@ class TwilioConversationsPlugin : FlutterPlugin {
         })
     }
 
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         debug("TwilioConversationsPlugin.onDetachedFromEngine")
         methodChannel.setMethodCallHandler(null)
         chatChannel.setStreamHandler(null)
@@ -165,7 +136,6 @@ class TwilioConversationsPlugin : FlutterPlugin {
         mediaProgressChannel.setStreamHandler(null)
         channelChannels.clear()
         channelListeners.clear()
-        initialized = false
     }
 
     fun registerForNotification(call: MethodCall, result: MethodChannel.Result) {
