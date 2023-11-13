@@ -9,7 +9,7 @@ This package is based on [Twilio Programmable Chat Plugin](https://pub.dev/packa
 
 ```yaml
 dependencies:
-  flutter_twilio_conversations: '^1.1.2'
+  flutter_twilio_conversations: '^1.1.5'
 ```
 
 ## Setup
