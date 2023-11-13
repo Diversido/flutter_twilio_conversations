@@ -6,8 +6,9 @@ import io.flutter.plugin.common.EventChannel
 import twilio.flutter.twilio_conversations.Mapper
 import com.twilio.util.ErrorInfo
 import android.util.Log
+import twilio.flutter.twilio_conversations.TwilioConversationsPlugin
 
-class ChannelListener(private val events: EventChannel.EventSink) : TwilioChannelListener {
+class ChannelListener(private val pluginInstance: TwilioConversationsPlugin, private val events: EventChannel.EventSink) : TwilioChannelListener {
     override fun onMessageAdded(message: Message) {
         Log.d("TwilioInfo", "ChannelListener.onMessageAdded => messageSid = ${message.sid}")
         sendEvent("messageAdded", mapOf("message" to Mapper.messageToMap(message)))
@@ -54,17 +55,17 @@ class ChannelListener(private val events: EventChannel.EventSink) : TwilioChanne
 
     override fun onTypingStarted(channel: Conversation, member: Participant) {
         Log.d("TwilioInfo", "ChannelListener.onTypingStarted => channelSid = ${channel.sid}, memberSid = ${member.sid}")
-        sendEvent("typingStarted", mapOf("channel" to Mapper.channelToMap(channel), "member" to Mapper.memberToMap(member)))
+        sendEvent("typingStarted", mapOf("channel" to Mapper.channelToMap(pluginInstance, channel), "member" to Mapper.memberToMap(member)))
     }
 
     override fun onTypingEnded(channel: Conversation, member: Participant) {
         Log.d("TwilioInfo", "ChannelListener.onTypingEnded => channelSid = ${channel.sid}, memberSid = ${member.sid}")
-        sendEvent("typingEnded", mapOf("channel" to Mapper.channelToMap(channel), "member" to Mapper.memberToMap(member)))
+        sendEvent("typingEnded", mapOf("channel" to Mapper.channelToMap(pluginInstance, channel), "member" to Mapper.memberToMap(member)))
     }
 
     override fun onSynchronizationChanged(channel: Conversation) {
         Log.d("TwilioInfo", "ChannelListener.onSynchronizationChanged => channelSid = ${channel.sid}")
-        sendEvent("synchronizationChanged", mapOf("channel" to Mapper.channelToMap(channel)))
+        sendEvent("synchronizationChanged", mapOf("channel" to Mapper.channelToMap(pluginInstance, channel)))
     }
 
     private fun sendEvent(name: String, data: Any?, e: ErrorInfo? = null) {

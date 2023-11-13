@@ -28,6 +28,10 @@ object ChatClientMethods {
     fun shutdown(call: MethodCall, result: MethodChannel.Result) {
         return try {
             TwilioConversationsPlugin.chatClient?.shutdown()
+            TwilioConversationsPlugin.chatClient = null
+            TwilioConversationsPlugin.chatClientRegion = null
+            TwilioConversationsPlugin.chatClientDeferCA = null
+
             result.success(null)
         } catch (err: Exception) {
             result.error("ERROR", err.message, null)

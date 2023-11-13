@@ -82,9 +82,9 @@ object Mapper {
         return result
     }
 
-    fun chatClientToMap(chatClient: ConversationsClient): Map<String, Any> {
+    fun chatClientToMap(pluginInstance: TwilioConversationsPlugin, chatClient: ConversationsClient): Map<String, Any> {
         return mapOf(
-                "channels" to channelsToMap(chatClient.myConversations),
+                "channels" to channelsToMap(pluginInstance, chatClient.myConversations),
                 "myIdentity" to chatClient.myIdentity,
                 "connectionState" to chatClient.connectionState.toString(),
                 "users" to usersToMap(chatClient.subscribedUsers),
@@ -121,33 +121,33 @@ object Mapper {
         }
     }
 
-    private fun channelsToMap(channels: List<Conversation>): Map<String, Any> {
-        val subscribedChannelsMap = channels.map { channelToMap(it) }
+    private fun channelsToMap(pluginInstance: TwilioConversationsPlugin, channels: List<Conversation>): Map<String, Any> {
+        val subscribedChannelsMap = channels.map { channelToMap(pluginInstance, it) }
         return mapOf(
                 "subscribedChannels" to subscribedChannelsMap
         )
     }
 
-    fun channelToMap(channel: Conversation?): Map<String, Any?>? {
+    fun channelToMap(pluginInstance: TwilioConversationsPlugin, channel: Conversation?): Map<String, Any?>? {
         if (channel == null) {
             return null
         }
 
         // Setting flutter event listener for the given channel if one does not yet exist.
-        if (!TwilioConversationsPlugin.channelChannels.containsKey(channel.sid)) {
-            TwilioConversationsPlugin.channelChannels[channel.sid] = EventChannel(TwilioConversationsPlugin.messenger, "flutter_twilio_conversations/${channel.sid}")
-            TwilioConversationsPlugin.channelChannels[channel.sid]?.setStreamHandler(object : EventChannel.StreamHandler {
+        if (!pluginInstance.channelChannels.containsKey(channel.sid)) {
+            pluginInstance.channelChannels[channel.sid] = EventChannel(pluginInstance.messenger, "flutter_twilio_conversations/${channel.sid}")
+            pluginInstance.channelChannels[channel.sid]?.setStreamHandler(object : EventChannel.StreamHandler {
                 override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
                     Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) attached")
-                    TwilioConversationsPlugin.channelListeners[channel.sid] = ChannelListener(events)
-                    channel.addListener(TwilioConversationsPlugin.channelListeners[channel.sid])
+                    pluginInstance.channelListeners[channel.sid] = ChannelListener(pluginInstance, events)
+                    channel.addListener(pluginInstance.channelListeners[channel.sid])
                 }
 
                 override fun onCancel(arguments: Any?) {
                     Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) detached")
-                    channel.removeListener(TwilioConversationsPlugin.channelListeners[channel.sid])
-                    TwilioConversationsPlugin.channelListeners.remove(channel.sid)
-                    TwilioConversationsPlugin.channelChannels.remove(channel.sid)
+                    channel.removeListener(pluginInstance.channelListeners[channel.sid])
+                    pluginInstance.channelListeners.remove(channel.sid)
+                    pluginInstance.channelChannels.remove(channel.sid)
                 }
             })
         }
