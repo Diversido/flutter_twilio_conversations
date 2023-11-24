@@ -2,6 +2,8 @@ package twilio.flutter.twilio_conversations
 
 import android.util.Log
 import com.twilio.conversations.*
+import com.twilio.conversations.extensions.ChannelType
+import com.twilio.conversations.extensions.channelType
 import com.twilio.util.ErrorInfo
 import io.flutter.plugin.common.EventChannel
 import java.text.SimpleDateFormat
@@ -118,6 +120,16 @@ object Mapper {
                 "type" to "null",
                 "data" to null,
             )
+        }
+    }
+
+    private fun memberTypeToString(channelType: ChannelType) : String {
+        return when (channelType) {
+            ChannelType.Chat -> "CHAT"
+            ChannelType.Sms -> "SMS"
+            ChannelType.Unset -> "UNSET"
+            ChannelType.Whatsapp -> "WHATSAPP"
+            else -> {"OTHER"}
         }
     }
 
@@ -264,7 +276,7 @@ object Mapper {
                 "lastReadTimestamp" to member.lastReadTimestamp,
                 "channelSid" to member.conversation.sid,
                 "identity" to member.identity,
-                "type" to member.type.toString(),
+                "type" to memberTypeToString(member.channelType),
                 "attributes" to attributesToMap(member.attributes)
         )
     }
