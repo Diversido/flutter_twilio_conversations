@@ -10,7 +10,7 @@ class MessageOptions {
 
   List<String>? _mimeType;
 
-  String? _filename;
+  List<String>? _filename;
 
   int? _mediaProgressListenerId;
   //#endregion
@@ -35,18 +35,19 @@ class MessageOptions {
   /// Create message with given media stream.
   ///
   /// If you specify [MessageOptions.withMedia] then you will not be able to specify [MessageOptions.withBody] because they are mutually exclusive message types. Created message type will be [MessageType.MEDIA].
-  void withMedia(List<File> input, List<String> mimeType) {
+  void withMedia(List<File> input, List<String> mimeType,List<String> filename) {
     if (_body != null) {
       throw Exception('MessageOptions.withBody has already been specified');
     }
     _input = input;
     _mimeType = mimeType;
+    _filename=filename;
   }
 
   /// Provide optional filename for media.
-  void withMediaFileName(String filename) {
-    _filename = filename;
-  }
+  // void withMediaFileName(String filename) {
+  //   _filename = filename;
+  // }
 
   void withMediaProgressListener({
     void Function()? onStarted,

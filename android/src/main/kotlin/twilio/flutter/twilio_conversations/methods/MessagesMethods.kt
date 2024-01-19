@@ -38,12 +38,13 @@ object MessagesMethods {
                 if(options["input"] != null && options["mimeType"] != null){
                     val inputList = options["input"] as List<String>
                     val mimeTypeList = options["mimeType"] as List<String>
+                    val fileName = options["filename"] as List<String>
                     if(inputList.size == mimeTypeList.size && inputList.size == 1){
                         val input = inputList[0] as String
                         val mimeType = mimeTypeList[0] as String?
                                 ?: return result.error("ERROR", "Missing 'mimeType' in MessageOptions", null)
                         Log.d("TwilioInfo", "MessagesMethods.sendMessage (Channels.addMedia) => hasMedia")
-                        messagePreparator.addMedia(FileInputStream(input), mimeType, "image.jpeg", object : MediaUploadListener {
+                        messagePreparator.addMedia(FileInputStream(input), mimeType, fileName[0] as String, object : MediaUploadListener {
                             override fun onCompleted(mediaSid: String) {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
                                 pluginInstance.mediaProgressSink?.success({
@@ -81,7 +82,7 @@ object MessagesMethods {
                     if(inputList.size == mimeTypeList.size && inputList.size == 2){
 
                         Log.d("TwilioInfo", "MessagesMethods.sendMessage (Channels.addMedia) => hasMedia")
-                        messagePreparator.addMedia(FileInputStream( inputList[0] as String),  mimeTypeList[0] as String, "image.jpeg", object : MediaUploadListener {
+                        messagePreparator.addMedia(FileInputStream( inputList[0] as String),  mimeTypeList[0] as String, fileName[0] as String, object : MediaUploadListener {
                             override fun onCompleted(mediaSid: String) {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
                                 pluginInstance.mediaProgressSink?.success({
@@ -103,7 +104,7 @@ object MessagesMethods {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onFailed")
                                 result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                             }
-                        }).addMedia(FileInputStream( inputList[1] as String),  mimeTypeList[1] as String, "image.jpeg", object : MediaUploadListener {
+                        }).addMedia(FileInputStream( inputList[1] as String),  mimeTypeList[1] as String, fileName[1] as String, object : MediaUploadListener {
                             override fun onCompleted(mediaSid: String) {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
                                 pluginInstance.mediaProgressSink?.success({
@@ -141,7 +142,7 @@ object MessagesMethods {
                     if(inputList.size == mimeTypeList.size && inputList.size == 3){
 
                         Log.d("TwilioInfo", "MessagesMethods.sendMessage (Channels.addMedia) => hasMedia")
-                        messagePreparator.addMedia(FileInputStream( inputList[0] as String),  mimeTypeList[0] as String, "image.jpeg", object : MediaUploadListener {
+                        messagePreparator.addMedia(FileInputStream( inputList[0] as String),  mimeTypeList[0] as String, fileName[0] as String, object : MediaUploadListener {
                             override fun onCompleted(mediaSid: String) {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
                                 pluginInstance.mediaProgressSink?.success({
@@ -163,7 +164,7 @@ object MessagesMethods {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onFailed")
                                 result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                             }
-                        }).addMedia(FileInputStream( inputList[1] as String),  mimeTypeList[1] as String, "image.jpeg", object : MediaUploadListener {
+                        }).addMedia(FileInputStream( inputList[1] as String),  mimeTypeList[1] as String, fileName[1] as String, object : MediaUploadListener {
                             override fun onCompleted(mediaSid: String) {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
                                 pluginInstance.mediaProgressSink?.success({
@@ -185,7 +186,7 @@ object MessagesMethods {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onFailed")
                                 result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                             }
-                        }).addMedia(FileInputStream( inputList[2] as String),  mimeTypeList[2] as String, "image.jpeg", object : MediaUploadListener {
+                        }).addMedia(FileInputStream( inputList[2] as String),  mimeTypeList[2] as String, fileName[2] as String, object : MediaUploadListener {
                             override fun onCompleted(mediaSid: String) {
                                 Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
                                 pluginInstance.mediaProgressSink?.success({
