@@ -40,8 +40,9 @@ public class MessagesMethods {
                     
                     let inputStream = InputStream(fileAtPath: input!)
                     
-                    if (options["filename"] != nil) {                        
-                        channel.prepareMessage().addMedia(inputStream: inputStream!, contentType: options["mimeType"] as! String, filename: "image.jpeg", listener: .init(
+                    if (options["filename"] != nil) {       
+                                         
+                        messagePreparator.addMedia(inputStream: inputStream!, contentType: options["mimeType"] as! String, filename: "image.jpeg", listener: .init(
                             onStarted: {
                                 SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.addMedia) => onStarted")
                                 if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
