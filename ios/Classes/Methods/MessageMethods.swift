@@ -106,10 +106,12 @@ public class MessageMethods {
                 if result.isSuccessful, let channel = channel {
                     channel.message(withIndex: messageIndex, completion: { (result: TCHResult, message: TCHMessage?) in
                         if result.isSuccessful, let message = message {
-                            message.getTemporaryContentUrlsForAttachedMedia(completion: { (result: TCHResult, urls: Optional<Dictionary<String, URL>>)  in
+                            let newmediaList = message.getAttachedMedia()
+                             
+                            message.getTemporaryContentUrlsForAttachedMedia(media: newmediaList,completion: { (result: TCHResult, urls: Optional<Dictionary<String, URL>>)  in
                                 if result.isSuccessful, let urls = urls {
                                     SwiftTwilioConversationsPlugin.debug("getMedia => success: \(String(describing: urls[urls.keys.first!]))")
-                                    flutterResult(urls[urls.keys.first!]?.absoluteString)
+                                    flutterResult(urls.keys)
                                 } else {
                                     flutterResult(FlutterError(code: "ERROR", message: "Error getting media content url: \(String(describing: result.error))", details: nil))
                                 }
