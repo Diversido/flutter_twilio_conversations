@@ -67,22 +67,12 @@ class MessageMedia {
   /// Save media content stream that could be streamed or downloaded by client.
   ///
   /// Provided file could be an existing file and a none existing file.
-  Future<List<String>> getDownloadURL() async {
-    final data = await TwilioConversationsClient._methodChannel
+  Future<String> getDownloadURL() async {
+    return await TwilioConversationsClient._methodChannel
         .invokeMethod('Message#getMedia', {
       'channelSid': _channelSid,
       'messageIndex': _messageIndex,
     });
-    List<String> images = [];
-    for (var element in data) {
-      images.add(element.toString());
-    }
-    (data as List).map((element) {
-      log(element.toString());
-    });
-    log("twilio media message bata aako sakiyo");
-
-    return images;
   }
   //#endregion
 }

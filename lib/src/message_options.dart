@@ -6,11 +6,11 @@ class MessageOptions {
 
   Map<String, dynamic>? _attributes;
 
-  List<File>? _input;
+  File? _input;
 
-  List<String>? _mimeType;
+  String? _mimeType;
 
-  List<String>? _filename;
+  String? _filename;
 
   int? _mediaProgressListenerId;
   //#endregion
@@ -35,19 +35,18 @@ class MessageOptions {
   /// Create message with given media stream.
   ///
   /// If you specify [MessageOptions.withMedia] then you will not be able to specify [MessageOptions.withBody] because they are mutually exclusive message types. Created message type will be [MessageType.MEDIA].
-  void withMedia(List<File> input, List<String> mimeType,List<String> filename) {
+  void withMedia(File input, String mimeType) {
     if (_body != null) {
       throw Exception('MessageOptions.withBody has already been specified');
     }
     _input = input;
     _mimeType = mimeType;
-    _filename=filename;
   }
 
   /// Provide optional filename for media.
-  // void withMediaFileName(String filename) {
-  //   _filename = filename;
-  // }
+  void withMediaFileName(String filename) {
+    _filename = filename;
+  }
 
   void withMediaProgressListener({
     void Function()? onStarted,
@@ -87,7 +86,7 @@ class MessageOptions {
     return {
       'body': _body,
       'attributes': _attributes,
-      'input': _input?.map((e) => e.path).toList(),
+      'input': _input?.path,
       'mimeType': _mimeType,
       'filename': _filename,
       'mediaProgressListenerId': _mediaProgressListenerId,

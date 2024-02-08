@@ -6,99 +6,92 @@ import UIKit
 public class MessagesMethods {
     // swiftlint:disable:next cyclomatic_complexity
     public static func sendMessage(_ call: FlutterMethodCall, result flutterResult: @escaping FlutterResult) {
-    guard let arguments = call.arguments as? [String: Any?],
-        let options = arguments["options"] as? [String: Any],
-        let channelSid = arguments["channelSid"] as? String else {
-            return flutterResult(FlutterError(code: "MISSING_PARAMS", message: "Missing parameters", details: nil))
-    }
-    
-    SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage => started")
-
-    let mediaProgressListenerId = options["mediaProgressListenerId"]
-
-    SwiftTwilioConversationsPlugin.chatListener?.chatClient?.conversation(withSidOrUniqueName: channelSid, completion: { (result: TCHResult, channel: TCHConversation?) in
-        guard result.isSuccessful, let channel = channel else {
-            return flutterResult(FlutterError(code: "ERROR", message: "Error retrieving conversation with sid '\(channelSid)'", details: nil))
-        }
-
-        SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage => got conversation")
-        let messagePreparator = channel.prepareMessage()
-        
-        if let body = options["body"] as? String {
-            messagePreparator.setBody(body)
-        }
-
-        if let attributesDict = options["attributes"] as? [String: Any?], !attributesDict.isEmpty {
-            let attributes = TCHJsonAttributes(dictionary: attributesDict as [AnyHashable: Any])
-            messagePreparator.setAttributes(attributes, error: nil)
+        guard let arguments = call.arguments as? [String: Any?],
+            let options = arguments["options"] as? [String: Any],
+            let channelSid = arguments["channelSid"] as? String else {
+                return flutterResult(FlutterError(code: "MISSING_PARAMS", message: "Missing parameters", details: nil))
         }
         
-        if let inputList = options["input"] as? [String],
-           let mimeTypeList = options["mimeType"] as? [String],
-           let fileNameList = options["filename"] as? [String],
-           let mimeType = options["mimeType"] as? [String], !mimeType.isEmpty,
-           inputList.count == mimeTypeList.count && inputList.count == fileNameList.count {
-           
-            for i in 0..<inputList.count {
-                guard let inputStream = InputStream(fileAtPath: inputList[i]),
-                      let fileName = options["filename"] as? [String], !fileName.isEmpty else {
-                    // Handle error creating InputStream or getting filename
-                    return flutterResult(FlutterError(code: "ERROR", message: "Error creating InputStream or getting filename", details: nil))
+        SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage => started")
+
+        let mediaProgressListenerId = options["mediaProgressListenerId"]
+
+        SwiftTwilioConversationsPlugin.chatListener?.chatClient?.conversation(withSidOrUniqueName: channelSid, completion: { (result: TCHResult, channel: TCHConversation?) in
+            if result.isSuccessful, let channel = channel {
+                SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage => got conversation")
+                let messagePreparator = channel.prepareMessage()
+                
+                if (options["body"] != nil) {
+                    messagePreparator.setBody(options["body"] as? String)
                 }
 
-                messagePreparator.addMedia(inputStream: inputStream, contentType: mimeType[i], filename: fileNameList[i], listener: .init(
-                    onStarted: {
-                        SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.addMedia) => onStarted")
-                        if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
-                            sink(["mediaProgressListenerId": id, "name": "started"])
-                        }
-                    },
-                    onProgress: {(bytes: UInt) in
-                        if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
-                            sink(["mediaProgressListenerId": id, "name": "progress", "data": bytes])
-                        }
-                    },
-                    onCompleted: {(mediaSid: String) in
-                        SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
-                        if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
-                            sink(["mediaProgressListenerId": id, "name": "completed", "data": mediaSid])
-                        }
-                    },
-                    onFailed: {(error: Error) in
-                        SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.addMedia) => onFailed")
-                        if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
-                            sink(["mediaProgressListenerId": id, "name": "failed"])
-                        }
+                if (options["attributes"] as? [String: Any?] != nil) {
+                    let attributesDict = options["attributes"] as? [String: Any?]
+                    let attributes = TCHJsonAttributes.init(dictionary: attributesDict! as [AnyHashable: Any])
+                    messagePreparator.setAttributes(attributes, error: nil)
+                }
+                
+                if (options["input"] != nil && options["mimeType"] as? String != nil) {
+                    let input = options["input"] as? String
+                    
+                    guard (options["mimeType"] as? String) != nil else {
+                        return flutterResult(FlutterError(code: "ERROR", message: "Missing 'mimeType' in MessageOptions", details: nil))
                     }
-                    )
-                )
+                    
+                    let inputStream = InputStream(fileAtPath: input!)
+                    
+                    if (options["filename"] != nil) {                        
+                        channel.prepareMessage().addMedia(inputStream: inputStream!, contentType: options["mimeType"] as! String, filename: "image.jpeg", listener: .init(
+                            onStarted: {
+                                SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.addMedia) => onStarted")
+                                if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
+                                    sink(["mediaProgressListenerId": id, "name": "started"])
+                                }
+                            },
+                            onProgress: {(bytes: UInt) in
+                                if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
+                                    sink(["mediaProgressListenerId": id, "name": "progress", "data": bytes])
+                                }
+                            },
+                            onCompleted: {(mediaSid: String) in
+                                SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
+                                if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
+                                    sink(["mediaProgressListenerId": id, "name": "completed", "data": mediaSid])
+                                }
+                            },
+                            onFailed: {(error : Error) in
+                                SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.addMedia) => onFailed")
+                                if let id = mediaProgressListenerId, let sink = SwiftTwilioConversationsPlugin.mediaProgressSink {
+                                sink(["mediaProgressListenerId": id, "name": "failed"])
+                                }
+                            }
+                            )
+                        ).buildAndSend(completion: {
+                            (result: TCHResult, message: TCHMessage?) in
+                            if result.isSuccessful, let message = message {
+                                SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.sendMessage) => onSuccess")
+                                flutterResult(Mapper.messageToDict(message, channelSid: channelSid))
+                            } else {
+                                SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.sendMessage) => onError: \(String(describing: result.error))")
+                                flutterResult(FlutterError(code: "ERROR", message: "Error sending message with options `\(String(describing: messagePreparator))`", details: nil))
+                            }
+                        })
+                    }
+                } else {
+                    messagePreparator.buildAndSend(completion: {
+                                    (result: TCHResult, message: TCHMessage?) in
+                                    if result.isSuccessful, let message = message {
+                                        SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.sendMessage) => onSuccess")
+                                        flutterResult(Mapper.messageToDict(message, channelSid: channelSid))
+                                    } else {
+                                        SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.sendMessage) => onError: \(String(describing: result.error))")
+                                        flutterResult(FlutterError(code: "ERROR", message: "Error sending message with options `\(String(describing: messagePreparator))`", details: nil))
+                                    }
+                                })
+                }
             }
-            
-            messagePreparator.buildAndSend(completion: { (result: TCHResult, message: TCHMessage?) in
-                if result.isSuccessful, let message = message {
-                    SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.sendMessage) => onSuccess")
-                    flutterResult(Mapper.messageToDict(message, channelSid: channelSid))
-                } else {
-                    SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.sendMessage) => onError: \(String(describing: result.error))")
-                    flutterResult(FlutterError(code: "ERROR", message: "Error sending message with options `\(String(describing: messagePreparator))`", details: nil))
-                }
-            })
-
-        } else {
-            messagePreparator.buildAndSend(completion: { (result: TCHResult, message: TCHMessage?) in
-                if result.isSuccessful, let message = message {
-                    SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.sendMessage) => onSuccess")
-                    flutterResult(Mapper.messageToDict(message, channelSid: channelSid))
-                } else {
-                    SwiftTwilioConversationsPlugin.debug("MessagesMethods.sendMessage (Message.sendMessage) => onError: \(String(describing: result.error))")
-                    flutterResult(FlutterError(code: "ERROR", message: "Error sending message with options `\(String(describing: messagePreparator))`", details: nil))
-                }
-            })
-        }
-    })
-}
-
-
+        })
+    }
 
     public static func removeMessage(_ call: FlutterMethodCall, result flutterResult: @escaping FlutterResult) {
         guard let arguments = call.arguments as? [String: Any?],

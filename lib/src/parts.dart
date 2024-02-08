@@ -3,7 +3,7 @@ library flutter_twilio_conversations;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:developer';
+
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/services.dart';
 
