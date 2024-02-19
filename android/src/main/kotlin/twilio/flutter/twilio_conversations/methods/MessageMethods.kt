@@ -141,18 +141,41 @@ object MessageMethods {
                     Log.d("TwilioInfo", "MessageMethods.getMedia => onSuccess")
                     channel.getMessageByIndex(messageIndex, object : CallbackListener<Message> {
                         override fun onSuccess(message: Message) {
-                            Log.d("TwilioInfo", "MessageMethods.getMedia (Messages.getMessageByIndex) => onSuccess")
-                            message.getTemporaryContentUrlsForAttachedMedia(object : CallbackListener<Map<String, String>> {
-                                override fun onSuccess(fileUrls: Map<String, String>) {
-                                    Log.d("TwilioInfo", "MessageMethods.getMedia (Message.Media.download) => onSuccess")
-                                    result.success(fileUrls[fileUrls.keys.first()] as String)
-                                }
+                            Log.d("TwilioInfo", "MessageMethods.getAllAttachedMedia (Messages.getMessageByIndex) => onSuccess")
 
-                                override fun onError(errorInfo: ErrorInfo) {
-                                    Log.d("TwilioInfo", "MessageMethods.getMedia (Message.Media.download) => onError: $errorInfo")
-                                    result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
-                                }
-                            })
+                            val newmediaList = message.getAttachedMedia()
+
+                            if (newmediaList != null && newmediaList.isNotEmpty()) {
+                                message.getTemporaryContentUrlsForMedia(newmediaList, object : CallbackListener<Map<String, String>> {
+                                    override fun onSuccess(fileUrls: Map<String, String>) {
+                                        Log.d("TwilioInfo", "MessageMethods.getAllAttachedMedia => onSuccess")
+                                        val mediaSids = fileUrls.values.toList()
+
+                                        Log.d("TwilioInfo", "Media SIDs: $mediaSids")
+
+                                        result.success(mediaSids)
+                                    }
+
+                                    override fun onError(errorInfo: ErrorInfo) {
+                                        Log.d("TwilioInfo", "MessageMethods.getAllAttachedMedia => onError: $errorInfo")
+                                        result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
+                                    }
+                                })
+                            } else {
+                                result.error("ERROR", "No attached media found for the specified message", null)
+                            }
+//                            Log.d("TwilioInfo", "MessageMethods.getMedia (Messages.getMessageByIndex) => onSuccess")
+//                            message.getTemporaryContentUrlsForAttachedMedia(object : CallbackListener<Map<String, String>> {
+//                                override fun onSuccess(fileUrls: Map<String, String>) {
+//                                    Log.d("TwilioInfo", "MessageMethods.getMedia (Message.Media.download) => onSuccess")
+//                                    result.success(fileUrls[fileUrls.keys.first()] as String)
+//                                }
+//
+//                                override fun onError(errorInfo: ErrorInfo) {
+//                                    Log.d("TwilioInfo", "MessageMethods.getMedia (Message.Media.download) => onError: $errorInfo")
+//                                    result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
+//                                }
+//                            })
                         }
 
                         override fun onError(errorInfo: ErrorInfo) {
