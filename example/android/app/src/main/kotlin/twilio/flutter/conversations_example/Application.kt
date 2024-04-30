@@ -13,6 +13,6 @@ class Application : FlutterApplication(), PluginRegistrantCallback {
     // These plugins are registered here to allow for background messages to be received
     // and notifications to be displayed outside of the lifecycle of the MainActivity
     override fun registerWith(registry: PluginRegistry) {
-        FlutterLocalNotificationsPlugin.registerWith(registry?.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"))
+      //  FlutterLocalNotificationsPlugin.registerWith(registry?.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"))
     }
 }
