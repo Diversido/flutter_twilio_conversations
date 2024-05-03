@@ -11,7 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
+  flutter_twilio_conversations_platform_interface: 
+    path: ../flutter_twilio_conversations_platform_interface
+  flutter_twilio_conversations_web:
+    path: ../flutter_twilio_conversations_web
   enum_to_string: ^2.0.1
 
 dev_dependencies:
@@ -27,3 +30,5 @@ flutter:
         pluginClass: TwilioConversationsPlugin
       ios:
         pluginClass: TwilioConversationsPlugin
+      web:
+        default_package: flutter_twilio_conversations_web
