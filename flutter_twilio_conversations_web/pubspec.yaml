@@ -1,0 +1,30 @@
+name: flutter_twilio_conversations_web
+description: Web platform implementation of flutter_twilio_conversations_web
+version: 0.0.1
+
+flutter:
+  plugin:
+    implements: flutter_twilio_conversations
+    platforms:
+      web:
+        pluginClass: TwilioConversationsPlugin
+        fileName: flutter_twilio_conversations_web.dart
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  flutter_twilio_conversations_platform_interface:
+    path: ../flutter_twilio_conversations_platform_interface
+  meta: ^1.1.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_twilio_conversations:
+    path: ../flutter_twilio_conversations
+
+environment:
+  sdk: ">=2.14.0 <4.0.0"
+  flutter: '>=1.17.0'
