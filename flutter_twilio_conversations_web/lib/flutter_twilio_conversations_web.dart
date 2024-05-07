@@ -1,5 +1,6 @@
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import '../method_channel/method_channel_flutter_twilio_conversations.dart';
 
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   TwilioConversationsPlugin();
@@ -10,7 +11,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<void> create() async {
+  Future<ChatClient?> create(String token, Properties properties) {
     print("here on web");
   }
 }

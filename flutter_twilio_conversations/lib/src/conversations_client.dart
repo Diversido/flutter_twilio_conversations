@@ -70,22 +70,23 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
   }
 
   /// Create to a [ChatClient].
-  Future<ChatClient?> create() async {
-    //String token, Properties properties) async {
-    FlutterTwilioConversationsPlatform.instance.create();
-    // assert(token != '');
-//
-    // try {
-    // print('TwilioConversationsPlugin.create => starting request in Dart');
-    // final methodData = await _methodChannel.invokeMethod('create',
-    // <String, Object>{'token': token, 'properties': properties._toMap()});
-    // print('TwilioConversationsPlugin.create => finished request in Dart');
-    // final chatClientMap = Map<String, dynamic>.from(methodData);
-    // chatClient = ChatClient._fromMap(chatClientMap);
-    // return chatClient;
-    // } on PlatformException catch (err) {
-    // print('TwilioConversationsPlugin.create => failed in Dart');
-    // throw TwilioConversationsClient._convertException(err);
-    // }
+  Future<ChatClient?> create(String token, Properties properties) async {
+    assert(token != '');
+
+    try {
+      print('TwilioConversationsPlugin.create => starting request in Dart');
+      final methodData =
+          FlutterTwilioConversationsPlatform.instance.create(token, properties);
+
+      // final methodData = await _methodChannel.invokeMethod('create',
+      // <String, Object>{'token': token, 'properties': properties._toMap()});
+      print('TwilioConversationsPlugin.create => finished request in Dart');
+      final chatClientMap = Map<String, dynamic>.from(methodData as Map);
+      chatClient = ChatClient._fromMap(chatClientMap);
+      return chatClient;
+    } on PlatformException catch (err) {
+      print('TwilioConversationsPlugin.create => failed in Dart');
+      throw TwilioConversationsClient._convertException(err);
+    }
   }
 }

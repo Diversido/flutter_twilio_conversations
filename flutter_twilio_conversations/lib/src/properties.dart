@@ -22,7 +22,7 @@ class Properties {
   }
 
   /// Create map from properties.
-  Map<String, Object> _toMap() {
+  Map<String, Object> toMap() {
     return {'region': _region!};
   }
 }

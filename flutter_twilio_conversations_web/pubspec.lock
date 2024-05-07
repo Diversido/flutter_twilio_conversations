@@ -68,7 +68,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_twilio_conversations:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       path: "../flutter_twilio_conversations"
       relative: true

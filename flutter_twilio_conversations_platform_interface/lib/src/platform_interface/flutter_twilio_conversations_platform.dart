@@ -42,7 +42,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> create(){
+  Future<ChatClient?> create(String token, Properties properties) async{
      throw UnimplementedError('create() has not been implemented.');
   }
   
