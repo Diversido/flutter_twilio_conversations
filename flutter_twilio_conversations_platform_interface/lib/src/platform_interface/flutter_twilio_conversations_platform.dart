@@ -3,12 +3,15 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-
+import '../models/model_exports.dart';
 import 'package:meta/meta.dart' show required;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import '../method_channel/method_channel_flutter_twilio_conversations.dart';
 import '../types/types.dart';
+
+
+import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 
 /// The interface that implementations of flutter_twilio_conversations must implement.
 ///
