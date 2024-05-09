@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-library twilio_programmable_video_platform_interface;
+library flutter_twilio_conversations_platform_interface;
 
 export 'package:flutter_twilio_conversations_platform_interface/src/platform_interface/flutter_twilio_conversations_platform.dart';
-export 'package:flutter_twilio_conversations_platform_interface/src/types/types.dart';

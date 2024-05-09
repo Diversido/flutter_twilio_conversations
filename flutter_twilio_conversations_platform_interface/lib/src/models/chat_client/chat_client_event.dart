@@ -1,28 +1,29 @@
 
 
+import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/src/models/model_exports.dart';
 
 /// The base RoomEvent that all other RoomEvent types must extend.
 abstract class BaseChatClientEvent {
-  final ChatClientModel? chatClientModel;
+  final ChatClient? chatClient;
 
-  const BaseChatClientEvent(this.chatClientModel);
+  const BaseChatClientEvent(this.chatClient);
 
   @override
-  String toString() => 'BaseChatClientEvent: { chatClientModel: $chatClientModel }';
+  String toString() => 'BaseChatClientEvent: { chatClientModel: $chatClient }';
 }
 
 /// Use this event if connecting to a Room failed.
 class ConnectFailure extends BaseChatClientEvent {
- // final TwilioExceptionModel? exception;
+ // final TwilioException? exception;
 
   const ConnectFailure(
-    ChatClientModel chatClientModel,
-    //this.exception,
-  ) : super(chatClientModel);
+    ChatClient chatClient,
+   // this.exception,
+  ) : super(chatClient);
 
   @override
-  String toString() => 'ConnectFailure: { chatClientModel: $chatClientModel, exception:  }';
+  String toString() => 'ConnectFailure: { chatClientModel: $chatClient, exception:  }';
 }
 
 // /// Use this event when the LocalParticipant is connected to the Room.
