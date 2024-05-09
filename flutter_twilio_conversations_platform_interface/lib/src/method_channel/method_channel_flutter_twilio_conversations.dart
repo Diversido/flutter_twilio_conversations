@@ -32,4 +32,6 @@ class MethodChannelFlutterTwilioConversations
     print('here');
     return _methodChannel.invokeMethod("create");
   }
+// needs to be implemented for the mobile interface
+    Stream<BaseChatClientEvent>? chatClientStream() {}
 }
