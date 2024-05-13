@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/conversation.dart'
+    as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_web/methods/conversation_client.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
@@ -29,7 +31,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
       final _clientModel = ConnectionStateChange(_chatClient!.toModel());
       _chatClientStreamController.add(_clientModel);
-      //  debug('Connected to room: ${room.name}');
       _chatClientStreamController.onListen = null;
     }
   }

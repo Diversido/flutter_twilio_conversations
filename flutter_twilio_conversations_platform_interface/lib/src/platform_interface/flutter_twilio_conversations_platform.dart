@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 import 'dart:async';
 
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
@@ -46,11 +44,9 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<ChatClient?> create(String token, Properties properties){
-     throw UnimplementedError('create() has not been implemented.');
+  Future<ChatClient?> create(String token, Properties properties) {
+    throw UnimplementedError('create() has not been implemented.');
   }
-  
-
 
   /// Stream of the BaseRoomEvent model.
   ///
@@ -60,7 +56,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
   }
 
   //  {
-    // print("here");
-    // throw UnimplementedError('canLaunch() has not been implemented.');
+  // print("here");
+  // throw UnimplementedError('canLaunch() has not been implemented.');
   // }
 }
