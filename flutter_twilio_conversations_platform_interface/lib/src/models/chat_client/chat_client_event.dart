@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/src/models/model_exports.dart';
 
@@ -13,24 +11,25 @@ abstract class BaseChatClientEvent {
   String toString() => 'BaseChatClientEvent: { chatClientModel: $chatClient }';
 }
 
-
 class ConnectionStateChange extends BaseChatClientEvent {
- // final TwilioException? exception;
+  // final TwilioException? exception;
 
   const ConnectionStateChange(
     ClientModel chatClient,
-   // this.exception,
+    // this.exception,
   ) : super(chatClient);
 
   @override
-  String toString() => 'ConnectFailure: { chatClientModel: $chatClient, exception:  }';
+  String toString() =>
+      'ConnectFailure: { chatClientModel: $chatClient, exception:  }';
 }
+
 class Connect extends BaseChatClientEvent {
- // final TwilioException? exception;
+  // final TwilioException? exception;
 
   const Connect(
     ClientModel chatClient,
-   // this.exception,
+    // this.exception,
   ) : super(chatClient);
 
   @override
@@ -38,16 +37,18 @@ class Connect extends BaseChatClientEvent {
 }
 
 /// Use this event if connecting to a Room failed.
-class ConnectFailure extends BaseChatClientEvent {
- // final TwilioException? exception;
+class ConnectError extends BaseChatClientEvent {
+  // final TwilioException? exception;
+  final String error;
 
-  const ConnectFailure(
+  const ConnectError(
     ClientModel chatClient,
-   // this.exception,
+    this.error,
+    // this.exception,
   ) : super(chatClient);
 
   @override
-  String toString() => 'ConnectFailure: { chatClientModel: $chatClient, exception:  }';
+  String toString() => 'ConnectError: { chatClientModel: $error, exception:  }';
 }
 
 // /// Use this event when the LocalParticipant is connected to the Room.

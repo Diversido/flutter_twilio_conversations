@@ -19,21 +19,11 @@ class TwilioConversationsClient extends EventEmitter {
 
   external dynamic reachabilityEnabled();
 
-  external dynamic getChannelDescriptors();
+  external dynamic connectionError();
 
-  external dynamic createChannel(String type, dynamic options);
+  external TwilioConversationsClient connectionStateChange();
 
-  external dynamic getUserChannels(String identity);
 
-  external dynamic getUserChannelDescriptors(String identity);
-
-  external dynamic getSubscribedChannels();
-
-  external dynamic subscribeToChannel(String channel);
-
-  external dynamic unsubscribeFromChannel(String channel);
-
-  external dynamic updateToken(String token);
 }
 
 extension Interop on TwilioConversationsClient {

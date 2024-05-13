@@ -232,7 +232,7 @@ class ChatClient {
     // onChannelSynchronizationChange = _onChannelSynchronizationChangeCtrl.stream;
     // onChannelUpdated = _onChannelUpdatedCtrl.stream;
     // onClientSynchronization = _onClientSynchronizationCtrl.stream;
-    // onConnectionState = _onConnectionStateCtrl.stream;
+     onConnectionState = _onConnectionStateCtrl.stream;
     // onError = _onErrorCtrl.stream;
     // onAddedToChannelNotification = _onAddedToChannelNotificationCtrl.stream;
     // onInvitedToChannelNotification = _onInvitedToChannelNotificationCtrl.stream;
