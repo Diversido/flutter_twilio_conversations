@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
+import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
 import 'package:js/js.dart';
 
 class ChatClientEventListener extends BaseListener {
@@ -14,8 +14,11 @@ class ChatClientEventListener extends BaseListener {
 
   void addListeners() {
     debug('Adding chatClientEventListeners for ${_client.connectionState}');
-    _on('ConnectionStateChange', connectionStateChange);
-    _on('ConnectionError', connectionError);
+    _on('connectionStateChanged', connectionStateChange);
+   _on('ConnectionError', connectionError);
+//    _on('conversationJoined', conversationJoined);
+    // _on('conversationLeft', conversationLeft);
+    // _on('messageAdded', connectionError);
     // _on('participantConnected', onParticipantConnected);
     // _on('participantDisconnected', onParticipantDisconnected);
   }
@@ -31,10 +34,18 @@ class ChatClientEventListener extends BaseListener {
       );
 
   void connectionStateChange(TwilioConversationsClient chatClient) {
-    debug('Added ConnectionStateChange ChatClient Event');
+    //TwilioConversationsClient chatClient) {
+    debug('ConnectionStateChange ChatClient Event');
     _chatClientStreamController.add(ConnectionStateChange(
       chatClient.toModel(),
     ));
+  }
+
+  void conversationJoined(dynamic chatClient, conversation) {
+    debug('ChatClient Joined Conversation');
+    _chatClientStreamController.add(
+      ConversationJoined(chatClient, conversation.toModel()),
+    );
   }
 
   void connectionError(TwilioConversationsClient chatClient) {

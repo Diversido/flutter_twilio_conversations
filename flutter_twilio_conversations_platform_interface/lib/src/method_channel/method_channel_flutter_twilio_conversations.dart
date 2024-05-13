@@ -5,7 +5,6 @@ import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:meta/meta.dart';
 import '../platform_interface/flutter_twilio_conversations_platform.dart';
 
-
 // const MethodChannel _channel =
 //     MethodChannel('plugins.flutter.io/flutter_twilio_conversations');
 
@@ -29,11 +28,9 @@ class MethodChannelFlutterTwilioConversations
 
   @override
   Future<ChatClient?> create(String token, Properties properties) async {
-    print('here');
     return _methodChannel.invokeMethod("create");
   }
+
 // needs to be implemented for the mobile interface
-    Stream<BaseChatClientEvent>? chatClientStream() {
-      print("i was wrong");
-    }
+  Stream<BaseChatClientEvent>? chatClientStream() {}
 }

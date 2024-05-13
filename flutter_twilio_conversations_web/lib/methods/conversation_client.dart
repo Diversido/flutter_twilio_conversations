@@ -1,5 +1,6 @@
 @JS()
 
+import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart';
 import 'package:js/js.dart';
 
@@ -15,9 +16,10 @@ class TwilioConversationsChannel {
   external dynamic on(String event, Function handler);
 }
 
-Future<dynamic?> createConversation(String token, dynamic properties) async {
+Future<dynamic?> createTwilioConversationsClient(String token, dynamic properties) async {
 
   try {
+    print(token);
     var client = TwilioConversationsClient(token);
     //var channels = await promiseToFuture<dynamic>(client.createConversation());
    // print(client.reachabilityEnabled());
@@ -25,6 +27,7 @@ Future<dynamic?> createConversation(String token, dynamic properties) async {
     //  await promiseToFuture<dynamic>(createConversation(token, properties));
     return client;
   } catch (e) {
+     print("im hitting here");
     print(e);
   }
 }

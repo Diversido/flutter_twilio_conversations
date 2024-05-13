@@ -8,15 +8,18 @@ class ChatClientModel {
   final Users users;
   final bool isReachabilityEnabled;
 
+  final Channels channels;
+
   const ChatClientModel({
     required this.connectionState,
     required this.myIdentity,
     required this.users,
     required this.isReachabilityEnabled,
+    required this.channels,
   });
 
   @override
   String toString() {
-    return '{ connectionState: $connectionState, myIdentity: $myIdentity, users: $users, isReachabilityEnabled: $isReachabilityEnabled }';
+    return '{ connectionState: $connectionState, myIdentity: $myIdentity, users: $users, isReachabilityEnabled: $isReachabilityEnabled, channels: $channels  }';
   }
 }

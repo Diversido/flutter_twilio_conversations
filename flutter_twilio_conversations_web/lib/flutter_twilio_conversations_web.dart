@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:flutter_twilio_conversations_web/interop/conversation_client.dart';
+import 'package:flutter_twilio_conversations_web/methods/conversation_client.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
-import 'package:flutter_twilio_conversations_web/listeners/client_conversations_event_listener.dart';
+import 'package:flutter_twilio_conversations_web/methods/listeners/conversations_client_event_listener.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
@@ -38,7 +38,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Future<ChatClient?> create(String token, Properties properties) async {
     _chatClientStreamController.onListen = _onConnected;
     try {
-      _chatClient = await createConversation(token, {"logLevel": "Debug"});
+      _chatClient = await createTwilioConversationsClient(token, {"logLevel": "Debug"});
       print(_chatClient!.version);
       var clientModel = _chatClient!.toModel();
       return ChatClient(clientModel.toString());
