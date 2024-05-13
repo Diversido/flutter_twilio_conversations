@@ -38,7 +38,8 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Future<ChatClient?> create(String token, Properties properties) async {
     _chatClientStreamController.onListen = _onConnected;
     try {
-      _chatClient = await createTwilioConversationsClient(token, {"logLevel": "Debug"});
+      _chatClient =
+          await createTwilioConversationsClient(token, {"logLevel": "Debug"});
       print(_chatClient!.version);
       var clientModel = _chatClient!.toModel();
       return ChatClient(clientModel.toString());

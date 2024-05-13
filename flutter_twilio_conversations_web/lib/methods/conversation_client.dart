@@ -16,18 +16,15 @@ class TwilioConversationsChannel {
   external dynamic on(String event, Function handler);
 }
 
-Future<dynamic?> createTwilioConversationsClient(String token, dynamic properties) async {
-
+Future<dynamic?> createTwilioConversationsClient(
+    String token, dynamic properties) async {
   try {
-    print(token);
-    var client = TwilioConversationsClient(token);
+    var client = await TwilioConversationsClient(token);
     //var channels = await promiseToFuture<dynamic>(client.createConversation());
-   // print(client.reachabilityEnabled());
-
+    // print(client.reachabilityEnabled());
     //  await promiseToFuture<dynamic>(createConversation(token, properties));
     return client;
   } catch (e) {
-     print("im hitting here");
     print(e);
   }
 }

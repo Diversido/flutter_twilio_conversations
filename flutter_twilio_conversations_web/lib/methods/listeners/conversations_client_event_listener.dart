@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'package:flutter_twilio_conversations_web/interop/classes/client.dart';
+import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
+    as TwilioChatClient;
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
 import 'package:js/js.dart';
 
 class ChatClientEventListener extends BaseListener {
-  final TwilioConversationsClient _client;
+  final TwilioChatClient.TwilioConversationsClient _client;
   final StreamController<BaseChatClientEvent> _chatClientStreamController;
 
   ChatClientEventListener(this._client, this._chatClientStreamController) {
@@ -15,8 +17,8 @@ class ChatClientEventListener extends BaseListener {
   void addListeners() {
     debug('Adding chatClientEventListeners for ${_client.connectionState}');
     _on('connectionStateChanged', connectionStateChange);
-   _on('ConnectionError', connectionError);
-//    _on('conversationJoined', conversationJoined);
+    _on('connectionError', connectionError);
+    _on('conversationJoined', conversationJoined);
     // _on('conversationLeft', conversationLeft);
     // _on('messageAdded', connectionError);
     // _on('participantConnected', onParticipantConnected);
@@ -33,26 +35,47 @@ class ChatClientEventListener extends BaseListener {
         allowInterop(eventHandler),
       );
 
-  void connectionStateChange(TwilioConversationsClient chatClient) {
+  void connectionStateChange(String connectionState) {
     //TwilioConversationsClient chatClient) {
     debug('ConnectionStateChange ChatClient Event');
+    switch (connectionState) {
+      case "connecting":
+        _client.connectionState = ConnectionState.CONNECTING;
+        break;
+      case "connected":
+        _client.connectionState = ConnectionState.CONNECTED;
+        break;
+      case "disconnected":
+        _client.connectionState = ConnectionState.DISCONNECTED;
+        break;
+      case "denied":
+        _client.connectionState = ConnectionState.DENIED;
+        break;
+      default:
+        _client.connectionState = ConnectionState.UNKNOWN;
+        break;
+    }
     _chatClientStreamController.add(ConnectionStateChange(
-      chatClient.toModel(),
+      _client.toModel(),
     ));
   }
 
-  void conversationJoined(dynamic chatClient, conversation) {
+  void conversationJoined(dynamic conversation) {
     debug('ChatClient Joined Conversation');
     _chatClientStreamController.add(
-      ConversationJoined(chatClient, conversation.toModel()),
+      ConversationJoined(_client.toModel(), conversation.toModel()),
     );
   }
 
-  void connectionError(TwilioConversationsClient chatClient) {
+  void connectionError(dynamic data) {
     debug('Added ConnectionStateChange ChatClient Event');
     _chatClientStreamController
-        .add(ConnectError(chatClient.toModel(), "this is an error"));
+        .add(ConnectError(_client.toModel(), "this is an error"));
   }
+  /*boolean terminal - Twilsock will stop connection attempts if true
+string message - the error message of the root cause
+number? httpStatusCode - http status code if available
+number? errorCode - Twilio public error code if available */
 
   // void onParticipantConnected(RemoteParticipant participant) {
   //   _roomStreamController.add(ParticipantConnected(_room.toModel(), participant.toModel()));

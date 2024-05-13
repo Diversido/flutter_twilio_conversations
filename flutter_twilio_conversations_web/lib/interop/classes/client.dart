@@ -9,6 +9,9 @@ class TwilioConversationsClient extends EventEmitter {
   external ConnectionState get connectionState;
   external String get version;
 
+  // Define setter for connectionState
+  external set connectionState(ConnectionState state);
+
   external factory TwilioConversationsClient(String token);
 
   external dynamic getChannelBySid(String sid);
@@ -32,5 +35,3 @@ extension Interop on TwilioConversationsClient {
     );
   }
 }
-
-
