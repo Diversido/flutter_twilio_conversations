@@ -4,11 +4,13 @@
 
 import 'dart:async';
 
+import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:meta/meta.dart' show required;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
 import '../method_channel/method_channel_flutter_twilio_conversations.dart';
-import '../types/types.dart';
+
+export '../models/model_exports.dart';
 
 /// The interface that implementations of flutter_twilio_conversations must implement.
 ///
@@ -42,12 +44,19 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> create(){
-     throw UnimplementedError('create() has not been implemented.');
+  Future<ChatClient?> create(String token, Properties properties) {
+    throw UnimplementedError('create() has not been implemented.');
   }
-  
+
+  /// Stream of the BaseRoomEvent model.
+  ///
+  /// This stream is used to update the Room in a plugin implementation.
+  Stream<BaseChatClientEvent>? chatClientStream() {
+    throw UnimplementedError('chatClientStream() has not been implemented');
+  }
+
   //  {
-    // print("here");
-    // throw UnimplementedError('canLaunch() has not been implemented.');
+  // print("here");
+  // throw UnimplementedError('canLaunch() has not been implemented.');
   // }
 }

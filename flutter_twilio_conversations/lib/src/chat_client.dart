@@ -39,7 +39,7 @@ class NotificationRegistrationEvent {
 /// Chat client - main entry point for the Chat SDK.
 class ChatClient {
   /// Stream for the native chat events.
-  StreamSubscription<dynamic>? _chatStream;
+  StreamSubscription<BaseChatClientEvent>? _chatStream;
 
   /// Stream for the notification events.
   StreamSubscription<dynamic>? _notificationStream;
@@ -226,35 +226,38 @@ class ChatClient {
   //#endregion
 
   ChatClient(this._myIdentity) : assert(_myIdentity != null) {
-    onChannelAdded = _onChannelAddedCtrl.stream;
-    onChannelDeleted = _onChannelDeletedCtrl.stream;
-    onChannelInvited = _onChannelInvitedCtrl.stream;
-    onChannelSynchronizationChange = _onChannelSynchronizationChangeCtrl.stream;
-    onChannelUpdated = _onChannelUpdatedCtrl.stream;
-    onClientSynchronization = _onClientSynchronizationCtrl.stream;
-    onConnectionState = _onConnectionStateCtrl.stream;
-    onError = _onErrorCtrl.stream;
-    onAddedToChannelNotification = _onAddedToChannelNotificationCtrl.stream;
-    onInvitedToChannelNotification = _onInvitedToChannelNotificationCtrl.stream;
-    onNewMessageNotification = _onNewMessageNotificationCtrl.stream;
-    onNotificationFailed = _onNotificationFailedCtrl.stream;
-    onRemovedFromChannelNotification =
-        _onRemovedFromChannelNotificationCtrl.stream;
-    onTokenAboutToExpire = _onTokenAboutToExpireCtrl.stream;
-    onTokenExpired = _onTokenExpiredCtrl.stream;
-    onUserSubscribed = _onUserSubscribedCtrl.stream;
-    onUserUnsubscribed = _onUserUnsubscribedCtrl.stream;
-    onUserUpdated = _onUserUpdatedCtrl.stream;
-    onNotificationRegistered = _onNotificationRegisteredCtrl.stream;
-    onNotificationDeregistered = _onNotificationDeregisteredCtrl.stream;
-    onNotificationFailed = _onNotificationFailedCtrl.stream;
+    // onChannelAdded = _onChannelAddedCtrl.stream;
+    // onChannelDeleted = _onChannelDeletedCtrl.stream;
+    // onChannelInvited = _onChannelInvitedCtrl.stream;
+    // onChannelSynchronizationChange = _onChannelSynchronizationChangeCtrl.stream;
+    // onChannelUpdated = _onChannelUpdatedCtrl.stream;
+    // onClientSynchronization = _onClientSynchronizationCtrl.stream;
+     onConnectionState = _onConnectionStateCtrl.stream;
+    // onError = _onErrorCtrl.stream;
+    // onAddedToChannelNotification = _onAddedToChannelNotificationCtrl.stream;
+    // onInvitedToChannelNotification = _onInvitedToChannelNotificationCtrl.stream;
+    // onNewMessageNotification = _onNewMessageNotificationCtrl.stream;
+    // onNotificationFailed = _onNotificationFailedCtrl.stream;
+    // onRemovedFromChannelNotification =
+    //     _onRemovedFromChannelNotificationCtrl.stream;
+    // onTokenAboutToExpire = _onTokenAboutToExpireCtrl.stream;
+    // onTokenExpired = _onTokenExpiredCtrl.stream;
+    // onUserSubscribed = _onUserSubscribedCtrl.stream;
+    // onUserUnsubscribed = _onUserUnsubscribedCtrl.stream;
+    // onUserUpdated = _onUserUpdatedCtrl.stream;
+    // onNotificationRegistered = _onNotificationRegisteredCtrl.stream;
+    // onNotificationDeregistered = _onNotificationDeregisteredCtrl.stream;
+    // onNotificationFailed = _onNotificationFailedCtrl.stream;
 
-    _chatStream = TwilioConversationsClient._chatChannel
-        .receiveBroadcastStream(0)
-        .listen(_parseEvents);
-    _notificationStream = TwilioConversationsClient._notificationChannel
-        .receiveBroadcastStream(0)
-        .listen(_parseNotificationEvents);
+    _chatStream = FlutterTwilioConversationsPlatform.instance
+        .chatClientStream()!
+        .listen((_parseEvents));
+    // TwilioConversationsClient._chatChannel
+    //     .receiveBroadcastStream(0)
+    //     .listen(_parseEvents);
+    // _notificationStream = TwilioConversationsClient._notificationChannel
+    //     .receiveBroadcastStream(0)
+    //     .listen(_parseNotificationEvents);
   }
 
   /// Construct from a map.

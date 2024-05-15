@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:meta/meta.dart';
 import '../platform_interface/flutter_twilio_conversations_platform.dart';
 
@@ -26,8 +27,10 @@ class MethodChannelFlutterTwilioConversations
   );
 
   @override
-  Future<void> create() {
-    print('here');
+  Future<ChatClient?> create(String token, Properties properties) async {
     return _methodChannel.invokeMethod("create");
   }
+
+// needs to be implemented for the mobile interface
+  Stream<BaseChatClientEvent>? chatClientStream() {}
 }
