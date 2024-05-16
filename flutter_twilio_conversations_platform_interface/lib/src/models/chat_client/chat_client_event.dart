@@ -20,9 +20,6 @@ class ConnectionStateChange extends BaseChatClientEvent {
     // this.exception,
   ) : super(chatClient);
 
-  @override
-  String toString() =>
-      'ConnectFailure: { chatClientModel: $chatClient, exception:  }';
 }
 
 class ConversationJoined extends BaseChatClientEvent {

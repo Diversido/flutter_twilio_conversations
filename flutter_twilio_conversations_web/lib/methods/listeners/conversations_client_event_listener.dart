@@ -3,7 +3,7 @@ import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
-import 'package:flutter_twilio_conversations_web/interop/classes/conversation.dart'
+import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
@@ -62,25 +62,25 @@ class ChatClientEventListener extends BaseListener {
   void conversationJoined(dynamic conversationJoined) async {
     debug('conversationJoined');
 
-    TwilioClientConversation.TwilioConversationsConversation conversation =
-        conversationJoined;
-    TwilioPaginator paginator =
-        await promiseToFuture(conversation.getMessages());
-    var interesting = paginator.toModel();
-    TwilioConversationsMessage message = interesting.items[0];
-    print('message: ${message.body}');
-    _chatClientStreamController.add(
-      ConversationJoined(_client.toModel(), conversation.toModel()),
-    );
+    // TwilioClientConversation.TwilioConversationsConversation conversation =
+    //     conversationJoined;
+    // TwilioPaginator paginator =
+    //     await promiseToFuture(conversation.getMessages());
+    // var interesting = paginator.toModel();
+    // TwilioConversationsMessage message = interesting.items[0];
+    // print('message: ${message.body}');
+    // _chatClientStreamController.add(
+    //   ConversationJoined(_client.toModel(), conversation.toModel()),
+    // );
   }
 
   void conversationLeft(dynamic conversationJoined) {
     debug('conversationLeft');
-    TwilioClientConversation.TwilioConversationsConversation conversation;
-    conversation = conversationJoined;
-    _chatClientStreamController.add(
-      ConversationJoined(_client.toModel(), conversation.toModel()),
-    );
+    // TwilioClientConversation.TwilioConversationsConversation conversation;
+    // conversation = conversationJoined;
+    // _chatClientStreamController.add(
+    //   ConversationJoined(_client.toModel(), conversation.toModel()),
+    // );
   }
 
   void connectionError(dynamic data) {

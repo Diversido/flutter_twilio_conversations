@@ -33,11 +33,10 @@ class Channels {
   Future<Channel> createChannel(
       String friendlyName, ChannelType channelType) async {
     try {
-      final methodData = await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channels#createChannel', <String, Object>{
-        'friendlyName': friendlyName,
-        'channelType': EnumToString.convertToString(channelType)
-      });
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .createChannel(
+              friendlyName, EnumToString.convertToString(channelType));
+
       final channelMap = Map<String, dynamic>.from(methodData);
       _updateChannelFromMap(channelMap);
       return _channelsMap[channelMap['sid']]!;
@@ -52,11 +51,10 @@ class Channels {
   /// Retrieves a [Channel] with the specified SID or unique name.
   Future<Channel> getChannel(String channelSidOrUniqueName) async {
     try {
-      final methodData = await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channels#getChannel', <String, Object>{
-        'channelSidOrUniqueName': channelSidOrUniqueName
-      });
-      final channelMap = Map<String, dynamic>.from(methodData);
+      final methodData = FlutterTwilioConversationsPlatform.instance
+          .getChannel(channelSidOrUniqueName);
+
+      final channelMap = Map<String, dynamic>.from(methodData as Map);
       _updateChannelFromMap(channelMap);
       return _channelsMap[channelMap['sid']]!;
     } on PlatformException catch (err) {

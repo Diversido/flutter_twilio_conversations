@@ -226,25 +226,25 @@ class ChatClient {
   //#endregion
 
   ChatClient(this._myIdentity) : assert(_myIdentity != null) {
-    // onChannelAdded = _onChannelAddedCtrl.stream;
-    // onChannelDeleted = _onChannelDeletedCtrl.stream;
-    // onChannelInvited = _onChannelInvitedCtrl.stream;
-    // onChannelSynchronizationChange = _onChannelSynchronizationChangeCtrl.stream;
-    // onChannelUpdated = _onChannelUpdatedCtrl.stream;
-    // onClientSynchronization = _onClientSynchronizationCtrl.stream;
-     onConnectionState = _onConnectionStateCtrl.stream;
-    // onError = _onErrorCtrl.stream;
-    // onAddedToChannelNotification = _onAddedToChannelNotificationCtrl.stream;
-    // onInvitedToChannelNotification = _onInvitedToChannelNotificationCtrl.stream;
-    // onNewMessageNotification = _onNewMessageNotificationCtrl.stream;
-    // onNotificationFailed = _onNotificationFailedCtrl.stream;
-    // onRemovedFromChannelNotification =
-    //     _onRemovedFromChannelNotificationCtrl.stream;
-    // onTokenAboutToExpire = _onTokenAboutToExpireCtrl.stream;
-    // onTokenExpired = _onTokenExpiredCtrl.stream;
-    // onUserSubscribed = _onUserSubscribedCtrl.stream;
-    // onUserUnsubscribed = _onUserUnsubscribedCtrl.stream;
-    // onUserUpdated = _onUserUpdatedCtrl.stream;
+    onChannelAdded = _onChannelAddedCtrl.stream;
+    onChannelDeleted = _onChannelDeletedCtrl.stream;
+    onChannelInvited = _onChannelInvitedCtrl.stream;
+    onChannelSynchronizationChange = _onChannelSynchronizationChangeCtrl.stream;
+    onChannelUpdated = _onChannelUpdatedCtrl.stream;
+    onClientSynchronization = _onClientSynchronizationCtrl.stream;
+    onConnectionState = _onConnectionStateCtrl.stream;
+    onError = _onErrorCtrl.stream;
+    onAddedToChannelNotification = _onAddedToChannelNotificationCtrl.stream;
+    onInvitedToChannelNotification = _onInvitedToChannelNotificationCtrl.stream;
+    onNewMessageNotification = _onNewMessageNotificationCtrl.stream;
+    onNotificationFailed = _onNotificationFailedCtrl.stream;
+    onRemovedFromChannelNotification =
+        _onRemovedFromChannelNotificationCtrl.stream;
+    onTokenAboutToExpire = _onTokenAboutToExpireCtrl.stream;
+    onTokenExpired = _onTokenExpiredCtrl.stream;
+    onUserSubscribed = _onUserSubscribedCtrl.stream;
+    onUserUnsubscribed = _onUserUnsubscribedCtrl.stream;
+    onUserUpdated = _onUserUpdatedCtrl.stream;
     // onNotificationRegistered = _onNotificationRegisteredCtrl.stream;
     // onNotificationDeregistered = _onNotificationDeregisteredCtrl.stream;
     // onNotificationFailed = _onNotificationFailedCtrl.stream;
@@ -354,6 +354,7 @@ class ChatClient {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
+    print('should update $map');
     _connectionState =
         EnumToString.fromString(ConnectionState.values, map['connectionState']);
     _isReachabilityEnabled = map['isReachabilityEnabled'];

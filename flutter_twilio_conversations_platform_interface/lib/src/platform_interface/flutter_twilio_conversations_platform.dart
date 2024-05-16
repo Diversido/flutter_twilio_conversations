@@ -44,8 +44,16 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<ChatClient?> create(String token, Properties properties) {
+  Future<dynamic> create(String token, Properties properties) {
     throw UnimplementedError('create() has not been implemented.');
+  }
+
+  Future<Map<dynamic, dynamic>> createChannel(String friendlyName, String channelType) {
+    throw UnimplementedError('createChannel() has not been implemented.');
+  }
+
+  Future<dynamic> getChannel(String channelSidOrUniqueName) {
+    throw UnimplementedError('getChannel() has not been implemented.');
   }
 
   /// Stream of the BaseRoomEvent model.

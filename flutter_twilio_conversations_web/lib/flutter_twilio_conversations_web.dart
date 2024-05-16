@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:js_util';
 
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/conversation.dart'
+import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
+import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/methods/conversation_client.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
@@ -36,17 +38,34 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<ChatClient?> create(String token, Properties properties) async {
+  Future<dynamic> create(String token, Properties properties) async {
     _chatClientStreamController.onListen = _onConnected;
     try {
       _chatClient =
           await createTwilioConversationsClient(token, {"logLevel": "Debug"});
-      print(_chatClient!.version);
+      print(_chatClient?.user.identity);
       var clientModel = _chatClient!.toModel();
-      return ChatClient(clientModel.toString());
+      return clientModel.toMap();
     } catch (e) {
       print('error: createConversation ${e}');
     }
+  }
+
+  Future<Map<dynamic, dynamic>> createChannel(
+      String friendlyName, String channelType) async {
+    throw UnimplementedError('createChannel() has not been implemented.');
+  }
+
+  @override
+  Future<dynamic> getChannel(String channelSidOrUniqueName) async {
+    try {
+      TwilioConversationsChannel _conversation = await promiseToFuture(
+          _chatClient?.getChannelBySid(channelSidOrUniqueName));
+      return _conversation.toModel();
+      // then does this conversation need to be subscribed to?
+      //   await getTwilioConversationBySidOrUniqueName(channelSidOrUniqueName);
+    } catch (e) {}
+    return null;
   }
 
   @override

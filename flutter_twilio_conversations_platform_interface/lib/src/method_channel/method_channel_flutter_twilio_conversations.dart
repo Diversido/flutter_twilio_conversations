@@ -27,8 +27,24 @@ class MethodChannelFlutterTwilioConversations
   );
 
   @override
-  Future<ChatClient?> create(String token, Properties properties) async {
-    return _methodChannel.invokeMethod("create");
+  Future<dynamic> create(String token, Properties properties) async {
+    // TODO Nic check that properties can be dynamic
+    return _methodChannel.invokeMethod('create',
+        <String, Object>{'token': token, 'properties': properties.toMap()});
+  }
+
+  Future<Map<dynamic, dynamic>> createChannel(String friendlyName, String channelType) async {
+    return await _methodChannel.invokeMethod(
+        'Channels#createChannel', <String, Object>{
+      'friendlyName': friendlyName,
+      'channelType': channelType
+    });
+  }
+
+// TODO Nic see if dynamic doesn't need to be returned
+  Future<dynamic> getChannel(String channelSidOrUniqueName) {
+    return _methodChannel.invokeMethod('Channels#getChannel',
+        <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
   }
 
 // needs to be implemented for the mobile interface

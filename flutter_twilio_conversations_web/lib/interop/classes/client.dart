@@ -1,6 +1,7 @@
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/event_emitter.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
 import 'package:js/js.dart';
 
 // Define Twilio.Conversations.Client class
@@ -8,8 +9,14 @@ import 'package:js/js.dart';
 class TwilioConversationsClient extends EventEmitter {
   external ConnectionState get connectionState;
   external String get version;
+  external Channels? channels;
+  external Users? users;
+  external bool isReachabilityEnabled;
+  external TwilioConversationsUser get user;
 
   external set connectionState(ConnectionState state);
+
+  external set user(TwilioConversationsUser state);
 
   external factory TwilioConversationsClient(String token);
 
@@ -30,7 +37,10 @@ extension Interop on TwilioConversationsClient {
   ClientModel toModel() {
     return ClientModel(
       connectionState: connectionState,
-      version: version,
+      myIdentity: user.toModel().identity,
+      channels: Channels(),
+      users: Users(),
+      isReachabilityEnabled: this.isReachabilityEnabled,
     );
   }
 }
