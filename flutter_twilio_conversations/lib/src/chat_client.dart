@@ -374,6 +374,8 @@ class ChatClient {
 
   /// Parse native chat client events to the right event streams.
   void _parseEvents(dynamic event) {
+    print('ok here $event');
+
     final String eventName = event['name'];
     print(
         "ChatClient => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");

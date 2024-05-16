@@ -4,22 +4,22 @@ import 'package:flutter_twilio_conversations_platform_interface/src/models/model
 
 /// The base RoomEvent that all other RoomEvent types must extend.
 abstract class BaseChatClientEvent {
-  final ClientModel? chatClient;
+  final ConnectionState? connectionState;
 
-  const BaseChatClientEvent(this.chatClient);
+  const BaseChatClientEvent(this.connectionState);
 
   @override
-  String toString() => 'BaseChatClientEvent: { chatClientModel: $chatClient }';
+  String toString() =>
+      'BaseChatClientEvent: { connectionState: $connectionState }';
 }
 
 class ConnectionStateChange extends BaseChatClientEvent {
   // final TwilioException? exception;
 
   const ConnectionStateChange(
-    ClientModel chatClient,
+    ConnectionState connectionState,
     // this.exception,
-  ) : super(chatClient);
-
+  ) : super(connectionState);
 }
 
 class ConversationJoined extends BaseChatClientEvent {
@@ -27,10 +27,10 @@ class ConversationJoined extends BaseChatClientEvent {
   final ConversationModel? conversationModel;
 
   const ConversationJoined(
-    ClientModel chatClient,
+    ConnectionState connectionState,
     this.conversationModel,
     // this.exception,
-  ) : super(chatClient);
+  ) : super(connectionState);
 
   @override
   String toString() => 'Connect: { conversationModel: $conversationModel  }';
@@ -42,10 +42,10 @@ class ConnectError extends BaseChatClientEvent {
   final String error;
 
   const ConnectError(
-    ClientModel chatClient,
+    ConnectionState connectionState,
     this.error,
     // this.exception,
-  ) : super(chatClient);
+  ) : super(connectionState);
 
   @override
   String toString() => 'ConnectError: { chatClientModel: $error, exception:  }';

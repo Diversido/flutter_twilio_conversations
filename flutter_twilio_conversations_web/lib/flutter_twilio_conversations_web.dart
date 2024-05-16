@@ -31,7 +31,8 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
           ChatClientEventListener(chatClient, _chatClientStreamController);
       _chatClientListener!.addListeners();
 
-      final _clientModel = ConnectionStateChange(_chatClient!.toModel());
+      final _clientModel =
+          ConnectionStateChange(_chatClient!.toModel().connectionState);
       _chatClientStreamController.add(_clientModel);
       _chatClientStreamController.onListen = null;
     }

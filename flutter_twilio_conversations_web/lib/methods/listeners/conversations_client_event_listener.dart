@@ -55,7 +55,7 @@ class ChatClientEventListener extends BaseListener {
         break;
     }
     _chatClientStreamController.add(ConnectionStateChange(
-      _client.toModel(),
+      _client.connectionState,
     ));
   }
 
@@ -85,8 +85,8 @@ class ChatClientEventListener extends BaseListener {
 
   void connectionError(dynamic data) {
     debug('Added ConnectionStateChange ChatClient Event');
-    _chatClientStreamController
-        .add(ConnectError(_client.toModel(), "this is an error"));
+    _chatClientStreamController.add( 
+        ConnectError(_client.toModel().connectionState, "this is an error")); // TODO Nic the data is probably the connection state and their is probably a region
   }
 
   /*boolean terminal - Twilsock will stop connection attempts if true
