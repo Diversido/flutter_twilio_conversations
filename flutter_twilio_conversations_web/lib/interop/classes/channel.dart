@@ -1,5 +1,6 @@
 // Define Twilio.Conversations.Client class
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:js/js.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 
@@ -7,7 +8,7 @@ import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_c
 @JS('Twilio.Conversations.Conversation')
 class TwilioConversationsChannel {
   external String get sid;
-  external Map<dynamic, dynamic>? get attributes;
+  external JSONValue? get attributes;
   external DateTime? _dateCreated;
   external String? _createdBy;
   external ChannelStatus status;
@@ -26,7 +27,7 @@ extension Interop on TwilioConversationsChannel {
   ChannelModel toModel() {
     return ChannelModel(
       sid: sid,
-      attributes: attributes,
+      attributes: {}, // TODO attributes,
       dateCreated: _dateCreated,
       createdBy: _createdBy,
     );

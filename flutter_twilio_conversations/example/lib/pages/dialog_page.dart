@@ -26,7 +26,7 @@ class _DialogPageState extends State<DialogPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
-            viewModel.dialog?.typingMessage() ?? 'Dialog',
+            viewModel.dialog?.typingMessage() ?? 'Dialog Page',
           ),
           leading: InkWell(
             child: Icon(Icons.arrow_back),

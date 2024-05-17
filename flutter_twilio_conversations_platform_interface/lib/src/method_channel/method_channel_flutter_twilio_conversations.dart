@@ -14,9 +14,11 @@ class MethodChannelFlutterTwilioConversations
   // @visibleForTesting
   // MethodChannel get channel => _channel;
   final MethodChannel _methodChannel;
+  final EventChannel _chatChannel;
 
   MethodChannelFlutterTwilioConversations()
       : _methodChannel = MethodChannel('flutter_twilio_conversations'),
+        _chatChannel = EventChannel('flutter_twilio_conversations/room'),
         super();
 
   /// This constructor is only used for testing and shouldn't be accessed by
@@ -24,6 +26,7 @@ class MethodChannelFlutterTwilioConversations
   @visibleForTesting
   MethodChannelFlutterTwilioConversations.private(
     this._methodChannel,
+    this._chatChannel,
   );
 
   @override
@@ -33,7 +36,8 @@ class MethodChannelFlutterTwilioConversations
         <String, Object>{'token': token, 'properties': properties.toMap()});
   }
 
-  Future<Map<dynamic, dynamic>> createChannel(String friendlyName, String channelType) async {
+  Future<Map<dynamic, dynamic>> createChannel(
+      String friendlyName, String channelType) async {
     return await _methodChannel.invokeMethod(
         'Channels#createChannel', <String, Object>{
       'friendlyName': friendlyName,
@@ -48,5 +52,5 @@ class MethodChannelFlutterTwilioConversations
   }
 
 // needs to be implemented for the mobile interface
-  Stream<Map<String,dynamic>>? chatClientStream() {}
+  Stream<Map<String, dynamic>>? chatClientStream() {}
 }

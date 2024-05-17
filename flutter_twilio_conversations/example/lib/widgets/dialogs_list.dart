@@ -17,10 +17,10 @@ class DialogsList extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
-            'Dialogs',
+            'Dialogs Page',
           ),
         ),
-        body: viewModel.dialogs.isNotEmpty
+        body: !viewModel.dialogs.isNotEmpty
             ? ListView.builder(
                 itemCount: viewModel.dialogs.length,
                 itemBuilder: (context, index) => InkWell(

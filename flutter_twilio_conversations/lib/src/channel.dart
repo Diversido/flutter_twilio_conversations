@@ -237,12 +237,14 @@ class Channel {
     onTypingEnded = _onTypingEndedCtrl.stream;
     onSynchronizationChanged = _onSynchronizationChangedCtrl.stream;
 
-    _messages = Messages(this);
-    _members = Members(_sid);
-    _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
-        .receiveBroadcastStream(0);
-    _channelStreamSubscriptions[_sid] ??=
-        _channelStreams[_sid]!.listen(_parseEvents);
+    // _messages = Messages(this);
+    // _members = Members(_sid);
+    // print('p: channel constructor called');
+    // _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
+    // .receiveBroadcastStream(0);
+    // print('p: channel receiver called');
+    // _channelStreamSubscriptions[_sid] ??=
+    // _channelStreams[_sid]!.listen(_parseEvents);
   }
 
   /// Construct from a map.
@@ -254,6 +256,7 @@ class Channel {
       ChannelType.PUBLIC,
       Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
     );
+    print("p: we made it!");
     channel._updateFromMap(map);
     return channel;
   }
@@ -486,6 +489,7 @@ class Channel {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
+    print("p: gone into updateFromMap $map");
     _synchronizationStatus = EnumToString.fromString(
         ChannelSynchronizationStatus.values, map['synchronizationStatus']);
     if (_synchronizationStatus == ChannelSynchronizationStatus.ALL) {
@@ -505,13 +509,16 @@ class Channel {
     _status = EnumToString.fromString(ChannelStatus.values, map['status']);
 
     _createdBy ??= map['createdBy'];
+
     _dateCreated ??=
         map['dateCreated'] != null ? DateTime.parse(map['dateCreated']) : null;
     _dateUpdated =
         map['dateUpdated'] != null ? DateTime.parse(map['dateUpdated']) : null;
+
     _lastMessageDate = map['lastMessageDate'] != null
         ? DateTime.parse(map['lastMessageDate'])
         : null;
+
     _lastMessageIndex = map['lastMessageIndex'];
   }
 

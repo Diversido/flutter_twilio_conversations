@@ -1,6 +1,7 @@
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:intl/intl.dart';
 
 class Mapper {
@@ -14,13 +15,14 @@ class Mapper {
 
     final messages = <TwilioConversationsMessage>[];
 
+    print('p: ${channel.synchronizationStatus.toString()}');
     return {
       'sid': channel.sid,
       'type': 'UNKNOWN',
       'attributes': attributesToMap(channel.attributes),
       'messages': messagesToMap(messages),
       'status': channel.status.toString(),
-      'synchronizationStatus  ': channel.synchronizationStatus.toString(),
+      'synchronizationStatus': channel.synchronizationStatus.toString(), // channel.conversationStatus.ChannelStatus
       'dateCreated': dateToString(channel.dateCreatedAsDate),
       'createdBy': channel.createdBy,
       'dateUpdated': dateToString(channel.dateUpdatedAsDate),
@@ -29,11 +31,9 @@ class Mapper {
     };
   }
 
-  static Map<String, dynamic>? attributesToMap(
-      Map<dynamic, dynamic>? attributes) {
-    return attributes?.map((key, value) {
-      return MapEntry(key.toString(), value);
-    });
+  static Map<String, dynamic>? attributesToMap(JSONValue? attributes) {
+    print('JSONValue is $attributes');
+    return {};
     // late String type;
     // late String data;
 

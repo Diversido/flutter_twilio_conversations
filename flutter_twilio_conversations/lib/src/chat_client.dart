@@ -39,7 +39,7 @@ class NotificationRegistrationEvent {
 /// Chat client - main entry point for the Chat SDK.
 class ChatClient {
   /// Stream for the native chat events.
-  StreamSubscription<Map<String,dynamic>>? _chatStream;
+  StreamSubscription<Map<String, dynamic>>? _chatStream;
 
   /// Stream for the notification events.
   StreamSubscription<dynamic>? _notificationStream;
@@ -252,9 +252,7 @@ class ChatClient {
     _chatStream = FlutterTwilioConversationsPlatform.instance
         .chatClientStream()!
         .listen((_parseEvents));
-    // TwilioConversationsClient._chatChannel
-    //     .receiveBroadcastStream(0)
-    //     .listen(_parseEvents);
+
     // _notificationStream = TwilioConversationsClient._notificationChannel
     //     .receiveBroadcastStream(0)
     //     .listen(_parseNotificationEvents);
@@ -354,7 +352,6 @@ class ChatClient {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-
     _connectionState =
         EnumToString.fromString(ConnectionState.values, map['connectionState']);
     _isReachabilityEnabled = map['isReachabilityEnabled'];
@@ -384,6 +381,7 @@ class ChatClient {
     final data = Map<String, dynamic>.from(event['data'] ?? {});
 
     if (data['chatClient'] != null) {
+      print("p: ");
       final chatClientMap = Map<String, dynamic>.from(data['chatClient']);
       _updateFromMap(chatClientMap);
     }
@@ -398,7 +396,6 @@ class ChatClient {
 
     Map<String, dynamic>? channelMap;
     if (data['channel'] != null) {
-          print('p: adding channel');
       channelMap =
           Map<String, dynamic>.from(data['channel'] as Map<dynamic, dynamic>);
     }
@@ -429,10 +426,14 @@ class ChatClient {
         _onAddedToChannelNotificationCtrl.add(channelSid!);
         break;
       case 'channelAdded':
-        print("p: channel added $channelMap");
         assert(channelMap != null);
         Channels._updateChannelFromMap(channelMap!);
+        print("p: channel mapped ${Channels._channelsMap[channelMap['sid']]!}");
         _onChannelAddedCtrl.add(Channels._channelsMap[channelMap['sid']]!);
+        _onClientSynchronizationCtrl
+            .add(ChatClientSynchronizationStatus.CONVERSATIONS_COMPLETED);
+        print(
+            "p: channel added to onChannelAddedCtrl ${Channels._channelsMap[channelMap['sid']]!}");
         break;
       case 'channelDeleted':
         assert(channelMap != null);

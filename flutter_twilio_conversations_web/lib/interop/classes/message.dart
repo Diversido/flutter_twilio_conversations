@@ -1,6 +1,7 @@
 // Define Twilio.Conversations.Client class
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:js/js.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 
@@ -17,7 +18,7 @@ class TwilioConversationsMessage {
 
   external int index;
   // external List<Media> attachedMedia;
-  external Map<dynamic, dynamic> attributes;
+  external JSONValue attributes;
 }
 
 extension Interop on TwilioConversationsMessage {

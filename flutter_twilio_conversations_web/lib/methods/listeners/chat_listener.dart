@@ -26,6 +26,7 @@ class ChatClientEventListener extends BaseListener {
     _on('conversationAdded', conversationAdded);
     _on('conversationJoined', conversationJoined);
     _on('conversationLeft', conversationLeft);
+    _on('conversationUpdated', conversationUpdated);
   }
 
   void _on(String eventName, Function eventHandler) => _client.on(
@@ -65,6 +66,15 @@ class ChatClientEventListener extends BaseListener {
   void conversationAdded(dynamic channelAdded) async {
     TwilioClientConversation.TwilioConversationsChannel channel = channelAdded;
     sendEvent('channelAdded', {"channel": Mapper.channelToMap(channel)});
+  }
+
+  void conversationUpdated(dynamic channelUpdated, dynamic reason) async {
+    TwilioClientConversation.TwilioConversationsChannel channel =
+        channelUpdated;
+    sendEvent('channelUpdated', {
+      "channel": Mapper.channelToMap(channel),
+      "reason": {"type": "channel", "value": reason,}
+    },);
   }
 
   // override fun onConversationAdded(conversation: Conversation?) {
