@@ -32,6 +32,7 @@ class Channels {
   /// This operation creates a new channel entity on the backend.
   Future<Channel> createChannel(
       String friendlyName, ChannelType channelType) async {
+        print("p: create channel called");
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .createChannel(
@@ -50,6 +51,7 @@ class Channels {
 
   /// Retrieves a [Channel] with the specified SID or unique name.
   Future<Channel> getChannel(String channelSidOrUniqueName) async {
+    print("p: get channel called");
     try {
       final methodData = FlutterTwilioConversationsPlatform.instance
           .getChannel(channelSidOrUniqueName);

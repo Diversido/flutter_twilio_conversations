@@ -38,8 +38,8 @@ extension Interop on TwilioConversationsClient {
     return ClientModel(
       connectionState: connectionState,
       myIdentity: user.toModel().identity,
-      channels: Channels(),
-      users: Users(),
+      channels: null,
+      users: null,
       isReachabilityEnabled: this.isReachabilityEnabled,
     );
   }

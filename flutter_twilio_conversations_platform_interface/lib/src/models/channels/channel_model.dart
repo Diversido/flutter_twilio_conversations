@@ -2,7 +2,7 @@ import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 
 class ChannelModel {
   final String? sid;
-  final Attributes? attributes;
+  final Map<dynamic, dynamic>? attributes;
   final DateTime? dateCreated;
   final String? createdBy;
 

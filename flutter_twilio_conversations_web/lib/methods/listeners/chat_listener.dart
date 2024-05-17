@@ -9,11 +9,13 @@ import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_c
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/paginator.dart';
 import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
+import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:js/js.dart';
 
 class ChatClientEventListener extends BaseListener {
   final TwilioChatClient.TwilioConversationsClient _client;
-  final StreamController<BaseChatClientEvent> _chatClientStreamController;
+  // final StreamController<BaseChatClientEvent> _chatClientStreamController; //TODO broken
+  final StreamController<Map<String, dynamic>> _chatClientStreamController;
 
   ChatClientEventListener(this._client, this._chatClientStreamController) {}
 
@@ -21,6 +23,7 @@ class ChatClientEventListener extends BaseListener {
     debug('Adding chatClientEventListeners for ${_client.connectionState}');
     _on('connectionStateChanged', connectionStateChange);
     _on('connectionError', connectionError);
+    _on('conversationAdded', conversationAdded);
     _on('conversationJoined', conversationJoined);
     _on('conversationLeft', conversationLeft);
   }
@@ -56,21 +59,32 @@ class ChatClientEventListener extends BaseListener {
     }
     _chatClientStreamController.add(ConnectionStateChange(
       _client.connectionState,
-    ));
+    ).toJson());
   }
 
-  void conversationJoined(dynamic conversationJoined) async {
+  void conversationAdded(dynamic channelAdded) async {
+    TwilioClientConversation.TwilioConversationsChannel channel = channelAdded;
+    sendEvent('channelAdded', {"channel": Mapper.channelToMap(channel)});
+  }
+
+  // override fun onConversationAdded(conversation: Conversation?) {
+  // Log.d("TwilioInfo", "ChatListener.onConversationAdded => conversation '${conversation?.sid}' added")
+  // sendEvent("channelAdded", mapOf(
+  // "channel" to Mapper.channelToMap(pluginInstance, conversation!!)
+  // ))
+  // }
+
+  void conversationJoined(dynamic channelJoined) async {
     debug('conversationJoined');
 
-    // TwilioClientConversation.TwilioConversationsConversation conversation =
-    //     conversationJoined;
+    TwilioClientConversation.TwilioConversationsChannel channel = channelJoined;
     // TwilioPaginator paginator =
     //     await promiseToFuture(conversation.getMessages());
     // var interesting = paginator.toModel();
     // TwilioConversationsMessage message = interesting.items[0];
     // print('message: ${message.body}');
     // _chatClientStreamController.add(
-    //   ConversationJoined(_client.toModel(), conversation.toModel()),
+    //   ChannelAdded(_client.toModel().connectionState, channel.toModel()),
     // );
   }
 
@@ -85,8 +99,9 @@ class ChatClientEventListener extends BaseListener {
 
   void connectionError(dynamic data) {
     debug('Added ConnectionStateChange ChatClient Event');
-    _chatClientStreamController.add( 
-        ConnectError(_client.toModel().connectionState, "this is an error")); // TODO Nic the data is probably the connection state and their is probably a region
+    // _chatClientStreamController.add(ConnectError(
+    // _client.toModel().connectionState,
+    // "this is an error")); // TODO Nic the data is probably the connection state and their is probably a region
   }
 
   /*boolean terminal - Twilsock will stop connection attempts if true
@@ -111,4 +126,13 @@ number? errorCode - Twilio public error code if available */
   //   remoteParticipantListener?.removeListeners();
   //   debug('Added ParticipantDisconnected Room Event');
   // }
+
+  sendEvent(String name, dynamic data, {ErrorInfo? e}) {
+    final eventData = {
+      "name": name,
+      "data": data,
+      "error": Mapper.errorInfoToMap(e),
+    };
+    _chatClientStreamController.add(eventData);
+  }
 }

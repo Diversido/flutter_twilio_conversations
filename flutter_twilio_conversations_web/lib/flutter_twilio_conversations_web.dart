@@ -9,7 +9,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/methods/conversation_client.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
-import 'package:flutter_twilio_conversations_web/methods/listeners/conversations_client_event_listener.dart';
+import 'package:flutter_twilio_conversations_web/methods/listeners/chat_listener.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
@@ -17,7 +17,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   static ChatClientEventListener? _chatClientListener;
 
   static final _chatClientStreamController =
-      StreamController<BaseChatClientEvent>.broadcast();
+      StreamController<Map<String, dynamic>>.broadcast();
 
   /// Registers this class as the default instance of [FlutterTwilioConversationsPlatform].
   static void registerWith(Registrar registrar) {
@@ -33,7 +33,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
       final _clientModel =
           ConnectionStateChange(_chatClient!.toModel().connectionState);
-      _chatClientStreamController.add(_clientModel);
+      _chatClientStreamController.add(_clientModel.toJson());
       _chatClientStreamController.onListen = null;
     }
   }
@@ -70,7 +70,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Stream<BaseChatClientEvent> chatClientStream() {
+  Stream<Map<String,dynamic>> chatClientStream() {
     print('TwilioConversationsPlugin.create => starting stream');
     return _chatClientStreamController.stream;
   }

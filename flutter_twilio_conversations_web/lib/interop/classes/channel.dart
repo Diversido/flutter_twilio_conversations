@@ -7,13 +7,19 @@ import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_c
 @JS('Twilio.Conversations.Conversation')
 class TwilioConversationsChannel {
   external String get sid;
-  external Attributes? get attributes;
+  external Map<dynamic, dynamic>? get attributes;
   external DateTime? _dateCreated;
   external String? _createdBy;
+  external ChannelStatus status;
+  external ChannelSynchronizationStatus synchronizationStatus;
+  external DateTime dateCreatedAsDate;
+  external String createdBy;
+  external DateTime dateUpdatedAsDate;
+  external DateTime lastMessageDate; // LastMessage - date and index
+  external int lastMessageIndex;
+  external int lastReadMessageIndex;
 
-
-
-  external dynamic getMessages();
+  external dynamic getMessagesA();
 }
 
 extension Interop on TwilioConversationsChannel {

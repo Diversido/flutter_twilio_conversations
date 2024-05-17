@@ -59,7 +59,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
   /// Stream of the BaseRoomEvent model.
   ///
   /// This stream is used to update the Room in a plugin implementation.
-  Stream<BaseChatClientEvent>? chatClientStream() {
+  Stream<Map<String,dynamic>>? chatClientStream() {
     throw UnimplementedError('chatClientStream() has not been implemented');
   }
 

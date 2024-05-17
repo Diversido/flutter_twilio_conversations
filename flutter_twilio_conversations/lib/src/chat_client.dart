@@ -39,7 +39,7 @@ class NotificationRegistrationEvent {
 /// Chat client - main entry point for the Chat SDK.
 class ChatClient {
   /// Stream for the native chat events.
-  StreamSubscription<BaseChatClientEvent>? _chatStream;
+  StreamSubscription<Map<String,dynamic>>? _chatStream;
 
   /// Stream for the notification events.
   StreamSubscription<dynamic>? _notificationStream;
@@ -354,18 +354,20 @@ class ChatClient {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-    print('should update $map');
+
     _connectionState =
         EnumToString.fromString(ConnectionState.values, map['connectionState']);
     _isReachabilityEnabled = map['isReachabilityEnabled'];
 
     if (map['channels'] != null) {
+      print("p: trying to update channels");
       final channelsMap = Map<String, dynamic>.from(map['channels']);
       _channels ??= Channels._fromMap(channelsMap);
       _channels?._updateFromMap(channelsMap);
     }
 
     if (map['users'] != null) {
+      print("p: trying to update users");
       final usersMap = Map<String, dynamic>.from(map['users']);
       _users ??= Users._fromMap(usersMap);
       _users?._updateFromMap(usersMap);
@@ -374,7 +376,7 @@ class ChatClient {
 
   /// Parse native chat client events to the right event streams.
   void _parseEvents(dynamic event) {
-    print('ok here $event');
+    print('p: parse eventName $event');
 
     final String eventName = event['name'];
     print(
@@ -396,6 +398,7 @@ class ChatClient {
 
     Map<String, dynamic>? channelMap;
     if (data['channel'] != null) {
+          print('p: adding channel');
       channelMap =
           Map<String, dynamic>.from(data['channel'] as Map<dynamic, dynamic>);
     }
@@ -426,6 +429,7 @@ class ChatClient {
         _onAddedToChannelNotificationCtrl.add(channelSid!);
         break;
       case 'channelAdded':
+        print("p: channel added $channelMap");
         assert(channelMap != null);
         Channels._updateChannelFromMap(channelMap!);
         _onChannelAddedCtrl.add(Channels._channelsMap[channelMap['sid']]!);

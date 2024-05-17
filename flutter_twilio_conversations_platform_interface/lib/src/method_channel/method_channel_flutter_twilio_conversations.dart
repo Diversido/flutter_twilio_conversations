@@ -48,5 +48,5 @@ class MethodChannelFlutterTwilioConversations
   }
 
 // needs to be implemented for the mobile interface
-  Stream<BaseChatClientEvent>? chatClientStream() {}
+  Stream<Map<String,dynamic>>? chatClientStream() {}
 }
