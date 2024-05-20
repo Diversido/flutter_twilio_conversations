@@ -48,7 +48,8 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('create() has not been implemented.');
   }
 
-  Future<Map<dynamic, dynamic>> createChannel(String friendlyName, String channelType) {
+  Future<Map<dynamic, dynamic>> createChannel(
+      String friendlyName, String channelType) {
     throw UnimplementedError('createChannel() has not been implemented.');
   }
 
@@ -59,12 +60,25 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
   /// Stream of the BaseRoomEvent model.
   ///
   /// This stream is used to update the Room in a plugin implementation.
-  Stream<Map<String,dynamic>>? chatClientStream() {
+  Stream<Map<String, dynamic>>? chatClientStream() {
     throw UnimplementedError('chatClientStream() has not been implemented');
   }
 
-  //  {
-  // print("here");
-  // throw UnimplementedError('canLaunch() has not been implemented.');
-  // }
+  Future<void> declineInvitationChannel(String channelSid);
+  Future<void> destroyChannel(String channelSid);
+  Future<void> getFriendlyNameChannel(String channelSid);
+  Future<void> getMembersCountChannel(String channelSid);
+  Future<void> getMessagesCountChannel(String channelSid);
+  Future<void> getNotificationLevelChannel(String channelSid);
+  Future<void> getUniqueNameChannel(String channelSid);
+  Future<void> getUnreadMessagesCountChannel(String channelSid);
+  Future<void> joinChannel(String channelSid);
+  Future<void> leaveChannel(String channelSid);
+  Future<void> setAttributesChannel(
+      String channelSid, Map<String, dynamic> attributes);
+  Future<void> setFriendlyNameChannel(String channelSid, String friendlyName);
+  Future<void> setNotificationLevelChannel(
+      String channelSid, String notificationLevel);
+  Future<void> setUniqueNameChannel(String channelSid, String uniqueName);
+  Future<void> typingChannel(String channelSid);
 }

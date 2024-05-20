@@ -51,6 +51,100 @@ class MethodChannelFlutterTwilioConversations
         <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
   }
 
+  @override
+  Future<void> declineInvitationChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#declineInvitation', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> destroyChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#destroy', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> getFriendlyNameChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#getFriendlyName', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> getMembersCountChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#getMembersCount', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> getMessagesCountChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#getMessagesCount', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> getNotificationLevelChannel(String channelSid) {
+    return _methodChannel.invokeMethod(
+        'Channel#getNotificationLevel', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> getUniqueNameChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#getUniqueName', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> getUnreadMessagesCountChannel(String channelSid) {
+    return _methodChannel.invokeMethod(
+        'Channel#getUnreadMessagesCount', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> joinChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#join', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> leaveChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#leave', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<void> setAttributesChannel(
+      String channelSid, Map<String, dynamic> attributes) {
+    return _methodChannel.invokeMethod('Channel#setAttributes',
+        {'channelSid': channelSid, 'attributes': attributes});
+  }
+
+  @override
+  Future<void> setFriendlyNameChannel(String channelSid, String friendlyName) {
+    return _methodChannel.invokeMethod('Channel#setFriendlyName',
+        {'channelSid': channelSid, 'friendlyName': friendlyName});
+  }
+
+  @override
+  Future<void> setNotificationLevelChannel(
+      String channelSid, String notificationLevel) {
+    return _methodChannel.invokeMethod('Channel#setNotificationLevel', {
+      'channelSid': channelSid,
+      'notificationLevel': notificationLevel,
+    });
+  }
+
+  @override
+  Future<void> setUniqueNameChannel(String channelSid, String uniqueName) {
+    return _methodChannel.invokeMethod('Channel#setUniqueName',
+        {'channelSid': channelSid, 'uniqueName': uniqueName});
+  }
+
+  @override
+  Future<void> typingChannel(String channelSid) {
+    return _methodChannel
+        .invokeMethod('Channel#typing', {'channelSid': channelSid});
+  }
+
 // needs to be implemented for the mobile interface
   Stream<Map<String, dynamic>>? chatClientStream() {}
 }
