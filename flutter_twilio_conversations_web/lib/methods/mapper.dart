@@ -1,10 +1,33 @@
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
+    as TwilioClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
 import 'package:intl/intl.dart';
 
 class Mapper {
+  static Map<String, dynamic>? chatClientToMap(
+      TwilioClient.TwilioConversationsClient chatClient) {
+    return {
+      "channels": channelsToMap(chatClient.channels),
+      "myIdentity": "chatClient.user.identity",
+      "connectionState": chatClient.connectionState.toString(),
+      "users": usersToMap(chatClient.users),
+      "isReachabilityEnabled": chatClient.isReachabilityEnabled,
+    };
+  }
+
+  static Map<String, dynamic>? channelsToMap(
+      List<TwilioConversationsChannel>? channels) {
+    if (channels == null) return {};
+    var subscribedChannelsMap =
+        channels.map((channel) => channelToMap(channel));
+
+    return {"subscribedChannels": subscribedChannelsMap};
+  }
+
   static Map<String, dynamic>? channelToMap(
       TwilioConversationsChannel? channel) {
     if (channel == null) {
@@ -12,6 +35,7 @@ class Mapper {
     }
 
     //TODO Implement the same as Mapper.kt
+    // For channel stream
 
     final messages = <TwilioConversationsMessage>[];
 
@@ -22,7 +46,8 @@ class Mapper {
       'attributes': attributesToMap(channel.attributes),
       'messages': messagesToMap(messages),
       'status': channel.status.toString(),
-      'synchronizationStatus': channel.synchronizationStatus.toString(), // channel.conversationStatus.ChannelStatus
+      'synchronizationStatus': channel.synchronizationStatus
+          .toString(), // channel.conversationStatus.ChannelStatus
       'dateCreated': dateToString(channel.dateCreatedAsDate),
       'createdBy': channel.createdBy,
       'dateUpdated': dateToString(channel.dateUpdatedAsDate),
@@ -30,6 +55,46 @@ class Mapper {
       'lastMessageIndex': channel.lastMessageIndex,
     };
   }
+
+
+  static Map<String, dynamic>? usersToMap(List<TwilioConversationsUser>? users) {
+        var subscribedUsersMap = users!.map((user) =>  userToMap(user));
+        var myUser = null;
+        // try {
+        //     if (TwilioConversationsPlugin.chatClient?.myUser != null) {
+        //         myUser = TwilioConversationsPlugin.chatClient?.myUser
+        //     }
+        // } catch (e) {
+        //    print("myUser is null ${e.toString()}");
+        // }
+
+        return {
+                "subscribedUsers" : subscribedUsersMap,
+                "myUser" : userToMap(myUser)
+        };
+    }
+
+    static Map<String, dynamic>? userToMap(TwilioConversationsUser user) {
+        if (user != null) {
+            return {
+                    "friendlyName" : user.friendlyName,
+                   // "attributes" : attributes:Map(user.attributes),
+                    "identity" : user.identity,
+                    // "isOnline" : user.isOnline,
+                    // "isNotifiable" : user.isNotifiable,
+                    // "isSubscribed" : user.isSubscribed
+            };
+        } else {
+            return {
+                    "friendlyName" : "",
+                    "attributes" : "",
+                    "identity" : "",
+                    "isOnline" : "",
+                    "isNotifiable" : "",
+                    "isSubscribed" : "",
+            };
+        }
+    }
 
   static Map<String, dynamic>? attributesToMap(JSONValue? attributes) {
     print('JSONValue is $attributes');

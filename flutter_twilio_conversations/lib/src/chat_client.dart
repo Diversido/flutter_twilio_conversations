@@ -261,6 +261,7 @@ class ChatClient {
   /// Construct from a map.
   factory ChatClient._fromMap(Map<String, dynamic> map) {
     var chatClient = ChatClient(map['myIdentity']);
+    print('initial chatClient: $chatClient');
     chatClient._updateFromMap(map);
     return chatClient;
   }
@@ -269,8 +270,8 @@ class ChatClient {
   /// Method to update the authentication token for this client.
   Future<void> updateToken(String token) async {
     try {
-      return await TwilioConversationsClient._methodChannel.invokeMethod(
-          'ChatClient#updateToken', <String, Object>{'token': token});
+      // return await TwilioConversationsClient._methodChannel.invokeMethod(
+      //     'ChatClient#updateToken', <String, Object>{'token': token});
     } on PlatformException {
       return;
     }
@@ -301,8 +302,8 @@ class ChatClient {
         print('ChatClient => TwilioLog failed to cancel notifications stream');
       }
       TwilioConversationsClient.chatClient = null;
-      return await TwilioConversationsClient._methodChannel
-          .invokeMethod('ChatClient#shutdown', null);
+      // return await TwilioConversationsClient._methodChannel
+      //     .invokeMethod('ChatClient#shutdown', null);
     } on PlatformException catch (err) {
       print('ChatClient => TwilioLog shutdown error: $err');
       throw TwilioConversationsClient._convertException(err);
@@ -317,11 +318,12 @@ class ChatClient {
   /// notifications.
   Future<String> registerForNotification(String token) async {
     try {
-      final isInit = await TwilioConversationsClient._methodChannel
-          .invokeMethod(
-              'registerForNotification', <String, Object>{'token': token});
+      // final isInit = await TwilioConversationsClient._methodChannel
+      //     .invokeMethod(
+      //         'registerForNotification', <String, Object>{'token': token});
 
-      return isInit;
+      // return isInit;
+      return "null";
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -332,8 +334,8 @@ class ChatClient {
   /// Token is only used on Android. iOS implementation retrieves APNs token itself.
   Future<void> unregisterForNotification(String token) async {
     try {
-      await TwilioConversationsClient._methodChannel.invokeMethod(
-          'unregisterForNotification', <String, Object>{'token': token});
+      // await TwilioConversationsClient._methodChannel.invokeMethod(
+      //     'unregisterForNotification', <String, Object>{'token': token});
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -342,8 +344,8 @@ class ChatClient {
   /// Returns the notification used to launch the app (iOS Only)
   Future<void> handleReceivedNotification() async {
     try {
-      return await TwilioConversationsClient._methodChannel
-          .invokeMethod('handleReceivedNotification');
+      // return await TwilioConversationsClient._methodChannel
+      //     .invokeMethod('handleReceivedNotification');
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -352,6 +354,7 @@ class ChatClient {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
+    print('updateFromMap map: $map');
     _connectionState =
         EnumToString.fromString(ConnectionState.values, map['connectionState']);
     _isReachabilityEnabled = map['isReachabilityEnabled'];
@@ -373,9 +376,8 @@ class ChatClient {
 
   /// Parse native chat client events to the right event streams.
   void _parseEvents(dynamic event) {
-
     final String eventName = event['name'];
-   
+
     final data = Map<String, dynamic>.from(event['data'] ?? {});
 
     if (data['chatClient'] != null) {
@@ -417,7 +419,7 @@ class ChatClient {
             UserUpdateReason.values, reasonMap['value']);
       }
     }
-
+    print('event Name: $eventName');
     switch (eventName) {
       case 'addedToChannelNotification':
         _onAddedToChannelNotificationCtrl.add(channelSid!);

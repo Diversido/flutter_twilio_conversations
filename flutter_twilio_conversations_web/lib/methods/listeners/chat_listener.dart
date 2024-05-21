@@ -22,6 +22,7 @@ class ChatClientEventListener extends BaseListener {
   void addListeners() {
     debug('Adding chatClientEventListeners for ${_client.connectionState}');
     _on('connectionStateChanged', connectionStateChange);
+    _on('stateChanged', stateChanged);
     _on('connectionError', connectionError);
     _on('conversationAdded', conversationAdded);
     _on('conversationJoined', conversationJoined);
@@ -63,6 +64,14 @@ class ChatClientEventListener extends BaseListener {
     ).toJson());
   }
 
+  void stateChanged(String state) {
+    if (state == 'initialized') {
+      state = 'CONVERSATIONS_COMPLETED';
+    }
+    sendEvent('clientSynchronization',
+        {"synchronizationStatus": state, "chatClient": _client});
+  }
+
   void conversationAdded(dynamic channelAdded) async {
     TwilioClientConversation.TwilioConversationsChannel channel = channelAdded;
     sendEvent('channelAdded', {"channel": Mapper.channelToMap(channel)});
@@ -71,10 +80,16 @@ class ChatClientEventListener extends BaseListener {
   void conversationUpdated(dynamic channelUpdated, dynamic reason) async {
     TwilioClientConversation.TwilioConversationsChannel channel =
         channelUpdated;
-    sendEvent('channelUpdated', {
-      "channel": Mapper.channelToMap(channel),
-      "reason": {"type": "channel", "value": reason,}
-    },);
+    sendEvent(
+      'channelUpdated',
+      {
+        "channel": Mapper.channelToMap(channel),
+        "reason": {
+          "type": "channel",
+          "value": reason,
+        }
+      },
+    );
   }
 
   // override fun onConversationAdded(conversation: Conversation?) {

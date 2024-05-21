@@ -20,7 +20,7 @@ class DialogsList extends StatelessWidget {
             'Dialogs Page',
           ),
         ),
-        body: !viewModel.dialogs.isNotEmpty
+        body: viewModel.dialogs.isNotEmpty
             ? ListView.builder(
                 itemCount: viewModel.dialogs.length,
                 itemBuilder: (context, index) => InkWell(

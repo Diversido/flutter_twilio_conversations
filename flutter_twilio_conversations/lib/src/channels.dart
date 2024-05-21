@@ -32,7 +32,7 @@ class Channels {
   /// This operation creates a new channel entity on the backend.
   Future<Channel> createChannel(
       String friendlyName, ChannelType channelType) async {
-        print("p: create channel called");
+    print("p: create channel called");
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .createChannel(
@@ -70,12 +70,13 @@ class Channels {
   /// To get channels already joined by current user see [Channels.getUserChannelsList].
   ///
   /// Returned list is wrapped in a [Paginator].
-  Future<Paginator<ChannelDescriptor>> getPublicChannelsList() async {
+  Future<Paginator<ChannelDescriptor>?> getPublicChannelsList() async {
     try {
-      final methodData = await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channels#getPublicChannelsList');
-      final paginatorMap = Map<String, dynamic>.from(methodData);
-      return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
+      // final methodData = await TwilioConversationsClient._methodChannel
+      //     .invokeMethod('Channels#getPublicChannelsList');
+      // final paginatorMap = Map<String, dynamic>.from(methodData);
+      // return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
+      return null;
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -89,12 +90,13 @@ class Channels {
   /// Per iOS docs: Retrieve a list of channel descriptors the user has a participation state on, for example invited, joined, creator.
   ///
   /// Returned list is wrapped in a [Paginator].
-  Future<Paginator<ChannelDescriptor>> getUserChannelsList() async {
+  Future<Paginator<ChannelDescriptor>?> getUserChannelsList() async {
     try {
-      final methodData = await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channels#getUserChannelsList');
-      final paginatorMap = Map<String, dynamic>.from(methodData);
-      return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
+      return null;
+      // final methodData = await TwilioConversationsClient._methodChannel
+      //     .invokeMethod('Channels#getUserChannelsList');
+      // final paginatorMap = Map<String, dynamic>.from(methodData);
+      // return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -103,20 +105,21 @@ class Channels {
   /// Get list of all [Channel] members with a given identity.
   ///
   /// The effect of this function is to find and return all Member instances across multiple channels with the given identity.
-  Future<List<Member>> getMembersByIdentity(String identity) async {
+  Future<List<Member>?> getMembersByIdentity(String identity) async {
     try {
-      final methodData = await TwilioConversationsClient._methodChannel
-          .invokeMethod(
-              'Channels#getMembersByIdentity', {'identity': identity});
-      final List<Map<String, dynamic>> memberMapList = methodData
-          .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
-          .toList();
+      return null;
+      //   final methodData = await TwilioConversationsClient._methodChannel
+      //       .invokeMethod(
+      //           'Channels#getMembersByIdentity', {'identity': identity});
+      //   final List<Map<String, dynamic>> memberMapList = methodData
+      //       .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
+      //       .toList();
 
-      var memberList = <Member>[];
-      for (final memberMap in memberMapList) {
-        memberList.add(Member._fromMap(memberMap));
-      }
-      return memberList;
+      //   var memberList = <Member>[];
+      //   for (final memberMap in memberMapList) {
+      //     memberList.add(Member._fromMap(memberMap));
+      //   }
+      //   return memberList;
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -139,6 +142,7 @@ class Channels {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
+    print('p: channels update from map');
     if (map['subscribedChannels'] != null) {
       final List<Map<String, dynamic>> subscribedChannelsList =
           map['subscribedChannels']
@@ -162,5 +166,6 @@ class Channels {
     } else {
       _channelsMap[sid]!._updateFromMap(channelMap);
     }
+    print('channels: $_channelsMap');
   }
 }

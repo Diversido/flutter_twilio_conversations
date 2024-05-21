@@ -4,13 +4,15 @@ import 'package:flutter_twilio_conversations_web/interop/classes/event_emitter.d
 import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
 import 'package:js/js.dart';
 
+import 'channel.dart';
+
 // Define Twilio.Conversations.Client class
 @JS('Twilio.Conversations.Client')
 class TwilioConversationsClient extends EventEmitter {
   external ConnectionState get connectionState;
   external String get version;
-  external Channels? channels;
-  external Users? users;
+  external List<TwilioConversationsChannel>? channels;
+  external List<TwilioConversationsUser>? users;
   external bool isReachabilityEnabled;
   external TwilioConversationsUser get user;
 
