@@ -373,15 +373,12 @@ class ChatClient {
 
   /// Parse native chat client events to the right event streams.
   void _parseEvents(dynamic event) {
-    print('p: parse eventName $event');
 
     final String eventName = event['name'];
-    print(
-        "ChatClient => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
+   
     final data = Map<String, dynamic>.from(event['data'] ?? {});
 
     if (data['chatClient'] != null) {
-      print("p: ");
       final chatClientMap = Map<String, dynamic>.from(data['chatClient']);
       _updateFromMap(chatClientMap);
     }
@@ -428,12 +425,7 @@ class ChatClient {
       case 'channelAdded':
         assert(channelMap != null);
         Channels._updateChannelFromMap(channelMap!);
-        print("p: channel mapped ${Channels._channelsMap[channelMap['sid']]!}");
         _onChannelAddedCtrl.add(Channels._channelsMap[channelMap['sid']]!);
-        _onClientSynchronizationCtrl
-            .add(ChatClientSynchronizationStatus.CONVERSATIONS_COMPLETED);
-        print(
-            "p: channel added to onChannelAddedCtrl ${Channels._channelsMap[channelMap['sid']]!}");
         break;
       case 'channelDeleted':
         assert(channelMap != null);

@@ -70,7 +70,99 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Stream<Map<String,dynamic>> chatClientStream() {
+  Future<void> declineInvitationChannel(String channelSid) {
+    // TODO: implement declineInvitationChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> destroyChannel(String channelSid) {
+    // TODO: implement destroyChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getFriendlyNameChannel(String channelSid) {
+    // TODO: implement getFriendlyNameChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> getMembersCountChannel(String channelSid) {
+    // TODO: implement getMembersCountChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> getMessagesCountChannel(String channelSid) {
+    // TODO: implement getMessagesCountChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getNotificationLevelChannel(String channelSid) {
+    // TODO: implement getNotificationLevelChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getUniqueNameChannel(String channelSid) {
+    // TODO: implement getUniqueNameChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> getUnreadMessagesCountChannel(String channelSid) {
+    // TODO: implement getUnreadMessagesCountChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> joinChannel(String channelSid) {
+    // TODO: implement joinChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> leaveChannel(String channelSid) {
+    // TODO: implement leaveChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<String, dynamic>> setAttributesChannel(
+      String channelSid, Map<String, dynamic> attributes) {
+    // TODO: implement setAttributesChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> setFriendlyNameChannel(String channelSid, String friendlyName) {
+    // TODO: implement setFriendlyNameChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> setNotificationLevelChannel(
+      String channelSid, String notificationLevel) {
+    // TODO: implement setNotificationLevelChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> setUniqueNameChannel(String channelSid, String uniqueName) {
+    // TODO: implement setUniqueNameChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> typingChannel(String channelSid) {
+    // TODO: implement typingChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<Map<String, dynamic>> chatClientStream() {
     print('TwilioConversationsPlugin.create => starting stream');
     return _chatClientStreamController.stream;
   }

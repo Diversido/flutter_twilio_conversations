@@ -64,38 +64,38 @@ class MethodChannelFlutterTwilioConversations
   }
 
   @override
-  Future<void> getFriendlyNameChannel(String channelSid) {
-    return _methodChannel
+  Future<String> getFriendlyNameChannel(String channelSid) async {
+    return await _methodChannel
         .invokeMethod('Channel#getFriendlyName', {'channelSid': channelSid});
   }
 
   @override
-  Future<void> getMembersCountChannel(String channelSid) {
-    return _methodChannel
+  Future<int> getMembersCountChannel(String channelSid) async {
+    return await _methodChannel
         .invokeMethod('Channel#getMembersCount', {'channelSid': channelSid});
   }
 
   @override
-  Future<void> getMessagesCountChannel(String channelSid) {
-    return _methodChannel
+  Future<int> getMessagesCountChannel(String channelSid) async {
+    return await _methodChannel
         .invokeMethod('Channel#getMessagesCount', {'channelSid': channelSid});
   }
 
   @override
-  Future<void> getNotificationLevelChannel(String channelSid) {
-    return _methodChannel.invokeMethod(
+  Future<String> getNotificationLevelChannel(String channelSid) async {
+    return await _methodChannel.invokeMethod(
         'Channel#getNotificationLevel', {'channelSid': channelSid});
   }
 
   @override
-  Future<void> getUniqueNameChannel(String channelSid) {
-    return _methodChannel
+  Future<String> getUniqueNameChannel(String channelSid) async {
+    return await _methodChannel
         .invokeMethod('Channel#getUniqueName', {'channelSid': channelSid});
   }
 
   @override
-  Future<void> getUnreadMessagesCountChannel(String channelSid) {
-    return _methodChannel.invokeMethod(
+  Future<int> getUnreadMessagesCountChannel(String channelSid) async {
+    return await _methodChannel.invokeMethod(
         'Channel#getUnreadMessagesCount', {'channelSid': channelSid});
   }
 
@@ -112,30 +112,32 @@ class MethodChannelFlutterTwilioConversations
   }
 
   @override
-  Future<void> setAttributesChannel(
-      String channelSid, Map<String, dynamic> attributes) {
-    return _methodChannel.invokeMethod('Channel#setAttributes',
+  Future<Map<String, dynamic>> setAttributesChannel(
+      String channelSid, Map<String, dynamic> attributes) async {
+    return await _methodChannel.invokeMethod('Channel#setAttributes',
         {'channelSid': channelSid, 'attributes': attributes});
   }
 
   @override
-  Future<void> setFriendlyNameChannel(String channelSid, String friendlyName) {
-    return _methodChannel.invokeMethod('Channel#setFriendlyName',
+  Future<String> setFriendlyNameChannel(
+      String channelSid, String friendlyName) async {
+    return await _methodChannel.invokeMethod('Channel#setFriendlyName',
         {'channelSid': channelSid, 'friendlyName': friendlyName});
   }
 
   @override
-  Future<void> setNotificationLevelChannel(
-      String channelSid, String notificationLevel) {
-    return _methodChannel.invokeMethod('Channel#setNotificationLevel', {
+  Future<String> setNotificationLevelChannel(
+      String channelSid, String notificationLevel) async {
+    return await _methodChannel.invokeMethod('Channel#setNotificationLevel', {
       'channelSid': channelSid,
       'notificationLevel': notificationLevel,
     });
   }
 
   @override
-  Future<void> setUniqueNameChannel(String channelSid, String uniqueName) {
-    return _methodChannel.invokeMethod('Channel#setUniqueName',
+  Future<String> setUniqueNameChannel(
+      String channelSid, String uniqueName) async {
+    return await _methodChannel.invokeMethod('Channel#setUniqueName',
         {'channelSid': channelSid, 'uniqueName': uniqueName});
   }
 
