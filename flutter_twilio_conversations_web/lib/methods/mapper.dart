@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
@@ -11,11 +13,11 @@ import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
 import 'package:intl/intl.dart';
 
 class Mapper {
-  static Map<String, dynamic>? chatClientToMap(
+  static Future<Map<String, dynamic>?> chatClientToMap(
       TwilioConversationsPlugin pluginInstance,
-      TwilioClient.TwilioConversationsClient chatClient) {
+      TwilioClient.TwilioConversationsClient chatClient) async {
     return {
-      "channels": channelsToMap(pluginInstance, chatClient.channels),
+      "channels": channelsToMap(pluginInstance, await promiseToFuture(chatClient.getSubscribedConversations())),
       "myIdentity": "",
       "connectionState": chatClient.connectionState,
       "users": usersToMap(chatClient.users),
