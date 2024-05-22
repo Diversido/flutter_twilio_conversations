@@ -1,4 +1,5 @@
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
@@ -9,18 +10,21 @@ import 'package:intl/intl.dart';
 
 class Mapper {
   static Map<String, dynamic>? chatClientToMap(
+      //FlutterTwilioConversationsPlatform pluginInstance,
       TwilioClient.TwilioConversationsClient chatClient) {
     return {
       "channels": channelsToMap(chatClient.channels),
-      "myIdentity": "chatClient.user.identity",
-      "connectionState": chatClient.connectionState.toString(),
+      "myIdentity": "",
+      "connectionState": chatClient.connectionState,
       "users": usersToMap(chatClient.users),
-      "isReachabilityEnabled": chatClient.isReachabilityEnabled,
+      "isReachabilityEnabled": true,
     };
   }
 
   static Map<String, dynamic>? channelsToMap(
+      //FlutterTwilioConversationsPlatform pluginInstance,
       List<TwilioConversationsChannel>? channels) {
+    print(channels);
     if (channels == null) return {};
     var subscribedChannelsMap =
         channels.map((channel) => channelToMap(channel));
@@ -29,13 +33,31 @@ class Mapper {
   }
 
   static Map<String, dynamic>? channelToMap(
+      //FlutterTwilioConversationsPlatform pluginInstance,
       TwilioConversationsChannel? channel) {
     if (channel == null) {
       return null;
     }
 
     //TODO Implement the same as Mapper.kt
-    // For channel stream
+    // Setting flutter event listener for the given channel if one does not yet exist.
+    // if (!pluginInstance.channelChannels.containsKey(channel.sid)) {
+    //     pluginInstance.channelChannels[channel.sid] = EventChannel(pluginInstance.messenger, "flutter_twilio_conversations/${channel.sid}")
+    //     pluginInstance.channelChannels[channel.sid]?.setStreamHandler(object : EventChannel.StreamHandler {
+    //         override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
+    //             Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) attached")
+    //             pluginInstance.channelListeners[channel.sid] = ChannelListener(pluginInstance, events)
+    //             channel.addListener(pluginInstance.channelListeners[channel.sid])
+    //         }
+
+    //         override fun onCancel(arguments: Any?) {
+    //             Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) detached")
+    //             channel.removeListener(pluginInstance.channelListeners[channel.sid])
+    //             pluginInstance.channelListeners.remove(channel.sid)
+    //             pluginInstance.channelChannels.remove(channel.sid)
+    //         }
+    //     })
+    // }
 
     final messages = <TwilioConversationsMessage>[];
 
@@ -56,45 +78,43 @@ class Mapper {
     };
   }
 
+  static Map<String, dynamic>? usersToMap(
+      List<TwilioConversationsUser>? users) {
+    if (users == null) return {};
+    var subscribedUsersMap = users!.map((user) => userToMap(user));
+    var myUser = null;
+    // try {
+    //     if (TwilioConversationsPlugin.chatClient?.myUser != null) {
+    //         myUser = TwilioConversationsPlugin.chatClient?.myUser
+    //     }
+    // } catch (e) {
+    //    print("myUser is null ${e.toString()}");
+    // }
 
-  static Map<String, dynamic>? usersToMap(List<TwilioConversationsUser>? users) {
-        var subscribedUsersMap = users!.map((user) =>  userToMap(user));
-        var myUser = null;
-        // try {
-        //     if (TwilioConversationsPlugin.chatClient?.myUser != null) {
-        //         myUser = TwilioConversationsPlugin.chatClient?.myUser
-        //     }
-        // } catch (e) {
-        //    print("myUser is null ${e.toString()}");
-        // }
+    return {"subscribedUsers": subscribedUsersMap, "myUser": userToMap(myUser)};
+  }
 
-        return {
-                "subscribedUsers" : subscribedUsersMap,
-                "myUser" : userToMap(myUser)
-        };
+  static Map<String, dynamic>? userToMap(TwilioConversationsUser user) {
+    if (user != null) {
+      return {
+        "friendlyName": user.friendlyName,
+        // "attributes" : attributes:Map(user.attributes),
+        "identity": user.identity,
+        // "isOnline" : user.isOnline,
+        // "isNotifiable" : user.isNotifiable,
+        // "isSubscribed" : user.isSubscribed
+      };
+    } else {
+      return {
+        "friendlyName": "",
+        "attributes": "",
+        "identity": "",
+        "isOnline": "",
+        "isNotifiable": "",
+        "isSubscribed": "",
+      };
     }
-
-    static Map<String, dynamic>? userToMap(TwilioConversationsUser user) {
-        if (user != null) {
-            return {
-                    "friendlyName" : user.friendlyName,
-                   // "attributes" : attributes:Map(user.attributes),
-                    "identity" : user.identity,
-                    // "isOnline" : user.isOnline,
-                    // "isNotifiable" : user.isNotifiable,
-                    // "isSubscribed" : user.isSubscribed
-            };
-        } else {
-            return {
-                    "friendlyName" : "",
-                    "attributes" : "",
-                    "identity" : "",
-                    "isOnline" : "",
-                    "isNotifiable" : "",
-                    "isSubscribed" : "",
-            };
-        }
-    }
+  }
 
   static Map<String, dynamic>? attributesToMap(JSONValue? attributes) {
     print('JSONValue is $attributes');

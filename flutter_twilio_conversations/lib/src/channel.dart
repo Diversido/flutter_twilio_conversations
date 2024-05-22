@@ -256,7 +256,6 @@ class Channel {
       ChannelType.PUBLIC,
       Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
     );
-    print("p: we made it!");
     channel._updateFromMap(map);
     return channel;
   }

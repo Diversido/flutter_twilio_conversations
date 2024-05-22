@@ -10,6 +10,7 @@ import 'package:flutter_twilio_conversations_web/methods/conversation_client.dar
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/methods/listeners/chat_listener.dart';
+import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
@@ -44,9 +45,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     try {
       _chatClient =
           await createTwilioConversationsClient(token, {"logLevel": "Debug"});
-      print(_chatClient?.user.identity);
-      var clientModel = _chatClient!.toModel();
-      return clientModel.toMap();
+      return Mapper.chatClientToMap(_chatClient!);
     } catch (e) {
       print('error: createConversation ${e}');
     }
