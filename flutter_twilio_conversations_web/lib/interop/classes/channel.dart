@@ -22,5 +22,5 @@ class TwilioConversationsChannel extends EventEmitter {
   external int lastMessageIndex;
   external int lastReadMessageIndex;
 
-  external dynamic getMessagesA();
+  external dynamic getMessages();
 }

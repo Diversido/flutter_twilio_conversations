@@ -360,10 +360,10 @@ class ChatClient {
     _isReachabilityEnabled = map['isReachabilityEnabled'];
 
     if (map['channels'] != null) {
-      print("p: channels update from map");
+      print("p: channels update from map $map");
       final channelsMap = Map<String, dynamic>.from(map['channels']);
       _channels ??= Channels._fromMap(channelsMap);
-      _channels?._updateFromMap(channelsMap);
+      _channels?._updateFromMap(channelsMap); //TODO Martin when is this called?
     }
 
     if (map['users'] != null) {
@@ -428,9 +428,11 @@ class ChatClient {
         break;
       case 'channelAdded':
         assert(channelMap != null);
-        print('p: event channelAdded');
+        print('p: event channelAdded and the map is $channelMap');
         Channels._updateChannelFromMap(channelMap!);
         _onChannelAddedCtrl.add(Channels._channelsMap[channelMap['sid']]!);
+        print(
+            'p: channels finished Adding and subscribedChannels are ${channels?.subscribedChannels}');
         break;
       case 'channelDeleted':
         assert(channelMap != null);
@@ -460,7 +462,8 @@ class ChatClient {
         ));
         break;
       case 'clientSynchronization':
-        print('p: event clientSynchronization ${data['synchronizationStatus']}');
+        print(
+            'p: event clientSynchronization ${data['synchronizationStatus']}');
         var synchronizationStatus = EnumToString.fromString(
             ChatClientSynchronizationStatus.values,
             data['synchronizationStatus']);

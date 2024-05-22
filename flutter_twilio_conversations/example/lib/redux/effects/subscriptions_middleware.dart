@@ -93,7 +93,7 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
     Store<AppState> store,
     SubscribeToConversationsUpdatesAction action,
   ) {
-    if (store.state.chatClient != null) {
+  if (store.state.chatClient != null) {
       store.state.chatClient?.onChannelUpdated?.listen((event) async {
         print('New conversation event: $event');
 

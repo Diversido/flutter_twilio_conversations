@@ -31,6 +31,29 @@ class ChatClientEventListener extends BaseListener {
     _on('conversationJoined', conversationJoined);
     _on('conversationLeft', conversationLeft);
     _on('conversationUpdated', conversationUpdated);
+// TODO check the android and IOS chat listener and use the same events as there
+// connectionError
+// connectionStateChanged
+// conversationAdded
+// conversationJoined
+// conversationLeft
+// conversationRemoved
+// conversationUpdated
+// messageAdded
+// messageRemoved
+// messageUpdated
+// participantJoined
+// participantLeft
+// participantUpdated
+// pushNotification
+// stateChanged
+// tokenAboutToExpire
+// tokenExpired
+// typingEnded
+// typingStarted
+// userSubscribed
+// userUnsubscribed
+// userUpdated
   }
 
   void _on(String eventName, Function eventHandler) => _client.on(
@@ -72,14 +95,19 @@ class ChatClientEventListener extends BaseListener {
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
     }
+
     sendEvent('clientSynchronization',
-        {"synchronizationStatus": state});
+        {"chatClient": Mapper.chatClientToMap(pluginInstance, _client)});
+    // sendEvent('clientSynchronization',
+    //     {"synchronizationStatus": state});
   }
 
   void conversationAdded(dynamic channelAdded) async {
     TwilioClientConversation.TwilioConversationsChannel channel = channelAdded;
-    sendEvent('channelAdded',
-        {"channel": Mapper.channelToMap(pluginInstance, channel)});
+    sendEvent('channelAdded', {
+      "channel": Mapper.channelToMap(pluginInstance, channel),
+      "chatClient": Mapper.chatClientToMap(pluginInstance, _client)
+    });
   }
 
   void conversationUpdated(dynamic channelUpdated, dynamic reason) async {

@@ -239,20 +239,21 @@ class Channel {
 
     _messages = Messages(this);
     _members = Members(_sid);
-    print('p: channel constructor called');
+    print('p: channel constructor called $_sid');
 
-    _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
-        .receiveBroadcastStream(0);
+    // _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
+    //     .receiveBroadcastStream(0);
 
-    _channelStreamSubscriptions[_sid] ??= FlutterTwilioConversationsPlatform
-        .instance
-        .channelStream(_sid)!
-        .listen((_parseEvents));
+    // _channelStreamSubscriptions[_sid] ??= FlutterTwilioConversationsPlatform
+    //     .instance
+    //     .channelStream(_sid)!
+    //     .listen((_parseEvents));
     //  _channelStreams[_sid]!.listen(_parseEvents);
   }
 
   /// Construct from a map.
   factory Channel._fromMap(Map<String, dynamic> map) {
+    print('p: Channel = $map');
     var channel = Channel(
       map['sid'],
       map['createdBy'],
@@ -260,6 +261,7 @@ class Channel {
       ChannelType.PUBLIC,
       Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
     );
+    print('p: meh 1');
     channel._updateFromMap(map);
     return channel;
   }
@@ -494,17 +496,21 @@ class Channel {
     }
 
     if (map['messages'] != null) {
+      print("p: in channel updating messages");
       final messagesMap = Map<String, dynamic>.from(map['messages']);
+          print('p: meh 2');
+
       _messages?._updateFromMap(messagesMap);
     }
 
     if (map['attributes'] != null) {
+      print("p: in channel updating attributes");
       _attributes =
           Attributes.fromMap(map['attributes'].cast<String, dynamic>());
     }
 
     _status = EnumToString.fromString(ChannelStatus.values, map['status']);
-
+    print("p: $_status");
     _createdBy ??= map['createdBy'];
 
     _dateCreated ??=
@@ -515,7 +521,7 @@ class Channel {
     _lastMessageDate = map['lastMessageDate'] != null
         ? DateTime.parse(map['lastMessageDate'])
         : null;
-
+    print("p: _lastMessageDate passed");
     _lastMessageIndex = map['lastMessageIndex'];
   }
 
@@ -529,6 +535,8 @@ class Channel {
 
     if (data['channel'] != null) {
       final channelMap = Map<String, dynamic>.from(data['channel']);
+          print('p: meh 3');
+
       _updateFromMap(channelMap);
     }
 

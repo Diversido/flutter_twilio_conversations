@@ -22,7 +22,8 @@ class Channels {
   /// Construct from a map.
   factory Channels._fromMap(Map<String, dynamic> map) {
     var channels = Channels();
-    channels._updateFromMap(map);
+    print('p: channels from map $map');
+    channels._updateFromMap(map); //TODO martin when?
     return channels;
   }
 
@@ -142,8 +143,10 @@ class Channels {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-    print('p: channels update from map');
+    print('p: channels update from map with $map');
     if (map['subscribedChannels'] != null) {
+      print('p: subscribed is not null');
+
       final List<Map<String, dynamic>> subscribedChannelsList =
           map['subscribedChannels']
               .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
@@ -165,6 +168,7 @@ class Channels {
       _channelsMap[sid] = Channel._fromMap(channelMap);
       _channelsMap[sid]!._isSubscribed = false;
     } else {
+      print('p: meh 5');
       _channelsMap[sid]!._updateFromMap(channelMap);
     }
     print('p: finished updating channels: $_channelsMap');

@@ -85,8 +85,9 @@ class Mapper {
       'dateCreated': dateToString(channel.dateCreatedAsDate),
       'createdBy': channel.createdBy,
       'dateUpdated': dateToString(channel.dateUpdated),
-      'lastMessageDate': dateToString(channel.lastMessageDate),//TODO lastMessage.date?
-      'lastMessageIndex': channel.lastMessageIndex,//TODO lastMessage.index?
+      'lastMessageDate':
+          dateToString(channel.lastMessageDate), //TODO lastMessage.date?
+      'lastMessageIndex': channel.lastMessageIndex, //TODO lastMessage.index?
     };
     print('p: cmap$channelMap');
     return channelMap;
@@ -178,9 +179,10 @@ class Mapper {
   }
 
   static String? dateToString(DateTime? date) {
+    return '2024-05-22 12:00:00';
     print('p: dateToString $date');
     if (date == null) return null;
-    final dateFormat = DateFormat('yyyy-MM-dd hh:mm:ss');
+    final dateFormat = DateFormat('yyyy-MM-dd hh:mm:ss'); //TODO HH vs hh and fix this method 
     return dateFormat.format(date);
   }
 

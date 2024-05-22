@@ -1,6 +1,7 @@
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/event_emitter.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
 import 'package:js/js.dart';
 
@@ -9,34 +10,51 @@ import 'channel.dart';
 // Define Twilio.Conversations.Client class
 @JS('Twilio.Conversations.Client')
 class TwilioConversationsClient extends EventEmitter {
+    external factory TwilioConversationsClient(String token);
+
   external ConnectionState get connectionState;
   external String get version;
-  external List<TwilioConversationsChannel>? channels;
-  external List<TwilioConversationsUser>? users;
-  external bool isReachabilityEnabled;
+  external bool reachabilityEnabled;
   external TwilioConversationsUser get user;
 
-  external set connectionState(ConnectionState state);
 
-  external set user(TwilioConversationsUser state);
+  // external createConversation();
+  // external getConversationBySid();
+  // external getConversationByUniqueName();
+  external JSIterator<TwilioConversationsChannel> getSubscribedConversations();
+  // external getSubscribedUsers();
+  // external getUser();
+  // external handlePushNotification();
+  // external removePushRegistrations();
+  // external setPushRegistrationId();
+  // external shutdown();
+  // external unsetPushRegistrationId();
+  // external updateToken();
+  // external parsePushNotification();
 
-  external factory TwilioConversationsClient(String token);
 
-  external dynamic getChannelBySid(String sid);
+  // external set connectionState(ConnectionState state);
 
-  external dynamic getChannelByUniqueName(String uniqueName);
+  // external set user(TwilioConversationsUser state);
 
-  external dynamic createConversation();
+  // external factory TwilioConversationsClient(String token);
 
-  external dynamic reachabilityEnabled();
+  // external dynamic getChannelBySid(String sid);
 
-  external dynamic connectionError();
+  // external dynamic getChannelByUniqueName(String uniqueName);
 
-  external TwilioConversationsClient connectionStateChange();
+  // external dynamic createConversation();
+
+  // external dynamic reachabilityEnabled();
+
+  // external dynamic connectionError();
+
+  // external TwilioConversationsClient connectionStateChange();
 
 
 }
 
+// TODO remove 
 extension Interop on TwilioConversationsClient {
   ClientModel toModel() {
     return ClientModel(
@@ -44,7 +62,7 @@ extension Interop on TwilioConversationsClient {
       myIdentity: user.toModel().identity,
       channels: null,
       users: null,
-      isReachabilityEnabled: this.isReachabilityEnabled,
+      isReachabilityEnabled: true,
     );
   }
 }
