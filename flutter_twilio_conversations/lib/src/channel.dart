@@ -237,14 +237,18 @@ class Channel {
     onTypingEnded = _onTypingEndedCtrl.stream;
     onSynchronizationChanged = _onSynchronizationChangedCtrl.stream;
 
-    // _messages = Messages(this);
-    // _members = Members(_sid);
-    // print('p: channel constructor called');
-    // _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
-    // .receiveBroadcastStream(0);
-    // print('p: channel receiver called');
-    // _channelStreamSubscriptions[_sid] ??=
-    // _channelStreams[_sid]!.listen(_parseEvents);
+    _messages = Messages(this);
+    _members = Members(_sid);
+    print('p: channel constructor called');
+
+    _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
+        .receiveBroadcastStream(0);
+
+    _channelStreamSubscriptions[_sid] ??= FlutterTwilioConversationsPlatform
+        .instance
+        .channelStream(_sid)!
+        .listen((_parseEvents));
+    //  _channelStreams[_sid]!.listen(_parseEvents);
   }
 
   /// Construct from a map.
@@ -482,7 +486,7 @@ class Channel {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-    print("p: gone into updateFromMap $map");
+    print("p: updateFromMap in channel $map");
     _synchronizationStatus = EnumToString.fromString(
         ChannelSynchronizationStatus.values, map['synchronizationStatus']);
     if (_synchronizationStatus == ChannelSynchronizationStatus.ALL) {
@@ -517,6 +521,7 @@ class Channel {
 
   /// Parse native channel events to the right event streams.
   void _parseEvents(dynamic event) {
+    print('p: parse Event Channel');
     final String eventName = event['name'];
     TwilioConversationsClient._log(
         "Channel => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");

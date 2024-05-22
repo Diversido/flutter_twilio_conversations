@@ -159,6 +159,7 @@ class Channels {
 
   /// Update individual channel from a map.
   static void _updateChannelFromMap(Map<String, dynamic> channelMap) {
+    print('p: updating channel from map');
     var sid = channelMap['sid'];
     if (_channelsMap[sid] == null) {
       _channelsMap[sid] = Channel._fromMap(channelMap);
@@ -166,6 +167,6 @@ class Channels {
     } else {
       _channelsMap[sid]!._updateFromMap(channelMap);
     }
-    print('channels: $_channelsMap');
+    print('p: finished updating channels: $_channelsMap');
   }
 }

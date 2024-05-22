@@ -13,12 +13,22 @@ import 'package:flutter_twilio_conversations_web/methods/listeners/chat_listener
 import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
+import 'methods/listeners/channel_listener.dart';
+
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   static TwilioChatClient.TwilioConversationsClient? _chatClient;
   static ChatClientEventListener? _chatClientListener;
+  static ChannelEventListener? _channelListener;
 
   static final _chatClientStreamController =
       StreamController<Map<String, dynamic>>.broadcast();
+
+  static final _channelStreamController =
+      StreamController<Map<String, dynamic>>.broadcast();
+
+  // update dynamic in both maps
+  Map<String, ChannelEventListener> channelChannels = {};
+  Map<String, StreamController<Map<String, dynamic>>> channelListeners = {};
 
   /// Registers this class as the default instance of [FlutterTwilioConversationsPlatform].
   static void registerWith(Registrar registrar) {
@@ -26,10 +36,11 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   void _onConnected() async {
+    print('_onConnected: called $_chatClient');
     final chatClient = _chatClient;
     if (chatClient != null) {
-      _chatClientListener =
-          ChatClientEventListener(chatClient, _chatClientStreamController);
+      _chatClientListener = ChatClientEventListener(
+          this, chatClient, _chatClientStreamController);
       _chatClientListener!.addListeners();
 
       final _clientModel =
@@ -45,7 +56,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     try {
       _chatClient =
           await createTwilioConversationsClient(token, {"logLevel": "Debug"});
-      return Mapper.chatClientToMap(_chatClient!);
+      return Mapper.chatClientToMap(this, _chatClient!);
     } catch (e) {
       print('error: createConversation ${e}');
     }
@@ -56,17 +67,17 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError('createChannel() has not been implemented.');
   }
 
-  @override
-  Future<dynamic> getChannel(String channelSidOrUniqueName) async {
-    try {
-      TwilioConversationsChannel _conversation = await promiseToFuture(
-          _chatClient?.getChannelBySid(channelSidOrUniqueName));
-      return _conversation.toModel();
-      // then does this conversation need to be subscribed to?
-      //   await getTwilioConversationBySidOrUniqueName(channelSidOrUniqueName);
-    } catch (e) {}
-    return null;
-  }
+  // @override
+  // Future<dynamic> getChannel(String channelSidOrUniqueName) async {
+  //   try {
+  //     TwilioConversationsChannel _conversation = await promiseToFuture(
+  //         _chatClient?.getChannelBySid(channelSidOrUniqueName));
+  //     return _conversation.toModel();
+  //     // then does this conversation need to be subscribed to?
+  //     //   await getTwilioConversationBySidOrUniqueName(channelSidOrUniqueName);
+  //   } catch (e) {}
+  //   return null;
+  // }
 
   @override
   Future<void> declineInvitationChannel(String channelSid) {
@@ -180,5 +191,11 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Stream<Map<String, dynamic>> chatClientStream() {
     print('TwilioConversationsPlugin.create => starting stream');
     return _chatClientStreamController.stream;
+  }
+
+  @override
+  Stream<Map<String, dynamic>> channelStream(String channelId) {
+    print('TwilioConversationsPlugin.channel => starting stream');
+    return channelListeners[channelId]!.stream;
   }
 }

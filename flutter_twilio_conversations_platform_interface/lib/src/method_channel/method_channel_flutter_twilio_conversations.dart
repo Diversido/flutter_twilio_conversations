@@ -148,5 +148,11 @@ class MethodChannelFlutterTwilioConversations
   }
 
 // needs to be implemented for the mobile interface
-  Stream<Map<String, dynamic>>? chatClientStream() {}
+  Stream<Map<String, dynamic>>? chatClientStream() {
+    return _chatChannel.receiveBroadcastStream().map((event) {
+      return event as Map<String, dynamic>;
+    });
+  }
+
+  Stream<Map<String, dynamic>>? channelStream(String channel) {}
 }

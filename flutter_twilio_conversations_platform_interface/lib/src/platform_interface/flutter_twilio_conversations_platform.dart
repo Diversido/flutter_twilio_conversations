@@ -128,10 +128,13 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('typingChannel() has not been implemented');
   }
 
-  /// Stream of the BaseRoomEvent model.
-  ///
-  /// This stream is used to update the Room in a plugin implementation.
+
+  /// This stream is used to update the ChatClient in a plugin implementation.
   Stream<Map<String, dynamic>>? chatClientStream() {
+    throw UnimplementedError('chatClientStream() has not been implemented');
+  }
+ /// This stream is used to update the Channel in a plugin implementation.
+    Stream<Map<String, dynamic>>? channelStream(String channel) {
     throw UnimplementedError('chatClientStream() has not been implemented');
   }
 }

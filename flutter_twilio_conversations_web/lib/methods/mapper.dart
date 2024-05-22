@@ -1,5 +1,7 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
+import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
@@ -10,10 +12,10 @@ import 'package:intl/intl.dart';
 
 class Mapper {
   static Map<String, dynamic>? chatClientToMap(
-      //FlutterTwilioConversationsPlatform pluginInstance,
+      TwilioConversationsPlugin pluginInstance,
       TwilioClient.TwilioConversationsClient chatClient) {
     return {
-      "channels": channelsToMap(chatClient.channels),
+      "channels": channelsToMap(pluginInstance, chatClient.channels),
       "myIdentity": "",
       "connectionState": chatClient.connectionState,
       "users": usersToMap(chatClient.users),
@@ -22,18 +24,20 @@ class Mapper {
   }
 
   static Map<String, dynamic>? channelsToMap(
-      //FlutterTwilioConversationsPlatform pluginInstance,
+      TwilioConversationsPlugin pluginInstance,
       List<TwilioConversationsChannel>? channels) {
     print(channels);
+    print('p: channels length ${channels?.length}');
+
     if (channels == null) return {};
     var subscribedChannelsMap =
-        channels.map((channel) => channelToMap(channel));
+        channels.map((channel) => channelToMap(pluginInstance, channel));
 
     return {"subscribedChannels": subscribedChannelsMap};
   }
 
   static Map<String, dynamic>? channelToMap(
-      //FlutterTwilioConversationsPlatform pluginInstance,
+      TwilioConversationsPlugin pluginInstance,
       TwilioConversationsChannel? channel) {
     if (channel == null) {
       return null;
@@ -41,28 +45,36 @@ class Mapper {
 
     //TODO Implement the same as Mapper.kt
     // Setting flutter event listener for the given channel if one does not yet exist.
-    // if (!pluginInstance.channelChannels.containsKey(channel.sid)) {
-    //     pluginInstance.channelChannels[channel.sid] = EventChannel(pluginInstance.messenger, "flutter_twilio_conversations/${channel.sid}")
-    //     pluginInstance.channelChannels[channel.sid]?.setStreamHandler(object : EventChannel.StreamHandler {
-    //         override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
-    //             Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) attached")
-    //             pluginInstance.channelListeners[channel.sid] = ChannelListener(pluginInstance, events)
-    //             channel.addListener(pluginInstance.channelListeners[channel.sid])
-    //         }
 
-    //         override fun onCancel(arguments: Any?) {
-    //             Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) detached")
-    //             channel.removeListener(pluginInstance.channelListeners[channel.sid])
-    //             pluginInstance.channelListeners.remove(channel.sid)
-    //             pluginInstance.channelChannels.remove(channel.sid)
-    //         }
-    //     })
-    // }
+/* _chatStream = FlutterTwilioConversationsPlatform.instance
+        .chatClientStream()!
+        .listen((_parseEvents));
+ */
+
+    // if (!pluginInstance.channelChannels.containsKey(channel.sid)) {
+    //     pluginInstance.channelChannels[channel.sid] = EventChannel("flutter_twilio_conversations/${channel.sid}");
+    //     pluginInstance.channelChannels[channel.sid]?.
+
+    // setStreamHandler(object : EventChannel.StreamHandler {
+    //     override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
+    //         Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) attached")
+    //         pluginInstance.channelListeners[channel.sid] = ChannelListener(pluginInstance, events)
+    //         channel.addListener(pluginInstance.channelListeners[channel.sid])
+    //     }
+
+    //     override fun onCancel(arguments: Any?) {
+    //         Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) detached")
+    //         channel.removeListener(pluginInstance.channelListeners[channel.sid])
+    //         pluginInstance.channelListeners.remove(channel.sid)
+    //         pluginInstance.channelChannels.remove(channel.sid)
+    //     }
+    // })
+    //  }
 
     final messages = <TwilioConversationsMessage>[];
 
     print('p: ${channel.synchronizationStatus.toString()}');
-    return {
+    final channelMap = {
       'sid': channel.sid,
       'type': 'UNKNOWN',
       'attributes': attributesToMap(channel.attributes),
@@ -72,10 +84,12 @@ class Mapper {
           .toString(), // channel.conversationStatus.ChannelStatus
       'dateCreated': dateToString(channel.dateCreatedAsDate),
       'createdBy': channel.createdBy,
-      'dateUpdated': dateToString(channel.dateUpdatedAsDate),
-      'lastMessageDate': dateToString(channel.lastMessageDate),
-      'lastMessageIndex': channel.lastMessageIndex,
+      'dateUpdated': dateToString(channel.dateUpdated),
+      'lastMessageDate': dateToString(channel.lastMessageDate),//TODO lastMessage.date?
+      'lastMessageIndex': channel.lastMessageIndex,//TODO lastMessage.index?
     };
+    print('p: cmap$channelMap');
+    return channelMap;
   }
 
   static Map<String, dynamic>? usersToMap(
@@ -164,6 +178,7 @@ class Mapper {
   }
 
   static String? dateToString(DateTime? date) {
+    print('p: dateToString $date');
     if (date == null) return null;
     final dateFormat = DateFormat('yyyy-MM-dd hh:mm:ss');
     return dateFormat.format(date);

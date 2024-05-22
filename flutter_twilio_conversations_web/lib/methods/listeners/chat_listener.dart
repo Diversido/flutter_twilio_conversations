@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
@@ -16,8 +17,10 @@ class ChatClientEventListener extends BaseListener {
   final TwilioChatClient.TwilioConversationsClient _client;
   // final StreamController<BaseChatClientEvent> _chatClientStreamController; //TODO broken
   final StreamController<Map<String, dynamic>> _chatClientStreamController;
+  final TwilioConversationsPlugin pluginInstance;
 
-  ChatClientEventListener(this._client, this._chatClientStreamController) {}
+  ChatClientEventListener(
+      this.pluginInstance, this._client, this._chatClientStreamController) {}
 
   void addListeners() {
     debug('Adding chatClientEventListeners for ${_client.connectionState}');
@@ -65,16 +68,18 @@ class ChatClientEventListener extends BaseListener {
   }
 
   void stateChanged(String state) {
+    print('p: stateChanged $state sync');
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
     }
     sendEvent('clientSynchronization',
-        {"synchronizationStatus": state, "chatClient": _client});
+        {"synchronizationStatus": state});
   }
 
   void conversationAdded(dynamic channelAdded) async {
     TwilioClientConversation.TwilioConversationsChannel channel = channelAdded;
-    sendEvent('channelAdded', {"channel": Mapper.channelToMap(channel)});
+    sendEvent('channelAdded',
+        {"channel": Mapper.channelToMap(pluginInstance, channel)});
   }
 
   void conversationUpdated(dynamic channelUpdated, dynamic reason) async {
@@ -83,7 +88,7 @@ class ChatClientEventListener extends BaseListener {
     sendEvent(
       'channelUpdated',
       {
-        "channel": Mapper.channelToMap(channel),
+        "channel": Mapper.channelToMap(pluginInstance, channel),
         "reason": {
           "type": "channel",
           "value": reason,
@@ -158,6 +163,7 @@ number? errorCode - Twilio public error code if available */
       "data": data,
       "error": Mapper.errorInfoToMap(e),
     };
+    print('p: sending chat event ${eventData['name']}');
     _chatClientStreamController.add(eventData);
   }
 }
