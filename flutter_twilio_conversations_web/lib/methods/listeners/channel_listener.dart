@@ -10,6 +10,7 @@ import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener
 import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:js/js.dart';
 
+// TODO implement this listener
 class ChannelEventListener extends BaseListener {
   final TwilioClientConversation.TwilioConversationsChannel _channel;
   final StreamController<Map<String, dynamic>> _channelStreamController;

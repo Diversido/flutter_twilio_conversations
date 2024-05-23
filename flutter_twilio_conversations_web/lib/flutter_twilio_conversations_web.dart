@@ -1,23 +1,20 @@
 import 'dart:async';
 import 'dart:js_util';
-
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
-    as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
-import 'package:flutter_twilio_conversations_web/methods/conversation_client.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
-    as TwilioChatClient;
+    as TwilioWebClient;
 import 'package:flutter_twilio_conversations_web/methods/listeners/chat_listener.dart';
 import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'methods/listeners/channel_listener.dart';
 
+// TODO look at channel listeners and controllers
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
-  static TwilioChatClient.TwilioConversationsClient? _chatClient;
+  static TwilioWebClient.TwilioConversationsClient? _chatClient;
   static ChatClientEventListener? _chatClientListener;
   static ChannelEventListener? _channelListener;
 
@@ -27,7 +24,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   static final _channelStreamController =
       StreamController<Map<String, dynamic>>.broadcast();
 
-  // update dynamic in both maps
+  // TODO update dynamic in both maps
   Map<String, ChannelEventListener> channelChannels = {};
   Map<String, StreamController<Map<String, dynamic>>> channelListeners = {};
 
@@ -39,8 +36,8 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   @override
   Future<dynamic> create(String token, Properties properties) async {
     try {
-      _chatClient =
-          await createTwilioConversationsClient(token, {"logLevel": "Debug"});
+      _chatClient = await TwilioWebClient.TwilioConversationsClient(token);
+
       _chatClientListener = ChatClientEventListener(
         this,
         _chatClient!,
@@ -52,8 +49,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
           await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
         _chatClient!.getSubscribedConversations(),
       );
-      print(
-          'p: after_chat_listener initial channels from getSubscribedConversations: $channels');
 
       return await Mapper.chatClientToMap(this, _chatClient!, channels.items);
     } catch (e) {

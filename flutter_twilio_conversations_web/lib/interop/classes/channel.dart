@@ -1,4 +1,3 @@
-// Define Twilio.Conversations.Client class
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/event_emitter.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/last_message.dart';
