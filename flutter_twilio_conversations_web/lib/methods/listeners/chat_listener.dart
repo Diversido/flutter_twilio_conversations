@@ -90,7 +90,10 @@ class ChatClientEventListener extends BaseListener {
     }
     sendEvent(
       'connectionStateChange',
-      {'connectionState', _client.connectionState.toString()},
+      {
+        'connectionState',
+        Mapper.connectionStateToString(_client.connectionState),
+      },
     );
   }
 

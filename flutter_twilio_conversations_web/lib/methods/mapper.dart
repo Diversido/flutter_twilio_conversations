@@ -27,10 +27,15 @@ class Mapper {
     return {
       "channels": channelsToMap(pluginInstance, channels),
       "myIdentity": "",
-      "connectionState": "Connected",
+      "connectionState": connectionStateToString(chatClient.connectionState),
       // "users": usersToMap(users), //TODO Martin
       "isReachabilityEnabled": true,
     };
+  }
+
+  static String connectionStateToString(ConnectionState state) {
+    print('Martin! map state ${state.toString().split('.').last}');
+    return state.toString().split('.').last;
   }
 
   static Map<String, dynamic>? channelsToMap(
