@@ -18,7 +18,10 @@ class ChatClientEventListener extends BaseListener {
   final TwilioConversationsPlugin pluginInstance;
 
   ChatClientEventListener(
-      this.pluginInstance, this._client, this._chatClientStreamController) {}
+    this.pluginInstance,
+    this._client,
+    this._chatClientStreamController,
+  );
 
   void addListeners() {
     debug('Adding chatClientEventListeners for ${_client.connectionState}');
@@ -65,6 +68,7 @@ class ChatClientEventListener extends BaseListener {
       );
 
   void connectionStateChange(String connectionState) {
+    print('p: chat_listener connectionStateChange $connectionState');
     debug('ConnectionStateChange ChatClient Event $connectionState');
     switch (connectionState) {
       case "connecting":
@@ -90,13 +94,14 @@ class ChatClientEventListener extends BaseListener {
 
   void stateChanged(String state) {
     print(
-        'p: stateChanged $state sync'); //TODO Martin why is this not called anymore?
+        'p: chat_listener stateChanged $state sync'); //TODO Martin why is this not called anymore?
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
     }
 
-    sendEvent('clientSynchronization',
-        {"chatClient": Mapper.chatClientToMap(pluginInstance, _client)});
+    sendEvent('clientSynchronization', {
+      "chatClient": Mapper.chatClientToMap(pluginInstance, _client),
+    });
     sendEvent('clientSynchronization', {
       "synchronizationStatus": state,
       "chatClient": Mapper.chatClientToMap(pluginInstance, _client)
@@ -104,6 +109,7 @@ class ChatClientEventListener extends BaseListener {
   }
 
   void conversationAdded(dynamic channelAdded) async {
+    print('p: chat_listener conversationAdded $channelAdded');
     TwilioClientConversation.TwilioConversationsChannel channel = channelAdded;
     sendEvent('channelAdded', {
       "channel": Mapper.channelToMap(pluginInstance, channel),
@@ -112,6 +118,8 @@ class ChatClientEventListener extends BaseListener {
   }
 
   void conversationUpdated(dynamic channelUpdated, dynamic reason) async {
+    print('p: chat_listener conversationUpdated $channelUpdated, $reason');
+
     TwilioClientConversation.TwilioConversationsChannel channel =
         channelUpdated;
     sendEvent(
@@ -134,6 +142,8 @@ class ChatClientEventListener extends BaseListener {
   // }
 
   void conversationJoined(dynamic channelJoined) async {
+    print('p: chat_listener conversationJoined $channelJoined');
+
     debug('conversationJoined');
 
     TwilioClientConversation.TwilioConversationsChannel channel = channelJoined;
@@ -157,6 +167,7 @@ class ChatClientEventListener extends BaseListener {
   }
 
   void connectionError(dynamic data) {
+    print('p: chat_listener connectionError $data');
     debug('Added ConnectionStateChange ChatClient Event');
     // _chatClientStreamController.add(ConnectError(
     // _client.toModel().connectionState,
@@ -192,7 +203,7 @@ number? errorCode - Twilio public error code if available */
       "data": data,
       "error": Mapper.errorInfoToMap(e),
     };
-    print('p: sending chat event ${eventData['name']}');
+    print('p: chat_listener sending chat event ${eventData['name']}');
     _chatClientStreamController.add(eventData);
   }
 }

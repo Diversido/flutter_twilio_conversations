@@ -21,8 +21,11 @@ class Mapper {
         await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
       chatClient.getSubscribedConversations(),
     );
-    final users = await promiseToFuture(chatClient.getSubscribedUsers());
-    print('Martin! user ${users}');
+    print('Martin! state ${chatClient.connectionState}');
+    print('Martin! channels ${channels.items}');
+
+    // final users = await promiseToFuture(chatClient.getSubscribedUsers());
+    // print('Martin! user ${users}');
     return {
       "channels": channelsToMap(pluginInstance, channels.items),
       "myIdentity": "",
