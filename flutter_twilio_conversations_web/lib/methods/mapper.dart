@@ -15,11 +15,10 @@ import 'package:intl/intl.dart';
 
 class Mapper {
   static Map<String, dynamic>? chatClientToMap(
-      TwilioConversationsPlugin pluginInstance,
-      TwilioClient.TwilioConversationsClient chatClient,
-      List<TwilioConversationsChannel>? channels,
-      ) {
-
+    TwilioConversationsPlugin pluginInstance,
+    TwilioClient.TwilioConversationsClient chatClient,
+    List<TwilioConversationsChannel>? channels,
+  ) {
     print('Martin! state ${chatClient.connectionState}');
     print('Martin! channels ${channels}');
 
@@ -28,7 +27,7 @@ class Mapper {
     return {
       "channels": channelsToMap(pluginInstance, channels),
       "myIdentity": "",
-      "connectionState": chatClient.connectionState,
+      "connectionState": "Connected",
       // "users": usersToMap(users), //TODO Martin
       "isReachabilityEnabled": true,
     };

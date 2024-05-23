@@ -88,9 +88,10 @@ class ChatClientEventListener extends BaseListener {
         _client.connectionState = ConnectionState.UNKNOWN;
         break;
     }
-    _chatClientStreamController.add(ConnectionStateChange(
-      _client.connectionState,
-    ).toJson());
+    sendEvent(
+      'connectionStateChange',
+      {'connectionState', _client.connectionState.toString()},
+    );
   }
 
   Future<void> stateChanged(String state) async {
@@ -128,18 +129,18 @@ class ChatClientEventListener extends BaseListener {
     });
   }
 
-  void conversationUpdated(dynamic channelUpdated, dynamic reason) async {
-    print('p: chat_listener conversationUpdated $channelUpdated, $reason');
+  void conversationUpdated(dynamic data) async {
+    print('p: chat_listener conversationUpdated $data, ');
 
     TwilioClientConversation.TwilioConversationsChannel channel =
-        channelUpdated;
+        data.conversation;
     sendEvent(
       'channelUpdated',
       {
         "channel": Mapper.channelToMap(pluginInstance, channel),
         "reason": {
           "type": "channel",
-          "value": reason,
+          "value": data.updateReasons,
         }
       },
     );

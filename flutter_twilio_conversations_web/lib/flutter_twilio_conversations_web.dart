@@ -47,14 +47,15 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
         _chatClientStreamController,
       );
 
-      // final channels =
-      //     await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-      //   _chatClient!.getSubscribedConversations(),
-      // );
-      //  print('p: initial channels from getSubscribedConversations: $channels');
       _chatClientListener!.addListeners();
+      final channels =
+          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+        _chatClient!.getSubscribedConversations(),
+      );
+      print(
+          'p: after_chat_listener initial channels from getSubscribedConversations: $channels');
 
-      return await Mapper.chatClientToMap(this, _chatClient!, null);
+      return await Mapper.chatClientToMap(this, _chatClient!, channels.items);
     } catch (e) {
       print('error: createConversation ${e}');
     }

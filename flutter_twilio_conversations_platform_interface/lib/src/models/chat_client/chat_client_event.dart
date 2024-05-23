@@ -13,23 +13,6 @@ abstract class BaseChatClientEvent {
       'BaseChatClientEvent: { connectionState: $connectionState }';
 }
 
-class ConnectionStateChange extends BaseChatClientEvent {
-  // final TwilioException? exception;
-
-  const ConnectionStateChange(
-    ConnectionState connectionState,
-    // this.exception,
-  ) : super(connectionState);
-
-  Map<String, dynamic> toJson() {
-    return {
-      'name' : 'ConnectionStateChange',
-      'connectionState': connectionState,
-      // 'exception': exception,
-    };
-  }
-}
-
 class ChannelAdded extends BaseChatClientEvent {
   final String name;
   final ChannelModel? channel;
@@ -46,8 +29,6 @@ class ChannelAdded extends BaseChatClientEvent {
 
   @override
   String toString() => 'ChannelAdded: {eventName: $name, channel: $channel}';
-
-
 }
 
 /// Use this event if connecting to a Room failed.
