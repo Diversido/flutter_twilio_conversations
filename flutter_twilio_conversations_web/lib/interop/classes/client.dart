@@ -10,19 +10,18 @@ import 'channel.dart';
 // Define Twilio.Conversations.Client class
 @JS('Twilio.Conversations.Client')
 class TwilioConversationsClient extends EventEmitter {
-    external factory TwilioConversationsClient(String token);
+  external factory TwilioConversationsClient(String token);
 
-  external ConnectionState get connectionState;
+  external ConnectionState connectionState;
   external String get version;
   external bool reachabilityEnabled;
   external TwilioConversationsUser get user;
 
-
   // external createConversation();
   // external getConversationBySid();
   // external getConversationByUniqueName();
-  external JSIterator<TwilioConversationsChannel> getSubscribedConversations();
-  // external getSubscribedUsers();
+  external JSPaginator<TwilioConversationsChannel> getSubscribedConversations();
+  external List<TwilioConversationsUser> getSubscribedUsers();
   // external getUser();
   // external handlePushNotification();
   // external removePushRegistrations();
@@ -31,7 +30,6 @@ class TwilioConversationsClient extends EventEmitter {
   // external unsetPushRegistrationId();
   // external updateToken();
   // external parsePushNotification();
-
 
   // external set connectionState(ConnectionState state);
 
@@ -50,11 +48,9 @@ class TwilioConversationsClient extends EventEmitter {
   // external dynamic connectionError();
 
   // external TwilioConversationsClient connectionStateChange();
-
-
 }
 
-// TODO remove 
+// TODO remove
 extension Interop on TwilioConversationsClient {
   ClientModel toModel() {
     return ClientModel(

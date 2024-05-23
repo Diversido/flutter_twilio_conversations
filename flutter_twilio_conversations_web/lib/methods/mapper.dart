@@ -5,6 +5,7 @@ import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioClient;
@@ -16,11 +17,17 @@ class Mapper {
   static Future<Map<String, dynamic>?> chatClientToMap(
       TwilioConversationsPlugin pluginInstance,
       TwilioClient.TwilioConversationsClient chatClient) async {
+    final channels =
+        await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+      chatClient.getSubscribedConversations(),
+    );
+    final users = await promiseToFuture(chatClient.getSubscribedUsers());
+    print('Martin! user ${users}');
     return {
-      "channels": channelsToMap(pluginInstance, await promiseToFuture(chatClient.getSubscribedConversations())),
+      "channels": channelsToMap(pluginInstance, channels.items),
       "myIdentity": "",
       "connectionState": chatClient.connectionState,
-      "users": usersToMap(chatClient.users),
+      // "users": usersToMap(users), //TODO Martin
       "isReachabilityEnabled": true,
     };
   }
@@ -39,8 +46,9 @@ class Mapper {
   }
 
   static Map<String, dynamic>? channelToMap(
-      TwilioConversationsPlugin pluginInstance,
-      TwilioConversationsChannel? channel) {
+    TwilioConversationsPlugin pluginInstance,
+    TwilioConversationsChannel? channel,
+  ) {
     if (channel == null) {
       return null;
     }
@@ -184,7 +192,8 @@ class Mapper {
     return '2024-05-22 12:00:00';
     print('p: dateToString $date');
     if (date == null) return null;
-    final dateFormat = DateFormat('yyyy-MM-dd hh:mm:ss'); //TODO HH vs hh and fix this method 
+    final dateFormat =
+        DateFormat('yyyy-MM-dd hh:mm:ss'); //TODO HH vs hh and fix this method
     return dateFormat.format(date);
   }
 

@@ -31,7 +31,7 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
   ) {
     if (store.state.chatClient != null) {
       store.state.chatClient?.onClientSynchronization?.listen((event) async {
-        print('Client synchronized');
+        print('Client synchronized'); //TODO Martin why is this never called?
         // in Android there is a separate event to identify when fully initialized
         // in iOS we do check manually
         if (event == ChatClientSynchronizationStatus.CONVERSATIONS_COMPLETED ||
@@ -93,7 +93,7 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
     Store<AppState> store,
     SubscribeToConversationsUpdatesAction action,
   ) {
-  if (store.state.chatClient != null) {
+    if (store.state.chatClient != null) {
       store.state.chatClient?.onChannelUpdated?.listen((event) async {
         print('New conversation event: $event');
 

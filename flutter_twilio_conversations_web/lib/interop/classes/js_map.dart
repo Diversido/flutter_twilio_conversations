@@ -43,6 +43,13 @@ extension Interop<K, V> on JSMap<K, V> {
   }
 }
 
+@JS('Paginator')
+class JSPaginator<T> {
+  external List<T> items;
+
+  external factory JSPaginator();
+}
+
 @JS()
 class JSIterator<T> {
   external IteratorValue<T> next();

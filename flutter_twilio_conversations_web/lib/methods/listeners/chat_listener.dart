@@ -7,8 +7,6 @@ import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/paginator.dart';
 import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:js/js.dart';
@@ -91,15 +89,18 @@ class ChatClientEventListener extends BaseListener {
   }
 
   void stateChanged(String state) {
-    print('p: stateChanged $state sync');
+    print(
+        'p: stateChanged $state sync'); //TODO Martin why is this not called anymore?
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
     }
 
     sendEvent('clientSynchronization',
         {"chatClient": Mapper.chatClientToMap(pluginInstance, _client)});
-    // sendEvent('clientSynchronization',
-    //     {"synchronizationStatus": state});
+    sendEvent('clientSynchronization', {
+      "synchronizationStatus": state,
+      "chatClient": Mapper.chatClientToMap(pluginInstance, _client)
+    });
   }
 
   void conversationAdded(dynamic channelAdded) async {
@@ -195,3 +196,4 @@ number? errorCode - Twilio public error code if available */
     _chatClientStreamController.add(eventData);
   }
 }
+//TODO Martin handle invalid token

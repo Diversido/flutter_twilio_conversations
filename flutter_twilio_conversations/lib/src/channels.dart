@@ -153,9 +153,13 @@ class Channels {
               .toList();
       _channelsMap.values.forEach((channel) => channel!._isSubscribed = false);
       for (final subscribedChannelMap in subscribedChannelsList) {
+        print('p: subscribed mapping $subscribedChannelsList');
+
         var sid = subscribedChannelMap['sid'];
         _updateChannelFromMap(subscribedChannelMap);
         _channelsMap[sid]!._isSubscribed = true;
+        print(
+            'p: updated subscribed $sid = ${_channelsMap[sid]!._isSubscribed}');
       }
     }
   }

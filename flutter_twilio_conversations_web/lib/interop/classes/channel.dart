@@ -4,7 +4,6 @@ import 'package:flutter_twilio_conversations_web/interop/classes/event_emitter.d
 import 'package:flutter_twilio_conversations_web/interop/classes/last_message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:js/js.dart';
-import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 
 @JS('Twilio.Conversations.Conversation')
 class TwilioConversationsChannel extends EventEmitter {

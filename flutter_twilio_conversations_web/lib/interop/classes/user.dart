@@ -3,7 +3,6 @@ import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:js/js.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 
-//@JS('Twilio.Conversations.Channel')
 @JS('Twilio.Conversations.User')
 class TwilioConversationsUser {
   external String get identity;
