@@ -79,11 +79,9 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
           .create(token, properties);
 
       print('TwilioConversationsPlugin.create => finished request in Dart');
-      print(methodData);
       final chatClientMap = Map<String, dynamic>.from(methodData as Map);
       print('chat client mapped: $chatClientMap');
       chatClient = ChatClient._fromMap(chatClientMap); //TODO Martin create
-      print("returning chat client");
       return chatClient;
     } on PlatformException catch (err) {
       print('TwilioConversationsPlugin.create => failed in Dart');

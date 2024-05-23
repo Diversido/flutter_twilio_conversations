@@ -143,18 +143,13 @@ class Channels {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-    print('p: channels update from map with $map');
     if (map['subscribedChannels'] != null) {
-      print('p: subscribed is not null');
-
       final List<Map<String, dynamic>> subscribedChannelsList =
           map['subscribedChannels']
               .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
               .toList();
       _channelsMap.values.forEach((channel) => channel!._isSubscribed = false);
       for (final subscribedChannelMap in subscribedChannelsList) {
-        print('p: subscribed mapping $subscribedChannelsList');
-
         var sid = subscribedChannelMap['sid'];
         _updateChannelFromMap(subscribedChannelMap);
         _channelsMap[sid]!._isSubscribed = true;
@@ -172,9 +167,7 @@ class Channels {
       _channelsMap[sid] = Channel._fromMap(channelMap);
       _channelsMap[sid]!._isSubscribed = false;
     } else {
-      print('p: meh 5');
       _channelsMap[sid]!._updateFromMap(channelMap);
     }
-    print('p: finished updating channels: $_channelsMap');
   }
 }

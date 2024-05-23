@@ -261,7 +261,6 @@ class ChatClient {
   /// Construct from a map.
   factory ChatClient._fromMap(Map<String, dynamic> map) {
     var chatClient = ChatClient(map['myIdentity']);
-    print('initial chatClient: $chatClient');
     chatClient._updateFromMap(map);
     return chatClient;
   }
@@ -363,7 +362,7 @@ class ChatClient {
       print("p: channels update from map $map");
       final channelsMap = Map<String, dynamic>.from(map['channels']);
       _channels ??= Channels._fromMap(channelsMap);
-      _channels?._updateFromMap(channelsMap); //TODO Martin when is this called?
+      _channels?._updateFromMap(channelsMap);
     }
 
     if (map['users'] != null) {
@@ -431,8 +430,6 @@ class ChatClient {
         print('p: event channelAdded and the map is $channelMap');
         Channels._updateChannelFromMap(channelMap!);
         _onChannelAddedCtrl.add(Channels._channelsMap[channelMap['sid']]!);
-        print(
-            'p: channels finished Adding and subscribedChannels are ${channels?.subscribedChannels}');
         break;
       case 'channelDeleted':
         assert(channelMap != null);
@@ -462,8 +459,6 @@ class ChatClient {
         ));
         break;
       case 'clientSynchronization':
-        print(
-            'p: event clientSynchronization ${data['synchronizationStatus']}');
         var synchronizationStatus = EnumToString.fromString(
             ChatClientSynchronizationStatus.values,
             data['synchronizationStatus']);

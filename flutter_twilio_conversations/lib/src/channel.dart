@@ -261,7 +261,6 @@ class Channel {
       ChannelType.PUBLIC,
       Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
     );
-    print('p: meh 1');
     channel._updateFromMap(map);
     return channel;
   }
@@ -498,8 +497,6 @@ class Channel {
     if (map['messages'] != null) {
       print("p: in channel updating messages");
       final messagesMap = Map<String, dynamic>.from(map['messages']);
-          print('p: meh 2');
-
       _messages?._updateFromMap(messagesMap);
     }
 
@@ -535,8 +532,6 @@ class Channel {
 
     if (data['channel'] != null) {
       final channelMap = Map<String, dynamic>.from(data['channel']);
-          print('p: meh 3');
-
       _updateFromMap(channelMap);
     }
 
