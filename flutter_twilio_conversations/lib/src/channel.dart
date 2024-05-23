@@ -510,7 +510,7 @@ class Channel {
     }
 
     _status = EnumToString.fromString(ChannelStatus.values, map['status']);
-    print("p: $_status");
+    print("p: status: $_status");
     _createdBy ??= map['createdBy'];
 
     _dateCreated ??=

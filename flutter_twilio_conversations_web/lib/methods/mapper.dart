@@ -14,20 +14,19 @@ import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
 import 'package:intl/intl.dart';
 
 class Mapper {
-  static Future<Map<String, dynamic>?> chatClientToMap(
+  static Map<String, dynamic>? chatClientToMap(
       TwilioConversationsPlugin pluginInstance,
-      TwilioClient.TwilioConversationsClient chatClient) async {
-    final channels =
-        await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-      chatClient.getSubscribedConversations(),
-    );
+      TwilioClient.TwilioConversationsClient chatClient,
+      List<TwilioConversationsChannel>? channels,
+      ) {
+
     print('Martin! state ${chatClient.connectionState}');
-    print('Martin! channels ${channels.items}');
+    print('Martin! channels ${channels}');
 
     // final users = await promiseToFuture(chatClient.getSubscribedUsers());
     // print('Martin! user ${users}');
     return {
-      "channels": channelsToMap(pluginInstance, channels.items),
+      "channels": channelsToMap(pluginInstance, channels),
       "myIdentity": "",
       "connectionState": chatClient.connectionState,
       // "users": usersToMap(users), //TODO Martin

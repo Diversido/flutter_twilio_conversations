@@ -251,7 +251,7 @@ class ChatClient {
     print('p: ChatClient initialized $this');
     _chatStream = FlutterTwilioConversationsPlatform.instance
         .chatClientStream()!
-        .listen((_parseEvents));
+        .listen((_parseEvents)); //TODO Martin listen
 
     // _notificationStream = TwilioConversationsClient._notificationChannel
     //     .receiveBroadcastStream(0)

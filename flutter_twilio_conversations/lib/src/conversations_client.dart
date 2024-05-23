@@ -82,7 +82,7 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
       print(methodData);
       final chatClientMap = Map<String, dynamic>.from(methodData as Map);
       print('chat client mapped: $chatClientMap');
-      chatClient = ChatClient._fromMap(chatClientMap);
+      chatClient = ChatClient._fromMap(chatClientMap); //TODO Martin create
       print("returning chat client");
       return chatClient;
     } on PlatformException catch (err) {

@@ -6,6 +6,7 @@ import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_c
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/methods/conversation_client.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
@@ -35,28 +36,25 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     FlutterTwilioConversationsPlatform.instance = TwilioConversationsPlugin();
   }
 
-  void _onConnected() async {
-    print('_onConnected: called $_chatClient');
-    final chatClient = _chatClient;
-    if (chatClient != null) {
-      _chatClientListener = ChatClientEventListener(
-          this, chatClient, _chatClientStreamController);
-      _chatClientListener!.addListeners();
-
-      final _clientModel =
-          ConnectionStateChange(_chatClient!.toModel().connectionState);
-      _chatClientStreamController.add(_clientModel.toJson());
-      _chatClientStreamController.onListen = null;
-    }
-  }
-
   @override
   Future<dynamic> create(String token, Properties properties) async {
-    _chatClientStreamController.onListen = _onConnected;
     try {
       _chatClient =
           await createTwilioConversationsClient(token, {"logLevel": "Debug"});
-      return Mapper.chatClientToMap(this, _chatClient!);
+      _chatClientListener = ChatClientEventListener(
+        this,
+        _chatClient!,
+        _chatClientStreamController,
+      );
+
+      // final channels =
+      //     await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+      //   _chatClient!.getSubscribedConversations(),
+      // );
+      //  print('p: initial channels from getSubscribedConversations: $channels');
+      _chatClientListener!.addListeners();
+
+      return await Mapper.chatClientToMap(this, _chatClient!, null);
     } catch (e) {
       print('error: createConversation ${e}');
     }

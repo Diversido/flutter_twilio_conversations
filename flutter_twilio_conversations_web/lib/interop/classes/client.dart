@@ -22,7 +22,7 @@ class TwilioConversationsClient extends EventEmitter {
   // external getConversationByUniqueName();
   external JSPaginator<TwilioConversationsChannel> getSubscribedConversations();
   external List<TwilioConversationsUser> getSubscribedUsers();
-  // external getUser();
+  external dynamic getUser();
   // external handlePushNotification();
   // external removePushRegistrations();
   // external setPushRegistrationId();

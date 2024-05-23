@@ -2,18 +2,19 @@ import 'dart:async';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:js/js.dart';
 
 class ChatClientEventListener extends BaseListener {
   final TwilioChatClient.TwilioConversationsClient _client;
-  // final StreamController<BaseChatClientEvent> _chatClientStreamController; //TODO broken
   final StreamController<Map<String, dynamic>> _chatClientStreamController;
   final TwilioConversationsPlugin pluginInstance;
 
@@ -92,28 +93,38 @@ class ChatClientEventListener extends BaseListener {
     ).toJson());
   }
 
-  void stateChanged(String state) {
+  Future<void> stateChanged(String state) async {
     print(
-        'p: chat_listener stateChanged $state sync'); //TODO Martin why is this not called anymore?
+      'p: chat_listener stateChanged $state sync',
+    ); //TODO Martin why is this not called anymore?
+    JSPaginator<TwilioConversationsChannel>? channels = null;
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
+
+      channels = await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+        _client.getSubscribedConversations(),
+      );
+      print(
+          'p: chat_listener stateChanged $state sync channels: ${channels.items.length}');
     }
 
-    sendEvent('clientSynchronization', {
-      "chatClient": Mapper.chatClientToMap(pluginInstance, _client),
-    });
+    // sendEvent('clientSynchronization', {
+    // "chatClient": Mapper.chatClientToMap(pluginInstance, _client),
+    // });
     sendEvent('clientSynchronization', {
       "synchronizationStatus": state,
-      "chatClient": Mapper.chatClientToMap(pluginInstance, _client)
+      "chatClient":
+          Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
     });
   }
 
   void conversationAdded(dynamic channelAdded) async {
     print('p: chat_listener conversationAdded $channelAdded');
     TwilioClientConversation.TwilioConversationsChannel channel = channelAdded;
+
     sendEvent('channelAdded', {
       "channel": Mapper.channelToMap(pluginInstance, channel),
-      "chatClient": Mapper.chatClientToMap(pluginInstance, _client)
+      // "chatClient": Mapper.chatClientToMap(pluginInstance, _client)
     });
   }
 

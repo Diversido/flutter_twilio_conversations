@@ -23,7 +23,7 @@ class TwilioMiddleware extends EpicMiddleware<AppState> {
 
               final chatClient = await TwilioConversationsClient().create(
                    action.token, Properties()
-                  );
+                  );//TODO Martin create chat
 
               if (chatClient != null) {
                 yield UpdateChatClient(chatClient);
