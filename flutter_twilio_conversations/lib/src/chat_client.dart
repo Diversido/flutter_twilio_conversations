@@ -39,7 +39,7 @@ class NotificationRegistrationEvent {
 /// Chat client - main entry point for the Chat SDK.
 class ChatClient {
   /// Stream for the native chat events.
-  StreamSubscription<Map<String, dynamic>>? _chatStream;
+  StreamSubscription<Map<dynamic, dynamic>>? _chatStream;
 
   /// Stream for the notification events.
   StreamSubscription<dynamic>? _notificationStream;
@@ -252,7 +252,7 @@ class ChatClient {
     _chatStream = FlutterTwilioConversationsPlatform.instance
         .chatClientStream()!
         .listen((_parseEvents)); //TODO Martin listen
-
+    print('p: chat stream: initialized $_chatStream');
     // _notificationStream = TwilioConversationsClient._notificationChannel
     //     .receiveBroadcastStream(0)
     //     .listen(_parseNotificationEvents);
@@ -379,7 +379,7 @@ class ChatClient {
     final String eventName = event['name'];
 
     final data = Map<String, dynamic>.from(event['data'] ?? {});
-
+    print('p: parse event data: $data');
     if (data['chatClient'] != null) {
       print("p: chatClient in parse events does not equal null");
       final chatClientMap = Map<String, dynamic>.from(data['chatClient']);
@@ -459,6 +459,8 @@ class ChatClient {
         ));
         break;
       case 'clientSynchronization':
+        print(
+            'p: event clientSynchronization: ${data['synchronizationStatus']}');
         var synchronizationStatus = EnumToString.fromString(
             ChatClientSynchronizationStatus.values,
             data['synchronizationStatus']);

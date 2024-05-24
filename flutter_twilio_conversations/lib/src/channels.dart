@@ -154,14 +154,14 @@ class Channels {
         _updateChannelFromMap(subscribedChannelMap);
         _channelsMap[sid]!._isSubscribed = true;
         print(
-            'p: updated subscribed $sid = ${_channelsMap[sid]!._isSubscribed}');
+            'pc: updated subscribed $sid = ${_channelsMap[sid]!._isSubscribed}');
       }
     }
   }
 
   /// Update individual channel from a map.
   static void _updateChannelFromMap(Map<String, dynamic> channelMap) {
-    print('p: updating channel from map');
+    // print('p: updating channel from map');
     var sid = channelMap['sid'];
     if (_channelsMap[sid] == null) {
       _channelsMap[sid] = Channel._fromMap(channelMap);
