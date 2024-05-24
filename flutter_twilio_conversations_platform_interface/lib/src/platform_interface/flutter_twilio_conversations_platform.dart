@@ -130,7 +130,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
 
 
   /// This stream is used to update the ChatClient in a plugin implementation.
-  Stream<Map<String, dynamic>>? chatClientStream() {
+  Stream<Map<dynamic, dynamic>>? chatClientStream() {
     throw UnimplementedError('chatClientStream() has not been implemented');
   }
  /// This stream is used to update the Channel in a plugin implementation.

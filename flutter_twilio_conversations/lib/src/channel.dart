@@ -253,7 +253,6 @@ class Channel {
 
   /// Construct from a map.
   factory Channel._fromMap(Map<String, dynamic> map) {
-    print('p: Channel = $map');
     var channel = Channel(
       map['sid'],
       map['createdBy'],
@@ -487,7 +486,7 @@ class Channel {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-    print("p: updateFromMap in channel $map");
+    // print("p: updateFromMap in channel $map");
     _synchronizationStatus = EnumToString.fromString(
         ChannelSynchronizationStatus.values, map['synchronizationStatus']);
     if (_synchronizationStatus == ChannelSynchronizationStatus.ALL) {
@@ -495,19 +494,19 @@ class Channel {
     }
 
     if (map['messages'] != null) {
-      print("p: in channel updating messages");
+      //  print("p: in channel updating messages");
       final messagesMap = Map<String, dynamic>.from(map['messages']);
       _messages?._updateFromMap(messagesMap);
     }
 
     if (map['attributes'] != null) {
-      print("p: in channel updating attributes");
+      // print("p: in channel updating attributes");
       _attributes =
           Attributes.fromMap(map['attributes'].cast<String, dynamic>());
     }
 
     _status = EnumToString.fromString(ChannelStatus.values, map['status']);
-    print("p: status: $_status");
+    // print("p: status: $_status");
     _createdBy ??= map['createdBy'];
 
     _dateCreated ??=
@@ -518,13 +517,13 @@ class Channel {
     _lastMessageDate = map['lastMessageDate'] != null
         ? DateTime.parse(map['lastMessageDate'])
         : null;
-    print("p: _lastMessageDate passed");
+   // print("p: _lastMessageDate passed");
     _lastMessageIndex = map['lastMessageIndex'];
   }
 
   /// Parse native channel events to the right event streams.
   void _parseEvents(dynamic event) {
-    print('p: parse Event Channel');
+   // print('p: parse Event Channel');
     final String eventName = event['name'];
     TwilioConversationsClient._log(
         "Channel => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");

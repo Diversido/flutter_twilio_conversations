@@ -45,7 +45,9 @@ class AuthWidget extends StatelessWidget {
                   ? viewModel.initialize(
                       _textEditingController.text.trim(),
                     )
-                  : viewModel.showEmptyFieldsToast(),
+                  : 
+                  viewModel.initialize("token"),
+                  // viewModel.showEmptyFieldsToast(), TODO put back for mobile
               child: Text('Initialize'),
             ),
           ],

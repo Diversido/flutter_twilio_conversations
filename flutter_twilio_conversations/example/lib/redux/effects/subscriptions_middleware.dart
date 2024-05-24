@@ -31,13 +31,15 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
   ) {
     if (store.state.chatClient != null) {
       store.state.chatClient?.onClientSynchronization?.listen((event) async {
-        print('Client synchronized'); //TODO Martin why is this never called?
+        print('Client synchronized');
         // in Android there is a separate event to identify when fully initialized
         // in iOS we do check manually
         if (event == ChatClientSynchronizationStatus.CONVERSATIONS_COMPLETED ||
             (event == ChatClientSynchronizationStatus.COMPLETED &&
-                store.state.chatClient?.channels != null &&
-                Platform.isIOS)) {
+                store.state.chatClient?.channels != null
+            // && Platform.isIOS // TODO check this as android is sending completed when chatclient already exists
+            // possibly another call should invoke this reload
+            )) {
           final dialogs = store.state.chatClient!.channels!.subscribedChannels
               .map(
                 (channel) =>
