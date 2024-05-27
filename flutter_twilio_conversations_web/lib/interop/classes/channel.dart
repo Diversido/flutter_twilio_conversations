@@ -22,16 +22,3 @@ class TwilioConversationsChannel extends EventEmitter {
 
   external dynamic getMessages();
 }
-
-
-// Martin sid=CH48ec5d3342144f838c6ee7448194c88f
-// Martin attributes=[object Object]
-// Martin createdBy=system
-// Martin dateCreated=Thu May 16 2024 17:00:59 GMT+0200 (South Africa Standard Time)
-// Martin dateUpdated=Thu May 16 2024 17:00:59 GMT+0200 (South Africa Standard Time)
-// Martin friendlyName=null
-// Martin lastMessage=[object Object]
-// Martin lastReadMessageIndex=7
-// Martin state=[object Object]
-// Martin status=joined
-// Martin uniqueName=null
