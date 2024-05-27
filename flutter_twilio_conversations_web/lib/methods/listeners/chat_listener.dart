@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:js/js.dart';
@@ -94,19 +96,19 @@ class ChatClientEventListener extends BaseListener {
   }
 
   Future<void> stateChanged(String state) async {
-    // JSPaginator<TwilioConversationsChannel>? channels = null;
+    JSPaginator<TwilioConversationsChannel>? channels = null;
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
 
-      // channels = await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-      //   _client.getSubscribedConversations(),
-      // );
+      channels = await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+        _client.getSubscribedConversations(),
+      );
     }
 
     sendEvent('clientSynchronization', {
       "synchronizationStatus": state,
-      // "chatClient":
-      //     Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
+      "chatClient":
+          Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
     });
   }
 
