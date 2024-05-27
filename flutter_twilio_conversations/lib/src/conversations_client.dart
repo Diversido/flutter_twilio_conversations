@@ -49,25 +49,29 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
   /// Enable debug logging.
   ///
   /// For native logging set [native] to `true` and for dart set [dart] to `true`.
-  // static Future<void> debug({
-  //   bool dart = false,
-  //   bool native = false,
-  //   bool sdk = false,
-  // }) async {
-  //   _dartDebug = dart;
-  //   await _methodChannel.invokeMethod('debug', {'native': native, 'sdk': sdk});
-  //   if (native && _loggingStream == null) {
-  //     _loggingStream =
-  //         _loggingChannel.receiveBroadcastStream().listen((dynamic event) {
-  //       if (native) {
-  //         print('[  NATIVE  ] $event');
-  //       }
-  //     });
-  //   } else if (!native && _loggingStream != null) {
-  //     await _loggingStream?.cancel();
-  //     _loggingStream = null;
-  //   }
-  // }
+  static Future<void> debug({
+    bool dart = false,
+    bool native = false,
+    bool sdk = false,
+  }) async {
+    _dartDebug = dart;
+    await FlutterTwilioConversationsPlatform.instance.platformDebug(
+      dart,
+      native,
+      sdk,
+    );
+    if (native && _loggingStream == null) {
+      _loggingStream =
+          _loggingChannel.receiveBroadcastStream().listen((dynamic event) {
+        if (native) {
+          print('[  NATIVE  ] $event');
+        }
+      });
+    } else if (!native && _loggingStream != null) {
+      await _loggingStream?.cancel();
+      _loggingStream = null;
+    }
+  }
 
   /// Create to a [ChatClient].
   Future<ChatClient?> create(String token, Properties properties) async {
@@ -81,7 +85,7 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
       print('TwilioConversationsPlugin.create => finished request in Dart');
       final chatClientMap = Map<String, dynamic>.from(methodData as Map);
       print('chat client mapped: $chatClientMap');
-      chatClient = ChatClient._fromMap(chatClientMap); //TODO Martin create
+      chatClient = ChatClient._fromMap(chatClientMap);
       return chatClient;
     } on PlatformException catch (err) {
       print('TwilioConversationsPlugin.create => failed in Dart');

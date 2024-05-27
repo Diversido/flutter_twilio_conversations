@@ -5,12 +5,8 @@
 import 'dart:async';
 
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
-import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:meta/meta.dart' show required;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import '../method_channel/method_channel_flutter_twilio_conversations.dart';
-
-export '../models/model_exports.dart';
 
 /// The interface that implementations of flutter_twilio_conversations must implement.
 ///
@@ -128,13 +124,17 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('typingChannel() has not been implemented');
   }
 
+  Future<void> platformDebug(bool dart, bool native, bool sdk) {
+    throw UnimplementedError('debug() has not been implemented');
+  }
 
   /// This stream is used to update the ChatClient in a plugin implementation.
   Stream<Map<dynamic, dynamic>>? chatClientStream() {
     throw UnimplementedError('chatClientStream() has not been implemented');
   }
- /// This stream is used to update the Channel in a plugin implementation.
-    Stream<Map<String, dynamic>>? channelStream(String channel) {
+
+  /// This stream is used to update the Channel in a plugin implementation.
+  Stream<Map<String, dynamic>>? channelStream(String channel) {
     throw UnimplementedError('chatClientStream() has not been implemented');
   }
 }
