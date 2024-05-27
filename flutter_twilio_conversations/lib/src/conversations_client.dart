@@ -2,11 +2,11 @@ part of flutter_twilio_conversations;
 
 /// Entry point for the Twilio Programmable Dart.
 class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
-  static const MethodChannel _methodChannel =
-      MethodChannel('flutter_twilio_conversations');
+  // static const MethodChannel _methodChannel =
+  //     MethodChannel('flutter_twilio_conversations');
 
-  static const EventChannel _chatChannel =
-      EventChannel('flutter_twilio_conversations/room');
+  // static const EventChannel _chatChannel =
+  //     EventChannel('flutter_twilio_conversations/room');
 
   static const EventChannel _mediaProgressChannel =
       EventChannel('flutter_twilio_conversations/media_progress');
@@ -14,8 +14,8 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
   static const EventChannel _loggingChannel =
       EventChannel('flutter_twilio_conversations/logging');
 
-  static const EventChannel _notificationChannel =
-      EventChannel('flutter_twilio_conversations/notification');
+  // static const EventChannel _notificationChannel =
+  //     EventChannel('flutter_twilio_conversations/notification');
 
   static StreamSubscription? _loggingStream;
 
@@ -49,25 +49,25 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
   /// Enable debug logging.
   ///
   /// For native logging set [native] to `true` and for dart set [dart] to `true`.
-  static Future<void> debug({
-    bool dart = false,
-    bool native = false,
-    bool sdk = false,
-  }) async {
-    _dartDebug = dart;
-    await _methodChannel.invokeMethod('debug', {'native': native, 'sdk': sdk});
-    if (native && _loggingStream == null) {
-      _loggingStream =
-          _loggingChannel.receiveBroadcastStream().listen((dynamic event) {
-        if (native) {
-          print('[  NATIVE  ] $event');
-        }
-      });
-    } else if (!native && _loggingStream != null) {
-      await _loggingStream?.cancel();
-      _loggingStream = null;
-    }
-  }
+  // static Future<void> debug({
+  //   bool dart = false,
+  //   bool native = false,
+  //   bool sdk = false,
+  // }) async {
+  //   _dartDebug = dart;
+  //   await _methodChannel.invokeMethod('debug', {'native': native, 'sdk': sdk});
+  //   if (native && _loggingStream == null) {
+  //     _loggingStream =
+  //         _loggingChannel.receiveBroadcastStream().listen((dynamic event) {
+  //       if (native) {
+  //         print('[  NATIVE  ] $event');
+  //       }
+  //     });
+  //   } else if (!native && _loggingStream != null) {
+  //     await _loggingStream?.cancel();
+  //     _loggingStream = null;
+  //   }
+  // }
 
   /// Create to a [ChatClient].
   Future<ChatClient?> create(String token, Properties properties) async {
@@ -75,14 +75,13 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
 
     try {
       print('TwilioConversationsPlugin.create => starting request in Dart');
-      final methodData =
-          FlutterTwilioConversationsPlatform.instance.create(token, properties);
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .create(token, properties);
 
-      // final methodData = await _methodChannel.invokeMethod('create',
-      // <String, Object>{'token': token, 'properties': properties._toMap()});
       print('TwilioConversationsPlugin.create => finished request in Dart');
       final chatClientMap = Map<String, dynamic>.from(methodData as Map);
-      chatClient = ChatClient._fromMap(chatClientMap);
+      print('chat client mapped: $chatClientMap');
+      chatClient = ChatClient._fromMap(chatClientMap); //TODO Martin create
       return chatClient;
     } on PlatformException catch (err) {
       print('TwilioConversationsPlugin.create => failed in Dart');

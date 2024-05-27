@@ -9,8 +9,6 @@ flutter:
       web:
         pluginClass: TwilioConversationsPlugin
         fileName: flutter_twilio_conversations_web.dart
-  assets:
-    - assets/twilioconversations.js
 
 dependencies:
   flutter:
@@ -23,6 +21,7 @@ dependencies:
   flutter_twilio_conversations: 
     path: ../flutter_twilio_conversations
   js: ^0.6.3
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

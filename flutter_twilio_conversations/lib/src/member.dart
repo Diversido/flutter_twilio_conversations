@@ -83,43 +83,46 @@ class Member {
   }
 
   /// Return user descriptor for current member.
-  Future<UserDescriptor> getUserDescriptor() async {
-    final userDescriptorData = await TwilioConversationsClient._methodChannel
-        .invokeMethod('Member#getUserDescriptor', {
-      'identity': _identity,
-      'channelSid': _channelSid,
-    });
-    final userDescriptor =
-        UserDescriptor._fromMap(userDescriptorData.cast<String, dynamic>());
-    return userDescriptor;
+  Future<UserDescriptor?> getUserDescriptor() async {
+    return null;
+    // final userDescriptorData = await TwilioConversationsClient._methodChannel
+    //     .invokeMethod('Member#getUserDescriptor', {
+    //   'identity': _identity,
+    //   'channelSid': _channelSid,
+    // });
+    // final userDescriptor =
+    //     UserDescriptor._fromMap(userDescriptorData.cast<String, dynamic>());
+    // return userDescriptor;
   }
 
   /// Return subscribed user object for current member.
-  Future<User> getAndSubscribeUser() async {
+  Future<User?> getAndSubscribeUser() async {
     try {
-      final methodData = await TwilioConversationsClient._methodChannel
-          .invokeMethod('Member#getAndSubscribeUser', {
-        'memberSid': _sid,
-        'channelSid': _channelSid,
-      });
-      final userMap = Map<String, dynamic>.from(methodData);
-      return User._fromMap(userMap);
+      return null;
+      // final methodData = await TwilioConversationsClient._methodChannel
+      //     .invokeMethod('Member#getAndSubscribeUser', {
+      //   'memberSid': _sid,
+      //   'channelSid': _channelSid,
+      // });
+      // final userMap = Map<String, dynamic>.from(methodData);
+      // return User._fromMap(userMap);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
   }
 
   /// Set attributes associated with this member.
-  Future<Map<String, dynamic>> setAttributes(
+  Future<Map<String, dynamic>?> setAttributes(
       Map<String, dynamic> attributes) async {
     try {
-      return Map<String, dynamic>.from(await TwilioConversationsClient
-          ._methodChannel
-          .invokeMethod('Member#setAttributes', {
-        'memberSid': _sid,
-        'channelSid': _channelSid,
-        'attributes': attributes
-      }));
+      return null;
+      // return Map<String, dynamic>.from(await TwilioConversationsClient
+      //     ._methodChannel
+      //     .invokeMethod('Member#setAttributes', {
+      //   'memberSid': _sid,
+      //   'channelSid': _channelSid,
+      //   'attributes': attributes
+      // }));
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

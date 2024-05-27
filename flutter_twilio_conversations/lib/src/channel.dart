@@ -239,10 +239,16 @@ class Channel {
 
     _messages = Messages(this);
     _members = Members(_sid);
-    _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
-        .receiveBroadcastStream(0);
-    _channelStreamSubscriptions[_sid] ??=
-        _channelStreams[_sid]!.listen(_parseEvents);
+    print('p: channel constructor called $_sid');
+
+    // _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
+    //     .receiveBroadcastStream(0);
+
+    // _channelStreamSubscriptions[_sid] ??= FlutterTwilioConversationsPlatform
+    //     .instance
+    //     .channelStream(_sid)!
+    //     .listen((_parseEvents));
+    //  _channelStreams[_sid]!.listen(_parseEvents);
   }
 
   /// Construct from a map.
@@ -267,8 +273,7 @@ class Channel {
   /// You accept the invitation by calling [Channel.join] or decline it by calling [Channel.declineInvitation].
   Future<void> join() async {
     try {
-      await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#join', {'channelSid': _sid});
+      await FlutterTwilioConversationsPlatform.instance.joinChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -277,8 +282,7 @@ class Channel {
   /// Leave this channel.
   Future<void> leave() async {
     try {
-      await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#leave', {'channelSid': _sid});
+      await FlutterTwilioConversationsPlatform.instance.leaveChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -291,8 +295,7 @@ class Channel {
   /// One common way to implement this indicator is to call [Channel.typing] repeatedly in response to key input events.
   Future<void> typing() async {
     try {
-      await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#typing', {'channelSid': _sid});
+      await FlutterTwilioConversationsPlatform.instance.typingChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -303,8 +306,8 @@ class Channel {
   /// If a user is invited to the channel, they can choose to either [Channel.join] the channel to accept the invitation or [Channel.declineInvitation] to decline.
   Future<void> declineInvitation() async {
     try {
-      await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#declineInvitation', {'channelSid': _sid});
+      await FlutterTwilioConversationsPlatform.instance
+          .declineInvitationChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -316,8 +319,8 @@ class Channel {
   /// There is no undo for this operation!
   Future<void> destroy() async {
     try {
-      await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#destroy', {'channelSid': _sid});
+      await FlutterTwilioConversationsPlatform.instance
+          .declineInvitationChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -334,8 +337,8 @@ class Channel {
   /// The retrieved value is then cached for 5 seconds so there is no reason to call this function more often than once in 5 seconds.
   Future<int> getMessagesCount() async {
     try {
-      return await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#getMessagesCount', {'channelSid': _sid});
+      return await FlutterTwilioConversationsPlatform.instance
+          .getMessagesCountChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -352,8 +355,8 @@ class Channel {
   /// The retrieved value is then cached for 5 seconds so there is no reason to call this function more often than once in 5 seconds.
   Future<int?> getUnreadMessagesCount() async {
     try {
-      return await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#getUnreadMessagesCount', {'channelSid': _sid});
+      return await FlutterTwilioConversationsPlatform.instance
+          .getUnreadMessagesCountChannel(_sid);
     } on PlatformException {
       return 0;
     }
@@ -370,8 +373,8 @@ class Channel {
   /// The retrieved value is then cached for 5 seconds so there is no reason to call this function more often than once in 5 seconds.
   Future<int> getMembersCount() async {
     try {
-      return await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#getMembersCount', {'channelSid': _sid});
+      return await FlutterTwilioConversationsPlatform.instance
+          .getMembersCountChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -384,10 +387,9 @@ class Channel {
   Future<Map<String, dynamic>> setAttributes(
       Map<String, dynamic> attributes) async {
     try {
-      return Map<String, dynamic>.from(
-          await TwilioConversationsClient._methodChannel.invokeMethod(
-              'Channel#setAttributes',
-              {'channelSid': _sid, 'attributes': attributes}));
+      return Map<String, dynamic>.from(await FlutterTwilioConversationsPlatform
+          .instance
+          .setAttributesChannel(_sid, attributes));
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -398,8 +400,8 @@ class Channel {
   /// Friendly name is a free-form text string, it is not unique and could be used for user-friendly channel name display in the UI.
   Future<String> getFriendlyName() async {
     try {
-      return await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#getFriendlyName', {'channelSid': _sid});
+      return await FlutterTwilioConversationsPlatform.instance
+          .getFriendlyNameChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -408,9 +410,8 @@ class Channel {
   /// Update the friendly name for this channel.
   Future<String> setFriendlyName(String friendlyName) async {
     try {
-      return await TwilioConversationsClient._methodChannel.invokeMethod(
-          'Channel#setFriendlyName',
-          {'channelSid': _sid, 'friendlyName': friendlyName});
+      return await FlutterTwilioConversationsPlatform.instance
+          .setFriendlyNameChannel(_sid, friendlyName);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -423,8 +424,8 @@ class Channel {
     try {
       return EnumToString.fromString(
           NotificationLevel.values,
-          await TwilioConversationsClient._methodChannel.invokeMethod(
-              'Channel#getNotificationLevel', {'channelSid': _sid}));
+          await FlutterTwilioConversationsPlatform.instance
+              .getNotificationLevelChannel(_sid));
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -438,11 +439,11 @@ class Channel {
     try {
       return EnumToString.fromString(
         NotificationLevel.values,
-        await TwilioConversationsClient._methodChannel
-            .invokeMethod('Channel#setNotificationLevel', {
-          'channelSid': _sid,
-          'notificationLevel': EnumToString.convertToString(notificationLevel),
-        }),
+        await FlutterTwilioConversationsPlatform.instance
+            .setNotificationLevelChannel(
+          _sid,
+          EnumToString.convertToString(notificationLevel),
+        ),
       );
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
@@ -454,8 +455,8 @@ class Channel {
   /// Unique name is similar to SID but can be specified by the user.
   Future<String> getUniqueName() async {
     try {
-      return await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channel#getUniqueName', {'channelSid': _sid});
+      return await FlutterTwilioConversationsPlatform.instance
+          .getUniqueNameChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -466,9 +467,8 @@ class Channel {
   /// Unique name is unique within Service Instance. You will receive an error if you try to set a name that is not unique.
   Future<String> setUniqueName(String uniqueName) async {
     try {
-      return await TwilioConversationsClient._methodChannel.invokeMethod(
-          'Channel#setUniqueName',
-          {'channelSid': _sid, 'uniqueName': uniqueName});
+      return await FlutterTwilioConversationsPlatform.instance
+          .setUniqueNameChannel(_sid, uniqueName);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -486,6 +486,7 @@ class Channel {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
+    // print("p: updateFromMap in channel $map");
     _synchronizationStatus = EnumToString.fromString(
         ChannelSynchronizationStatus.values, map['synchronizationStatus']);
     if (_synchronizationStatus == ChannelSynchronizationStatus.ALL) {
@@ -493,30 +494,36 @@ class Channel {
     }
 
     if (map['messages'] != null) {
+      //  print("p: in channel updating messages");
       final messagesMap = Map<String, dynamic>.from(map['messages']);
       _messages?._updateFromMap(messagesMap);
     }
 
     if (map['attributes'] != null) {
+      // print("p: in channel updating attributes");
       _attributes =
           Attributes.fromMap(map['attributes'].cast<String, dynamic>());
     }
 
     _status = EnumToString.fromString(ChannelStatus.values, map['status']);
-
+    // print("p: status: $_status");
     _createdBy ??= map['createdBy'];
+
     _dateCreated ??=
         map['dateCreated'] != null ? DateTime.parse(map['dateCreated']) : null;
     _dateUpdated =
         map['dateUpdated'] != null ? DateTime.parse(map['dateUpdated']) : null;
+
     _lastMessageDate = map['lastMessageDate'] != null
         ? DateTime.parse(map['lastMessageDate'])
         : null;
+   // print("p: _lastMessageDate passed");
     _lastMessageIndex = map['lastMessageIndex'];
   }
 
   /// Parse native channel events to the right event streams.
   void _parseEvents(dynamic event) {
+   // print('p: parse Event Channel');
     final String eventName = event['name'];
     TwilioConversationsClient._log(
         "Channel => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
