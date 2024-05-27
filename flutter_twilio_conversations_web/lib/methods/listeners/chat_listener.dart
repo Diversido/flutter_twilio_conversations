@@ -2,13 +2,10 @@ import 'dart:async';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
-import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:js/js.dart';
@@ -69,7 +66,6 @@ class ChatClientEventListener extends BaseListener {
       );
 
   void connectionStateChange(String connectionState) {
-    print('p: chat_listener connectionStateChange $connectionState');
     debug('ConnectionStateChange ChatClient Event $connectionState');
     switch (connectionState) {
       case "connecting":
@@ -98,27 +94,19 @@ class ChatClientEventListener extends BaseListener {
   }
 
   Future<void> stateChanged(String state) async {
-    print(
-      'p: chat_listener stateChanged $state sync',
-    ); //TODO Martin why is this not called anymore?
-    JSPaginator<TwilioConversationsChannel>? channels = null;
+    // JSPaginator<TwilioConversationsChannel>? channels = null;
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
 
-      channels = await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-        _client.getSubscribedConversations(),
-      );
-      print(
-          'p: chat_listener stateChanged $state sync channels: ${channels.items.length}');
+      // channels = await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+      //   _client.getSubscribedConversations(),
+      // );
     }
 
-    // sendEvent('clientSynchronization', {
-    // "chatClient": Mapper.chatClientToMap(pluginInstance, _client),
-    // });
     sendEvent('clientSynchronization', {
       "synchronizationStatus": state,
-      "chatClient":
-          Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
+      // "chatClient":
+      //     Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
     });
   }
 
@@ -149,16 +137,7 @@ class ChatClientEventListener extends BaseListener {
     );
   }
 
-  // override fun onConversationAdded(conversation: Conversation?) {
-  // Log.d("TwilioInfo", "ChatListener.onConversationAdded => conversation '${conversation?.sid}' added")
-  // sendEvent("channelAdded", mapOf(
-  // "channel" to Mapper.channelToMap(pluginInstance, conversation!!)
-  // ))
-  // }
-
   void conversationJoined(dynamic channelJoined) async {
-    print('p: chat_listener conversationJoined $channelJoined');
-
     debug('conversationJoined');
 
     TwilioClientConversation.TwilioConversationsChannel channel = channelJoined;
@@ -222,4 +201,3 @@ number? errorCode - Twilio public error code if available */
     _chatClientStreamController.add(eventData);
   }
 }
-//TODO Martin handle invalid token

@@ -320,7 +320,7 @@ class Channel {
   Future<void> destroy() async {
     try {
       await FlutterTwilioConversationsPlatform.instance
-          .declineInvitationChannel(_sid);
+          .destroyChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

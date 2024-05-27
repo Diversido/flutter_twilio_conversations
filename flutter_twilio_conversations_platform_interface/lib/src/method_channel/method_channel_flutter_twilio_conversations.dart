@@ -147,6 +147,11 @@ class MethodChannelFlutterTwilioConversations
         .invokeMethod('Channel#typing', {'channelSid': channelSid});
   }
 
+  Future<void> platformDebug(bool dart, bool native, bool sdk) async {
+    return await _methodChannel
+        .invokeMethod('debug', {'native': native, 'sdk': sdk});
+  }
+
 // needs to be implemented for the mobile interface
   Stream<Map<dynamic, dynamic>>? chatClientStream() {
     try {

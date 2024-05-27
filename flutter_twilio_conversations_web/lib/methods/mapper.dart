@@ -20,12 +20,12 @@ class Mapper {
     List<TwilioConversationsChannel>? channels,
   ) {
     // final users = await promiseToFuture(chatClient.getSubscribedUsers()); // TODO move this outside of Mapper
-    // print('Martin! user ${users}');
+  
     return {
       "channels": channelsToMap(pluginInstance, channels),
       "myIdentity": "", // TODO
       "connectionState": connectionStateToString(chatClient.connectionState),
-      // "users": usersToMap(users), //TODO Martin
+      // "users": usersToMap(users), //TODO
       "isReachabilityEnabled": true, // TODO
     };
   }

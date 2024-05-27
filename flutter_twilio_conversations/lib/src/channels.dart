@@ -23,7 +23,7 @@ class Channels {
   factory Channels._fromMap(Map<String, dynamic> map) {
     var channels = Channels();
     print('p: channels from map $map');
-    channels._updateFromMap(map); //TODO martin when?
+    channels._updateFromMap(map);
     return channels;
   }
 
