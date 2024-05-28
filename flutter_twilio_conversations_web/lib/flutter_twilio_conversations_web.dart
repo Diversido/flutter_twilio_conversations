@@ -192,4 +192,8 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     print('TwilioConversationsPlugin.channel => starting stream');
     return channelListeners[channelId]!.stream;
   }
+
+  Future<void> platformDebug(bool dart, bool native, bool sdk) {
+    throw UnimplementedError('debug() has not been implemented');
+  }
 }

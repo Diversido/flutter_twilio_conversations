@@ -464,6 +464,7 @@ class ChatClient {
         var synchronizationStatus = EnumToString.fromString(
             ChatClientSynchronizationStatus.values,
             data['synchronizationStatus']);
+        print('p: client sync: $synchronizationStatus');
         print('TwilioConversationsPlugin.clientSynchronization => data: $data');
         if (synchronizationStatus != null) {
           _onClientSynchronizationCtrl.add(synchronizationStatus);
