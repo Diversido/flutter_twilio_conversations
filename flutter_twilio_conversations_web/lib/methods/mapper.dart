@@ -1,11 +1,6 @@
-import 'dart:js_util';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
-import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioClient;
@@ -20,7 +15,7 @@ class Mapper {
     List<TwilioConversationsChannel>? channels,
   ) {
     // final users = await promiseToFuture(chatClient.getSubscribedUsers()); // TODO move this outside of Mapper
-  
+
     return {
       "channels": channelsToMap(pluginInstance, channels),
       "myIdentity": "", // TODO
@@ -85,17 +80,15 @@ class Mapper {
     final channelMap = {
       'sid': channel.sid,
       'type': 'UNKNOWN',
-      'attributes': attributesToMap(channel.attributes),
       'messages': messagesToMap(messages),
-      'status': channel.status.toString(),
-      'synchronizationStatus': channel.synchronizationStatus
-          .toString(), // channel.conversationStatus.ChannelStatus
-      'dateCreated': dateToString(channel.dateCreatedAsDate),
+      'attributes': attributesToMap(channel.attributes),
+      'status': channel.status,
+      'synchronizationStatus': 'ALL',
+      'dateCreated': dateToString(channel.dateCreated),
       'createdBy': channel.createdBy,
       'dateUpdated': dateToString(channel.dateUpdated),
-      'lastMessageDate':
-          dateToString(channel.lastMessageDate), //TODO lastMessage.date?
-      'lastMessageIndex': channel.lastMessageIndex, //TODO lastMessage.index?
+      'lastMessageDate': dateToString(channel.lastMessage?.dateCreated),
+      'lastMessageIndex': channel.lastMessage?.index,
     };
 
     return channelMap;
@@ -142,61 +135,40 @@ class Mapper {
   }
 
   static Map<String, dynamic>? attributesToMap(JSONValue? attributes) {
-    //TODO
-    print('JSONValue is $attributes');
-    return {};
-    // late String type;
-    // late String data;
-
-    // switch(attributes.type) {
-    //   case AttributesType.OBJECT:
-    //     type = "object";
-    //     data = "${attributes.jsonObject}";
-    //     break;
-    //   case AttributesType.ARRAY:
-    //     type = "array";
-    //     data = "${attributes.jsonArray}";
-    //     break;
-    //   case AttributesType.STRING:
-    //     type = "string";
-    //     data = attributes.string!;
-    //     break;
-    //   case AttributesType.NUMBER:
-    //     type = "number";
-    //     data = attributes.number!.toString();
-    //     break;
-    //   case AttributesType.BOOLEAN:
-    //     type = "boolean";
-    //     data = attributes.boolean!.toString();
-    //     break;
-    //   case AttributesType.NULL:
-    //     type = "null";
-    //     data = "null";
-    //     break;
-    // }
+    if (attributes == null) {
+      return {"type": "NULL", "data": null};
+    } else if (attributes.number != null) {
+      return {"type": "NUMBER", "data": attributes.number?.toString()};
+    } else if (attributes.string != null) {
+      return {"type": "STRING", "data": attributes.string};
+    } else if (attributes.JSONArray != null) {
+      return {"type": "ARRAY", "data": attributes.JSONArray};
+    } else if (attributes.JSONObject != null) {
+      return {"type": "OBJECT", "data": attributes.JSONObject};
+    } else {
+      return {"type": "NULL", "data": null};
+    }
   }
 
   static Map<String, dynamic>? messagesToMap(
       List<TwilioConversationsMessage>? messages) {
+    return null;
     if (messages == null) return null;
 
-    var index = -1;
-    for (TwilioConversationsMessage message in messages) {
-      if (message.conversation.lastReadMessageIndex > index) {
-        index = message.conversation.lastReadMessageIndex;
-      }
-    }
-    return {"lastReadMessageIndex": index};
+    // var index = -1;
+    // for (TwilioConversationsMessage message in messages) {
+    //   if (message.conversation.lastReadMessageIndex > index) {
+    //     index = message.conversation.lastReadMessageIndex;
+    //   }
+    // }
+    return {"lastReadMessageIndex": '0'};
   }
 
-  static String? dateToString(DateTime? date) {
-    //TODO
-    return '2024-05-22 12:00:00';
-    print('p: dateToString $date');
+  static String? dateToString(dynamic date) {
     if (date == null) return null;
-    final dateFormat =
-        DateFormat('yyyy-MM-dd hh:mm:ss'); //TODO HH vs hh and fix this method
-    return dateFormat.format(date);
+    final dateTime = DateTime.fromMicrosecondsSinceEpoch(date.getTime() * 1000);
+    final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return dateFormat.format(dateTime);
   }
 
   static Map<String, dynamic> messageToMap(TwilioConversationsMessage message) {
