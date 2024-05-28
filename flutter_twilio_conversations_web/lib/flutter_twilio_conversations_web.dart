@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
 import 'package:flutter_twilio_conversations_web/methods/listeners/chat_listener.dart';
@@ -45,12 +42,8 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
       );
 
       _chatClientListener!.addListeners();
-      final channels =
-          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-        _chatClient!.getSubscribedConversations(),
-      );
 
-      return await Mapper.chatClientToMap(this, _chatClient!, channels.items);
+      return await Mapper.chatClientToMap(this, _chatClient!, []);
     } catch (e) {
       print('error: createConversation ${e}');
     }
@@ -61,17 +54,9 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError('createChannel() has not been implemented.');
   }
 
-  // @override
-  // Future<dynamic> getChannel(String channelSidOrUniqueName) async {
-  //   try {
-  //     TwilioConversationsChannel _conversation = await promiseToFuture(
-  //         _chatClient?.getChannelBySid(channelSidOrUniqueName));
-  //     return _conversation.toModel();
-  //     // then does this conversation need to be subscribed to?
-  //     //   await getTwilioConversationBySidOrUniqueName(channelSidOrUniqueName);
-  //   } catch (e) {}
-  //   return null;
-  // }
+  Future<dynamic> getChannel(String channelSidOrUniqueName) {
+    throw UnimplementedError('getChannel() has not been implemented.');
+  }
 
   @override
   Future<void> declineInvitationChannel(String channelSid) {
@@ -191,5 +176,9 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Stream<Map<String, dynamic>> channelStream(String channelId) {
     print('TwilioConversationsPlugin.channel => starting stream');
     return channelListeners[channelId]!.stream;
+  }
+
+  Future<void> platformDebug(bool dart, bool native, bool sdk) {
+    throw UnimplementedError('debug() has not been implemented');
   }
 }

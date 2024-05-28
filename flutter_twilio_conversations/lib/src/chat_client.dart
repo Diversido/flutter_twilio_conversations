@@ -459,8 +459,6 @@ class ChatClient {
         ));
         break;
       case 'clientSynchronization':
-        print(
-            'p: event clientSynchronization: ${data['synchronizationStatus']}');
         var synchronizationStatus = EnumToString.fromString(
             ChatClientSynchronizationStatus.values,
             data['synchronizationStatus']);

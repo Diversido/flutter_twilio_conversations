@@ -55,14 +55,12 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
     bool sdk = false,
   }) async {
     _dartDebug = dart;
-    await FlutterTwilioConversationsPlatform.instance.platformDebug(
-      dart,
-      native,
-      sdk,
-    );
+    await FlutterTwilioConversationsPlatform.instance
+        .platformDebug(dart, native, sdk);
     if (native && _loggingStream == null) {
       _loggingStream =
           _loggingChannel.receiveBroadcastStream().listen((dynamic event) {
+        //TODO
         if (native) {
           print('[  NATIVE  ] $event');
         }

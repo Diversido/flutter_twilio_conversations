@@ -11,6 +11,15 @@ import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
 import 'package:js/js.dart';
 
 // TODO implement this listener
+// messageAdded
+// messageRemoved
+// messageUpdated
+// participantJoined
+// participantLeft
+// participantUpdated
+// pushNotification
+// typingEnded
+// typingStarted
 class ChannelEventListener extends BaseListener {
   final TwilioClientConversation.TwilioConversationsChannel _channel;
   final StreamController<Map<String, dynamic>> _channelStreamController;
@@ -19,8 +28,6 @@ class ChannelEventListener extends BaseListener {
 
   void addListeners() {
     debug('Adding chatClientEventListeners for ${_channel.sid}');
-    // _on('connectionStateChanged', connectionStateChange);
-    
   }
 
   void _on(String eventName, Function eventHandler) => _channel.on(
