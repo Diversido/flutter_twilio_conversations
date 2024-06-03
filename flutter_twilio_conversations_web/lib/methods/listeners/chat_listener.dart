@@ -89,7 +89,7 @@ class ChatClientEventListener extends BaseListener {
     sendEvent('clientSynchronization', {
       "synchronizationStatus": state,
       "chatClient":
-          Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
+          await Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
     });
   }
 
@@ -112,7 +112,7 @@ class ChatClientEventListener extends BaseListener {
     sendEvent('channelAdded', {
       "channel": Mapper.channelToMap(pluginInstance, channelAdded),
       "chatClient":
-          Mapper.chatClientToMap(pluginInstance, _client, [channelAdded])
+         await Mapper.chatClientToMap(pluginInstance, _client, [channelAdded])
     });
   }
 

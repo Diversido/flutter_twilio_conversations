@@ -241,13 +241,13 @@ class Channel {
     _members = Members(_sid);
     print('p: channel constructor called $_sid');
 
-    // _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
-    //     .receiveBroadcastStream(0);
+    _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
+        .receiveBroadcastStream(0);
 
-    // _channelStreamSubscriptions[_sid] ??= FlutterTwilioConversationsPlatform
-    //     .instance
-    //     .channelStream(_sid)!
-    //     .listen((_parseEvents));
+    _channelStreamSubscriptions[_sid] ??= FlutterTwilioConversationsPlatform
+        .instance
+        .channelStream(_sid)!
+        .listen((_parseEvents));
     //  _channelStreams[_sid]!.listen(_parseEvents);
   }
 
@@ -319,8 +319,7 @@ class Channel {
   /// There is no undo for this operation!
   Future<void> destroy() async {
     try {
-      await FlutterTwilioConversationsPlatform.instance
-          .destroyChannel(_sid);
+      await FlutterTwilioConversationsPlatform.instance.destroyChannel(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -517,13 +516,13 @@ class Channel {
     _lastMessageDate = map['lastMessageDate'] != null
         ? DateTime.parse(map['lastMessageDate'])
         : null;
-   // print("p: _lastMessageDate passed");
+    // print("p: _lastMessageDate passed");
     _lastMessageIndex = map['lastMessageIndex'];
   }
 
   /// Parse native channel events to the right event streams.
   void _parseEvents(dynamic event) {
-   // print('p: parse Event Channel');
+    print('p: parse Event Channel');
     final String eventName = event['name'];
     TwilioConversationsClient._log(
         "Channel => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");

@@ -13,13 +13,10 @@ import 'methods/listeners/channel_listener.dart';
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   static TwilioWebClient.TwilioConversationsClient? _chatClient;
   static ChatClientEventListener? _chatClientListener;
-  static ChannelEventListener? _channelListener;
 
   static final _chatClientStreamController =
       StreamController<Map<String, dynamic>>.broadcast();
 
-  static final _channelStreamController =
-      StreamController<Map<String, dynamic>>.broadcast();
 
   // TODO update dynamic in both maps
   Map<String, ChannelEventListener> channelChannels = {};

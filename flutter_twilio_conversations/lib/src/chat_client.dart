@@ -379,7 +379,6 @@ class ChatClient {
     final String eventName = event['name'];
 
     final data = Map<String, dynamic>.from(event['data'] ?? {});
-    print('p: parse event data: $data');
     if (data['chatClient'] != null) {
       print("p: chatClient in parse events does not equal null");
       final chatClientMap = Map<String, dynamic>.from(data['chatClient']);
@@ -396,6 +395,7 @@ class ChatClient {
 
     Map<String, dynamic>? channelMap;
     if (data['channel'] != null) {
+      print('channel where it is breaking ${data['channel']}');
       channelMap =
           Map<String, dynamic>.from(data['channel'] as Map<dynamic, dynamic>);
     }

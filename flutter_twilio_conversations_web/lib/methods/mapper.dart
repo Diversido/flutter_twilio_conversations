@@ -1,23 +1,29 @@
+import 'dart:async';
+import 'dart:js_util';
+
+import 'package:flutter/services.dart';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
+import 'package:flutter_twilio_conversations_web/methods/listeners/channel_listener.dart';
 import 'package:intl/intl.dart';
 
 class Mapper {
-  static Map<String, dynamic>? chatClientToMap(
+  static Future<Map<String, dynamic>?> chatClientToMap(
     TwilioConversationsPlugin pluginInstance,
     TwilioClient.TwilioConversationsClient chatClient,
     List<TwilioConversationsChannel>? channels,
-  ) {
+  ) async {
     // final users = await promiseToFuture(chatClient.getSubscribedUsers()); // TODO move this outside of Mapper
 
     return {
-      "channels": channelsToMap(pluginInstance, channels),
+      "channels": await channelsToMap(pluginInstance, channels),
       "myIdentity": "", // TODO
       "connectionState": connectionStateToString(chatClient.connectionState),
       // "users": usersToMap(users), //TODO
@@ -29,20 +35,20 @@ class Mapper {
     return state.toString().split('.').last;
   }
 
-  static Map<String, dynamic>? channelsToMap(
+  static Future<Map<String, dynamic>?> channelsToMap(
       TwilioConversationsPlugin pluginInstance,
-      List<TwilioConversationsChannel>? channels) {
+      List<TwilioConversationsChannel>? channels) async {
     if (channels == null) return {};
-    var subscribedChannelsMap =
-        channels.map((channel) => channelToMap(pluginInstance, channel));
+    var subscribedChannelsMap = await channels
+        .map((channel) async => await channelToMap(pluginInstance, channel));
 
     return {"subscribedChannels": subscribedChannelsMap};
   }
 
-  static Map<String, dynamic>? channelToMap(
+  static Future<Map<String, dynamic>?> channelToMap(
     TwilioConversationsPlugin pluginInstance,
     TwilioConversationsChannel? channel,
-  ) {
+  ) async {
     if (channel == null) {
       return null;
     }
@@ -54,33 +60,49 @@ class Mapper {
             .chatClientStream()!
             .listen((_parseEvents));
     */
+    if (!pluginInstance.channelChannels.containsKey(channel.sid)) {
+      final channelStreamController =
+          StreamController<Map<String, dynamic>>.broadcast();
 
-    // if (!pluginInstance.channelChannels.containsKey(channel.sid)) {
-    //     pluginInstance.channelChannels[channel.sid] = EventChannel("flutter_twilio_conversations/${channel.sid}");
-    //     pluginInstance.channelChannels[channel.sid]?.
+      pluginInstance.channelChannels[channel.sid] = ChannelEventListener(
+        channel,
+        channelStreamController,
+      );
+      //  EventChannel('flutter_twilio_conversations/${channel.sid}') as ChannelEventListener;
 
-    // setStreamHandler(object : EventChannel.StreamHandler {
-    //     override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
-    //         Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) attached")
-    //         pluginInstance.channelListeners[channel.sid] = ChannelListener(pluginInstance, events)
-    //         channel.addListener(pluginInstance.channelListeners[channel.sid])
-    //     }
+      pluginInstance.channelChannels[channel.sid]!.addListeners();
 
-    //     override fun onCancel(arguments: Any?) {
-    //         Log.d("TwilioInfo", "Mapper.channelToMap => EventChannel for Channel(${channel.sid}) detached")
-    //         channel.removeListener(pluginInstance.channelListeners[channel.sid])
-    //         pluginInstance.channelListeners.remove(channel.sid)
-    //         pluginInstance.channelChannels.remove(channel.sid)
-    //     }
-    // })
-    //  }
+      pluginInstance.channelListeners[channel.sid] = channelStreamController;
 
-    final messages = <TwilioConversationsMessage>[];
+      /* pluginInstance.channelChannels[channel.sid]?.setStreamHandler(
+        StreamHandler(
+          onListen: (arguments, EventSink events) {
+            print(
+                "TwilioInfo: Mapper.channelToMap => EventChannel for Channel(${channel.sid}) attached");
+            pluginInstance.channelListeners[channel.sid] =
+                ChannelListener(pluginInstance, events);
+            channel.addListener(pluginInstance.channelListeners[channel.sid]);
+          },
+          onCancel: (arguments) {
+            print(
+                "TwilioInfo: Mapper.channelToMap => EventChannel for Channel(${channel.sid}) detached");
+            channel
+                .removeListener(pluginInstance.channelListeners[channel.sid]);
+            pluginInstance.channelListeners.remove(channel.sid);
+            pluginInstance.channelChannels.remove(channel.sid);
+          },
+        ),
+      ); */
+    }
+
+    final messages =
+        await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
+            channel.getMessages());
 
     final channelMap = {
       'sid': channel.sid,
       'type': 'UNKNOWN',
-      'messages': messagesToMap(messages),
+      'messages': messagesToMap(messages.items),
       'attributes': attributesToMap(channel.attributes),
       'status': channel.status,
       'synchronizationStatus': 'ALL',
@@ -152,16 +174,15 @@ class Mapper {
 
   static Map<String, dynamic>? messagesToMap(
       List<TwilioConversationsMessage>? messages) {
-    return null;
     if (messages == null) return null;
 
-    // var index = -1;
-    // for (TwilioConversationsMessage message in messages) {
-    //   if (message.conversation.lastReadMessageIndex > index) {
-    //     index = message.conversation.lastReadMessageIndex;
-    //   }
-    // }
-    return {"lastReadMessageIndex": '0'};
+    var index = -1;
+    for (TwilioConversationsMessage message in messages) {
+      if (message.conversation.lastReadMessageIndex! > index) {
+        index = message.conversation.lastReadMessageIndex!;
+      }
+    }
+    return {"lastReadMessageIndex": index};
   }
 
   static String? dateToString(dynamic date) {
