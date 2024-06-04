@@ -6,8 +6,8 @@ import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
-import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
-import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
+import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
+import 'package:flutter_twilio_conversations_web/mapper.dart';
 
 class ChatClientEventListener extends BaseListener {
   final TwilioChatClient.TwilioConversationsClient _client;
@@ -95,40 +95,40 @@ class ChatClientEventListener extends BaseListener {
 
   void conversationUpdated(dynamic data) async {
     debug('Conversation Updated ChatClient Event');
-    sendEvent(
-      'channelUpdated',
-      {
-        "channel": Mapper.channelToMap(pluginInstance, data.conversation),
-        "reason": {
-          "type": "channel",
-          "value": data.updateReasons,
-        }
-      },
-    );
+    // sendEvent(
+    //   'channelUpdated',
+    //   {
+    //     "channel": await Mapper.channelToMap(pluginInstance, data.conversation),
+    //     "reason": {
+    //       "type": "channel",
+    //       "value": data.updateReasons[0],
+    //     }
+    //   },
+    // );
   }
 
   void conversationAdded(dynamic channelAdded) async {
     debug('Conversation Added ChatClient Event');
     sendEvent('channelAdded', {
-      "channel": Mapper.channelToMap(pluginInstance, channelAdded),
+      "channel": await Mapper.channelToMap(pluginInstance, channelAdded),
       "chatClient":
-         await Mapper.chatClientToMap(pluginInstance, _client, [channelAdded])
+          await Mapper.chatClientToMap(pluginInstance, _client, [channelAdded])
     });
   }
 
   void conversationJoined(dynamic channel) async {
     debug('Conversation Joined ChatClient Event');
     sendEvent('channelAdded', {
-      "channel": Mapper.channelToMap(pluginInstance, channel),
+      "channel": await Mapper.channelToMap(pluginInstance, channel),
     });
   }
 
-  void conversationLeft(dynamic data) {
+  void conversationLeft(dynamic data) async {
     debug('Conversation Left ChatClient Event');
     sendEvent(
       'channelDeleted',
       {
-        "channel": Mapper.channelToMap(pluginInstance, data.conversation),
+        "channel": await Mapper.channelToMap(pluginInstance, data.conversation),
       },
     );
   }

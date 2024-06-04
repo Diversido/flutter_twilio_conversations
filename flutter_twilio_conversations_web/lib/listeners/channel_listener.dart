@@ -6,8 +6,8 @@ import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
 
-import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
-import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
+import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
+import 'package:flutter_twilio_conversations_web/mapper.dart';
 import 'package:js/js.dart';
 
 // TODO implement this listener
@@ -42,16 +42,16 @@ class ChannelEventListener extends BaseListener {
         allowInterop(eventHandler),
       );
 
-  messageAdded(dynamic message) {
+  messageAdded(dynamic message) async {
     debug('Message Added Channel Event');
-    sendEvent("messageAdded", Mapper.messageToMap(message));
+    sendEvent("messageAdded", await Mapper.messageToMap(message));
   }
 
-  messageUpdated(dynamic data) {
+  messageUpdated(dynamic data) async {
     debug('Message Updated Channel Event');
 
     sendEvent("messageUpdated", {
-      "message": Mapper.messageToMap(data.message),
+      "message": await Mapper.messageToMap(data.message),
       "reason": {"type": "message", "value": data.reason.toString()}
     });
   }
@@ -95,11 +95,6 @@ class ChannelEventListener extends BaseListener {
   // override fun onSynchronizationChanged(channel: Conversation) {
   //     Log.d("TwilioInfo", "ChannelListener.onSynchronizationChanged => channelSid = ${channel.sid}")
   //     sendEvent("synchronizationChanged", mapOf("channel" to Mapper.channelToMap(pluginInstance, channel)))
-  // }
-
-  // private fun sendEvent(name: String, data: Any?, e: ErrorInfo? = null) {
-  //     val eventData = mapOf("name" to name, "data" to data, "error" to Mapper.errorInfoToMap(e))
-  //     events.success(eventData)
   // }
 
   sendEvent(String name, dynamic data, {ErrorInfo? e}) {

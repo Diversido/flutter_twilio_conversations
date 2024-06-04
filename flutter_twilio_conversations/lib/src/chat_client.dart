@@ -377,7 +377,7 @@ class ChatClient {
   void _parseEvents(dynamic event) {
     print('p: chatClient event recieved: ${event['name']}');
     final String eventName = event['name'];
-
+ print('p: chatClient event recieved: ${event['data']}');
     final data = Map<String, dynamic>.from(event['data'] ?? {});
     if (data['chatClient'] != null) {
       print("p: chatClient in parse events does not equal null");
@@ -410,9 +410,11 @@ class ChatClient {
 
     dynamic reason;
     if (data['reason'] != null) {
+          print('channel where it is breaking number 2 ${data['reason']}');
       final reasonMap =
           Map<String, dynamic>.from(data['reason'] as Map<dynamic, dynamic>);
       if (reasonMap['type'] == 'channel') {
+     
         reason = EnumToString.fromString(
             ChannelUpdateReason.values, reasonMap['value']);
       } else if (reasonMap['type'] == 'user') {

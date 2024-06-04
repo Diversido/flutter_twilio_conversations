@@ -1,13 +1,18 @@
 import 'dart:async';
+import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
-import 'package:flutter_twilio_conversations_web/methods/listeners/chat_listener.dart';
-import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
+import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
+import 'package:flutter_twilio_conversations_web/mapper.dart';
+import 'package:flutter_twilio_conversations_web/methods/message_method.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
-import 'methods/listeners/channel_listener.dart';
+import 'listeners/channel_listener.dart';
 
 // TODO look at channel listeners and controllers
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
@@ -16,7 +21,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   static final _chatClientStreamController =
       StreamController<Map<String, dynamic>>.broadcast();
-
 
   // TODO update dynamic in both maps
   Map<String, ChannelEventListener> channelChannels = {};
@@ -82,6 +86,14 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     // TODO: implement getMembersCountChannel
     throw UnimplementedError();
   }
+
+  @override
+  Future<dynamic> getLastMessages(int count, Channel _channel) async {
+    return await MessageMethods().getLastMessages(count, _channel, _chatClient);
+  }
+
+  @override
+  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {}
 
   @override
   Future<int> getMessagesCountChannel(String channelSid) {

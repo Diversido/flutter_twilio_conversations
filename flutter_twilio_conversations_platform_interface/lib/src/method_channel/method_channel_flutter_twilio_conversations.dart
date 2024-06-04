@@ -147,6 +147,23 @@ class MethodChannelFlutterTwilioConversations
         .invokeMethod('Channel#typing', {'channelSid': channelSid});
   }
 
+  @override
+  Future<dynamic> getLastMessages(int count, Channel _channel) async {
+    return await _methodChannel.invokeMethod('Messages#getLastMessages', {
+      'count': count,
+      'channelSid': _channel.sid,
+    });
+  }
+
+  @override
+  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
+    return await _methodChannel.invokeMethod('Messages#sendMessage', {
+      'options': options.toMap(),
+      'channelSid': _channel.sid,
+    });
+  }
+
+  @override
   Future<void> platformDebug(bool dart, bool native, bool sdk) async {
     return await _methodChannel
         .invokeMethod('debug', {'native': native, 'sdk': sdk});

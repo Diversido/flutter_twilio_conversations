@@ -20,13 +20,10 @@ class Messages {
   /// Sends a message to the channel.
   Future<Message?> sendMessage(MessageOptions options) async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Messages#sendMessage', {
-      //   'options': options.toMap(),
-      //   'channelSid': _channel.sid,
-      // });
-      // final messageMap = Map<String, dynamic>.from(methodData);
-      // return Message._fromMap(messageMap, this);
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .sendMessage(options, _channel);
+      final messageMap = Map<String, dynamic>.from(methodData);
+      return Message._fromMap(messageMap, this);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -92,19 +89,18 @@ class Messages {
   /// Load last messages in chat.
   Future<List<Message>?> getLastMessages(int count) async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Messages#getLastMessages', {
-      //   'count': count,
-      //   'channelSid': _channel.sid,
-      // });
-      // final List<Map<String, dynamic>> messageMapList = methodData
-      //     .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
-      //     .toList();
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getLastMessages(count, _channel);
+      print('methodData: $methodData');
+      final List<Map<String, dynamic>> messageMapList = methodData
+          .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
+          .toList();
 
       var messages = <Message>[];
-      // for (final messageMap in messageMapList) {
-      //   messages.add(Message._fromMap(messageMap, this));
-      // }
+      for (final messageMap in messageMapList) {
+        print('messageMap: $messageMap');
+        messages.add(Message._fromMap(messageMap, this));
+      }
       return messages;
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);

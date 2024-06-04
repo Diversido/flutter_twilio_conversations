@@ -125,7 +125,16 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
   }
 
   Future<void> platformDebug(bool dart, bool native, bool sdk) {
-    throw UnimplementedError('debug() has not been implemented');
+    throw UnimplementedError('platformDebug() has not been implemented');
+  }
+
+  Future<dynamic> getLastMessages(int count, Channel _channel) async {
+    throw UnimplementedError('getLastMessages() has not been implemented');
+  }
+
+  @override
+  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
+    throw UnimplementedError('sendMessage() has not been implemented');
   }
 
   /// This stream is used to update the ChatClient in a plugin implementation.

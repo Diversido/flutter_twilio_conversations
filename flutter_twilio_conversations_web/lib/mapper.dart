@@ -6,12 +6,14 @@ import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/media.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
-import 'package:flutter_twilio_conversations_web/methods/listeners/channel_listener.dart';
+import 'package:flutter_twilio_conversations_web/listeners/channel_listener.dart';
 import 'package:intl/intl.dart';
 
 class Mapper {
@@ -21,9 +23,9 @@ class Mapper {
     List<TwilioConversationsChannel>? channels,
   ) async {
     // final users = await promiseToFuture(chatClient.getSubscribedUsers()); // TODO move this outside of Mapper
-
+    final channelsMapped = await channelsToMap(pluginInstance, channels);
     return {
-      "channels": await channelsToMap(pluginInstance, channels),
+      "channels": channelsMapped,
       "myIdentity": "", // TODO
       "connectionState": connectionStateToString(chatClient.connectionState),
       // "users": usersToMap(users), //TODO
@@ -31,16 +33,19 @@ class Mapper {
     };
   }
 
+//MappedListIterable<TwilioConversationsChannel, Future<Map<String, dynamic>?>> (())
   static String connectionStateToString(ConnectionState state) {
     return state.toString().split('.').last;
   }
 
-  static Future<Map<String, dynamic>?> channelsToMap(
-      TwilioConversationsPlugin pluginInstance,
-      List<TwilioConversationsChannel>? channels) async {
+  static Future<Map<String, dynamic>> channelsToMap(
+    TwilioConversationsPlugin pluginInstance,
+    List<TwilioConversationsChannel>? channels,
+  ) async {
     if (channels == null) return {};
-    var subscribedChannelsMap = await channels
-        .map((channel) async => await channelToMap(pluginInstance, channel));
+    final subscribedChannelsMap = await Future.wait(
+      channels.map((channel) => channelToMap(pluginInstance, channel)).toList(),
+    );
 
     return {"subscribedChannels": subscribedChannelsMap};
   }
@@ -95,25 +100,42 @@ class Mapper {
       ); */
     }
 
-    final messages =
-        await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
-            channel.getMessages());
+    try {
+      final messages =
+          await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
+              channel.getMessages());
+      final channelMap = {
+        'sid': channel.sid,
+        'type': 'UNKNOWN',
+        'messages': messagesToMap(messages.items),
+        'attributes': attributesToMap(channel.attributes),
+        'status': channel.status,
+        'synchronizationStatus': 'ALL',
+        'dateCreated': dateToString(channel.dateCreated),
+        'createdBy': channel.createdBy,
+        'dateUpdated': dateToString(channel.dateUpdated),
+        'lastMessageDate': dateToString(channel.lastMessage?.dateCreated),
+        'lastMessageIndex': channel.lastMessage?.index,
+      };
 
-    final channelMap = {
-      'sid': channel.sid,
-      'type': 'UNKNOWN',
-      'messages': messagesToMap(messages.items),
-      'attributes': attributesToMap(channel.attributes),
-      'status': channel.status,
-      'synchronizationStatus': 'ALL',
-      'dateCreated': dateToString(channel.dateCreated),
-      'createdBy': channel.createdBy,
-      'dateUpdated': dateToString(channel.dateUpdated),
-      'lastMessageDate': dateToString(channel.lastMessage?.dateCreated),
-      'lastMessageIndex': channel.lastMessage?.index,
-    };
+      return channelMap;
+    } catch (e) {
+      final channelMap = {
+        'sid': channel.sid,
+        'type': 'UNKNOWN',
+        'messages': messagesToMap(<TwilioConversationsMessage>[]),
+        'attributes': attributesToMap(channel.attributes),
+        'status': channel.status,
+        'synchronizationStatus': 'ALL',
+        'dateCreated': dateToString(channel.dateCreated),
+        'createdBy': channel.createdBy,
+        'dateUpdated': dateToString(channel.dateUpdated),
+        'lastMessageDate': dateToString(channel.lastMessage?.dateCreated),
+        'lastMessageIndex': channel.lastMessage?.index,
+      };
 
-    return channelMap;
+      return channelMap;
+    }
   }
 
   static Map<String, dynamic>? usersToMap(
@@ -192,20 +214,47 @@ class Mapper {
     return dateFormat.format(dateTime);
   }
 
-  static Map<String, dynamic> messageToMap(TwilioConversationsMessage message) {
-    //TODO
-    return {
+  static Future<Map<String, dynamic>> messageToMap(
+      TwilioConversationsMessage message) async {
+    try {
+      final member = await promiseToFuture<TwilioConversationsMember>(
+          message.getParticipant());
+      return messageMapped(message, member);
+    } catch (e) {
+      return messageMapped(message, null);
+    }
+  }
+
+  static Map<String, dynamic> messageMapped(
+      TwilioConversationsMessage message, TwilioConversationsMember? member) {
+    final messageMapped = {
       "sid": message.sid,
       "author": message.author,
-      "dateCreated": message.dateCreated,
+      "dateCreated": dateToString(message.dateCreated),
       "messageBody": message.body,
-      "channelSid": message.channelSid,
+      "channelSid": message.conversation.sid,
       "memberSid": message.participantSid,
-      // "member": memberToMap(message.participant), //TODO implement memberToMap
+      "member": memberToMap(member),
       "messageIndex": message.index,
-      // "hasMedia": message.getAttachedMedia().isNotEmpty(), //TODO Implement
+      "hasMedia":
+          false, //message.getAttachedMedia().isNotEmpty(), //TODO Implement
       // "media": mediaToMap(message), //TODO Implement
       "attributes": attributesToMap(message.attributes),
+    };
+
+    return messageMapped;
+  }
+
+  static Map<String, dynamic>? memberToMap(TwilioConversationsMember? member) {
+    if (member == null) return null;
+    return {
+      "sid": member.sid,
+      "lastReadMessageIndex": member.lastReadMessageIndex,
+      "lastReadTimestamp": dateToString(member.lastReadTimestamp),
+      "channelSid": member.conversation.sid,
+      "identity": member.identity,
+      "type": member.type,
+      "attributes": attributesToMap(member.attributes)
     };
   }
 
