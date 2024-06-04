@@ -9,7 +9,6 @@ import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 
 class MessageMethods {
-  @override
   Future<dynamic> getLastMessages(int count, Channel _channel,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
     // check channel exists
@@ -32,10 +31,79 @@ class MessageMethods {
     return messageList;
   }
 
-  @override
-  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {}
-}
+  Future<dynamic> sendMessage(MessageOptions options, Channel _channel,
+      TwilioWebClient.TwilioConversationsClient? _chatClient) async {
+    try {
+      final channels =
+          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+        _chatClient!.getSubscribedConversations(),
+      );
 
+      final channel =
+          channels.items.firstWhere((element) => element.sid == _channel.sid);
+
+      final optionsMapped = options.toMap();
+
+      dynamic messagePreparator = await channel.prepareMessage();
+
+      if ((optionsMapped["body"]) != null) {
+        messagePreparator.setBody(optionsMapped["body"]);
+      }
+
+      if (optionsMapped["attributes"] != null) {
+        messagePreparator.setAttributes(
+            optionsMapped["attributes"] as Map<String, dynamic>?);
+      }
+
+      if (optionsMapped["input"] != null &&
+          (optionsMapped["mimeType"] as String?) != null) {
+        final input = optionsMapped["input"] as String;
+        final mimeType = optionsMapped["mimeType"] as String?;
+
+        // channel.prepareMessage().addMedia(FileInputStream(input), mimeType, "image.jpeg", object : MediaUploadListener {
+        //     override fun onCompleted(mediaSid: String) {
+        //         Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onCompleted")
+        //         pluginInstance.mediaProgressSink?.success({
+        //             "mediaProgressListenerId" to options["mediaProgressListenerId"]
+        //             "name" to "completed"
+        //             "data" to mediaSid
+        //         })
+        //     }
+
+        //     override fun onStarted() {
+        //         Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onStarted")
+        //         pluginInstance.mediaProgressSink?.success({
+        //             "mediaProgressListenerId" to options["mediaProgressListenerId"]
+        //             "name" to "started"
+        //         })
+        //     }
+
+        //     override fun onFailed(errorInfo: ErrorInfo) {
+        //         Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.addMedia) => onFailed")
+        //         result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
+        //     }
+        // }).buildAndSend(object : CallbackListener<Message> {
+        //     override fun onSuccess(message: Message) {
+        //         Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.sendMessage) => onSuccess")
+        //         result.success(Mapper.messageToMap(message))
+        //     }
+
+        //     override fun onError(errorInfo: ErrorInfo) {
+        //         Log.d("TwilioInfo", "MessagesMethods.sendMessage (Message.sendMessage) => onError: $errorInfo")
+        //         result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
+        //     }
+        // })
+      } else {
+        messagePreparator
+            .build()
+            .send()
+            .then((value) => Mapper.messageToMap(value));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+}
 /*val options = call.argument<Map<String, Any>>("options")
                 ?: return result.error("ERROR", "Missing 'options'", null)
         val channelSid = call.argument<String>("channelSid")

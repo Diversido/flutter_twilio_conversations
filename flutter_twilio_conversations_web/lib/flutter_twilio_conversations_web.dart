@@ -93,7 +93,9 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {}
+  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
+    return await MessageMethods().sendMessage(options, _channel, _chatClient);
+  }
 
   @override
   Future<int> getMessagesCountChannel(String channelSid) {

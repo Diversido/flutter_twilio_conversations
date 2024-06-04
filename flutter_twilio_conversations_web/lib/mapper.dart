@@ -178,6 +178,12 @@ class Mapper {
     }
   }
 
+  // static Attributes? mapToAttributes( Map<String, dynamic>? map) {
+  //       if (map == null) return null;
+  //       val attrObject = mapToJSONObject(map);
+  //       if (attrObject != null) return Attributes(attrObject); else return null;
+  //   }
+
   static Map<String, dynamic>? attributesToMap(JSONValue? attributes) {
     if (attributes == null) {
       return {"type": "NULL", "data": null};
