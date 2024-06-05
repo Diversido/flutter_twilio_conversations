@@ -19,6 +19,7 @@ class MethodChannelFlutterTwilioConversations
   MethodChannelFlutterTwilioConversations()
       : _methodChannel = MethodChannel('flutter_twilio_conversations'),
         _chatChannel = EventChannel('flutter_twilio_conversations/room'),
+
         super();
 
   /// This constructor is only used for testing and shouldn't be accessed by
@@ -181,5 +182,14 @@ class MethodChannelFlutterTwilioConversations
     }
   }
 
-  Stream<Map<String, dynamic>>? channelStream(String channel) {}
+  Stream<Map<dynamic, dynamic>>? channelStream(String sid) {
+       try {
+      return EventChannel('flutter_twilio_conversations/$sid').receiveBroadcastStream().map((event) {
+        return event as Map<dynamic, dynamic>;
+      });
+    } catch (e) {
+      print('chatClientStream error: $e');
+      return null;
+    }
+  }
 }

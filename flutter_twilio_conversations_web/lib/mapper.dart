@@ -185,6 +185,12 @@ class Mapper {
   //   }
 
   static Map<String, dynamic>? attributesToMap(JSONValue? attributes) {
+    print('attributes testing: ${attributes}');
+    print('attributes testing: ${attributes?.value}');
+    print('attributes testing: ${attributes?.number}');
+    print('attributes testing: ${attributes?.string}');
+    print('attributes testing: ${attributes?.JSONObject}');
+    print('attributes testing: ${attributes?.JSONArray}');
     if (attributes == null) {
       return {"type": "NULL", "data": null};
     } else if (attributes.number != null) {

@@ -184,9 +184,9 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Stream<Map<String, dynamic>> channelStream(String channelId) {
+  Stream<Map<String, dynamic>> channelStream(String channelSid) {
     print('TwilioConversationsPlugin.channel => starting stream');
-    return channelListeners[channelId]!.stream;
+    return channelListeners[channelSid]!.stream;
   }
 
   Future<void> platformDebug(bool dart, bool native, bool sdk) {

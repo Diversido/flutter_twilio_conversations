@@ -241,14 +241,11 @@ class Channel {
     _members = Members(_sid);
     print('p: channel constructor called $_sid');
 
-    _channelStreams[_sid] ??= EventChannel('flutter_twilio_conversations/$_sid')
-        .receiveBroadcastStream(0);
+    _channelStreams[_sid] ??=
+        FlutterTwilioConversationsPlatform.instance.channelStream(_sid)!;
 
-    _channelStreamSubscriptions[_sid] ??= FlutterTwilioConversationsPlatform
-        .instance
-        .channelStream(_sid)!
-        .listen((_parseEvents));
-    //  _channelStreams[_sid]!.listen(_parseEvents);
+    _channelStreamSubscriptions[_sid] ??=
+        _channelStreams[_sid]!.listen(_parseEvents);
   }
 
   /// Construct from a map.

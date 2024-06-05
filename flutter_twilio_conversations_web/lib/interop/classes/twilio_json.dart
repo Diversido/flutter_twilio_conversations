@@ -8,6 +8,7 @@ class JSONValue {
   external dynamic get boolean;
   external dynamic get JSONObject;
   external dynamic get JSONArray;
+  external dynamic get value;
 }
 
 @JS('Twilio.JSONObject')
