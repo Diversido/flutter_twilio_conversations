@@ -180,12 +180,8 @@ class Mapper {
         return {"type": "NULL", "data": null};
       }
       final map = jsToMap(attributes);
-      if (map.isEmpty) {
-        return {"type": "NULL", "data": '{}'};
-      }
       return {"type": "OBJECT", "data": json.encode(map)};
     } catch (e) {
-      print("error mapping attributes: $e");
       return {"type": "NULL", "data": null};
     }
     // TODO untested
@@ -218,8 +214,10 @@ class Mapper {
 
   static String? dateToString(dynamic date) {
     if (date == null) return null;
-    final dateTime = DateTime.fromMicrosecondsSinceEpoch(date.getTime() * 1000);
-    final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final dateTime = DateTime.fromMicrosecondsSinceEpoch(
+      date.getTime() * 1000,
+    ).toUtc();
+    final dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     return dateFormat.format(dateTime);
   }
 
