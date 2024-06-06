@@ -62,20 +62,16 @@ class Messages {
   /// Fetch at most count messages including and subsequent to the specified index.
   Future<List<Message>> getMessagesAfter(int index, int count) async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Messages#getMessagesAfter', {
-      //   'index': index,
-      //   'count': count,
-      //   'channelSid': _channel.sid,
-      // });
-      // final List<Map<String, dynamic>> messageMapList = methodData
-      //     .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
-      //     .toList();
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getMessagesBefore(index, count, _channel);
+      final List<Map<String, dynamic>> messageMapList = methodData
+          .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
+          .toList();
 
       var messages = <Message>[];
-      // for (final messageMap in messageMapList) {
-      //   messages.add(Message._fromMap(messageMap, this));
-      // }
+      for (final messageMap in messageMapList) {
+        messages.add(Message._fromMap(messageMap, this));
+      }
       return messages;
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
