@@ -27,7 +27,7 @@ class MessagesMethods {
         await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(channels
             .items
             .firstWhere((element) => element.sid == _channel.sid)
-            .getMessages());
+            .getMessages(50, 0, "forward"));
 
     final messageList = await Future.wait(
         messages.items.map((message) => Mapper.messageToMap(message)));
@@ -90,5 +90,21 @@ class MessagesMethods {
     return await channels.items
         .firstWhere((element) => element.sid == _channel.sid)
         .setAllMessagesRead();
+  }
+
+  Future<dynamic> getMessagesDirection(
+      int index,
+      int count,
+      Channel _channel,
+      TwilioWebClient.TwilioConversationsClient? _chatClient,
+      String direction) async {
+    final channels =
+        await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+      _chatClient!.getSubscribedConversations(),
+    );
+
+    return await channels.items
+        .firstWhere((element) => element.sid == _channel.sid)
+        .getMessages(50, index, direction);
   }
 }

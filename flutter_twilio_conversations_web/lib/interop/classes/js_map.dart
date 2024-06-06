@@ -3,18 +3,26 @@ library js_map;
 
 import 'dart:js';
 import 'dart:js_util';
-
 import 'package:js/js.dart';
 
 Map jsToMap(jsObject) {
-  return new Map.fromIterable(_getKeysOfObject(jsObject), value: (key) {
-    var property = getProperty(jsObject, key);
-    if (property is !String) {
-      return jsToMap(property);
-    } else {
-      return property;
-    }
-  });
+  try {
+    return new Map.fromIterable(_getKeysOfObject(jsObject), value: (key) {
+      var property = getProperty(jsObject, key);
+      if (property is! String &&
+          property is! num &&
+          property is! bool &&
+          property is! List &&
+          property is! Map) {
+        return jsToMap(property);
+      } else {
+        return property;
+      }
+    });
+  } catch (e) {
+    print(e);
+    return {};
+  }
 }
 
 // https://www.phind.com/search?cache=q0tfe6yb900vsbhbykhl2ejx

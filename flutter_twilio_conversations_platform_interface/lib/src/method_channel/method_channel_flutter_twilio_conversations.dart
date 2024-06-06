@@ -155,6 +155,26 @@ class MethodChannelFlutterTwilioConversations
     });
   }
 
+  @override
+  Future<dynamic> getMessagesAfter(
+      int index, int count, Channel _channel) async {
+    return await _methodChannel.invokeMethod('Messages#getMessagesAfter', {
+      'index': index,
+      'count': count,
+      'channelSid': _channel.sid,
+    });
+  }
+
+  @override
+  Future<dynamic> getMessagesBefore(
+      int index, int count, Channel _channel) async {
+    return await _methodChannel.invokeMethod('Messages#getMessagesBefore', {
+      'index': index,
+      'count': count,
+      'channelSid': _channel.sid,
+    });
+  }
+
   Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
     return await _methodChannel.invokeMethod(
         'Messages#setAllMessagesReadWithResult', {'channelSid': _channel.sid});

@@ -136,6 +136,16 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getLastMessages() has not been implemented');
   }
 
+  Future<dynamic> getMessagesAfter(
+      int index, int count, Channel _channel) async {
+    throw UnimplementedError('getMessagesAfter() has not been implemented');
+  }
+
+  Future<dynamic> getMessagesBefore(
+      int index, int count, Channel _channel) async {
+    throw UnimplementedError('getMessagesBefore() has not been implemented');
+  }
+
   Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
     throw UnimplementedError('sendMessage() has not been implemented');
   }

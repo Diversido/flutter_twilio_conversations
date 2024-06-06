@@ -100,7 +100,7 @@ class Mapper {
     try {
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
-              channel.getMessages());
+              channel.getMessages(50, 0, "forward"));
       return channelsMapped(pluginInstance, channel, messages);
     } catch (e) {
       return channelsMapped(pluginInstance, channel, null);
@@ -181,10 +181,11 @@ class Mapper {
       }
       final map = jsToMap(attributes);
       if (map.isEmpty) {
-        return {"type": "NULL", "data": null};
+        return {"type": "NULL", "data": '{}'};
       }
       return {"type": "OBJECT", "data": json.encode(map)};
     } catch (e) {
+      print("error mapping attributes: $e");
       return {"type": "NULL", "data": null};
     }
     // TODO untested

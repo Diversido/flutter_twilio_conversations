@@ -9,7 +9,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
-import 'package:flutter_twilio_conversations_web/methods/messages_method.dart';
+import 'package:flutter_twilio_conversations_web/methods/messages_methods.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'listeners/channel_listener.dart';
@@ -90,6 +90,20 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
     return await MessagesMethods()
         .setAllMessagesReadWithResult(_channel, _chatClient);
+  }
+
+  @override
+  Future<dynamic> getMessagesAfter(
+      int index, int count, Channel _channel) async {
+    return await MessagesMethods()
+        .getMessagesDirection(index, count, _channel, _chatClient, "forward");
+  }
+
+  @override
+  Future<dynamic> getMessagesBefore(
+      int index, int count, Channel _channel) async {
+    return await MessagesMethods()
+        .getMessagesDirection(index, count, _channel, _chatClient, "backwards");
   }
 
   @override
@@ -199,3 +213,62 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError('debug() has not been implemented');
   }
 }
+
+/*
+ChannelMethods___
+getMembersCount
+setAttributes
+getFriendlyName
+setFriendlyName
+getNotificationLevel
+setNotificationLevel
+getUniqueName
+setUniqueName
+join
+leave
+typing
+destroy
+getMessagesCount
+getUnreadMessagesCount
+ChannelsMethods___
+getChannel
+getPublicChannelsList
+getUserChannelsList
+createChannel
+ChatClientMethods__
+updateToken
+shutdown
+MemberMethods__
+getChannel
+getUserDescriptor
+getAndSubscribeUser
+setAttributes
+MembersMethods__
+getChannel
+getMembersList
+getMember
+addByIdentity
+inviteByIdentity
+removeByIdentity
+MessageMethods__
+getChannel
+updateMessageBody
+setAttributes
+getMedia
+MessagesMethods___
+removeMessage
+getMessagesBefore
+getMessagesAfter
+getLastMessages
+getMessageByIndex
+setLastReadMessageIndexWithResult
+advanceLastReadMessageIndexWithResult
+setAllMessagesReadWithResult
+setNoMessagesReadWithResult
+Users__
+unsubscribe
+Users__
+getChannelUserDescriptors
+getUserDescriptor
+getAndSubscribeUser
+*/
