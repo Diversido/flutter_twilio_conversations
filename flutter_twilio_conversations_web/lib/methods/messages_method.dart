@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:js_util';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
@@ -10,7 +11,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 
-class MessageMethods {
+class MessagesMethods {
   Future<dynamic> getLastMessages(int count, Channel _channel,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
     // check channel exists
@@ -62,29 +63,32 @@ class MessageMethods {
         final input = optionsMapped["input"] as String;
         final mimeType = optionsMapped["mimeType"] as String?;
 
-        final formData = dio.FormData.fromMap({
-          "data": "{}",
-          "files.image": await dio.MultipartFile.fromFile(
-              "${documentDirectory.path}/picture.png",
-              filename: "picture.png",
-              contentType: MediaType('image', 'png'))
+        final media = FormData.fromMap({
+          'contentType': mimeType,
+          'filename': DateTime.now().toIso8601String(),
+          'media': await MultipartFile.fromFile(input, filename: 'upload.txt'),
         });
 
-        final media = File(input);
-        Stream<String> lines = media
-            .openRead()
-            .transform(utf8.decoder) // Decode bytes to UTF-8.
-            .transform(LineSplitter());
-        messagePreparator.addMedia(
-            input, mimeType, "image.jpeg", (mediaSid) {});
-      } else {
-        messagePreparator
-            .build()
-            .send()
-            .then((value) => Mapper.messageToMap(value));
+        messagePreparator.addMedia(media);
       }
+      messagePreparator
+          .build()
+          .send()
+          .then((value) => Mapper.messageToMap(value));
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<int?> setAllMessagesReadWithResult(Channel _channel,
+      TwilioWebClient.TwilioConversationsClient? _chatClient) async {
+    final channels =
+        await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+      _chatClient!.getSubscribedConversations(),
+    );
+
+    return await channels.items
+        .firstWhere((element) => element.sid == _channel.sid)
+        .setAllMessagesRead();
   }
 }

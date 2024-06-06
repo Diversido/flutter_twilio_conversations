@@ -19,7 +19,6 @@ class MethodChannelFlutterTwilioConversations
   MethodChannelFlutterTwilioConversations()
       : _methodChannel = MethodChannel('flutter_twilio_conversations'),
         _chatChannel = EventChannel('flutter_twilio_conversations/room'),
-
         super();
 
   /// This constructor is only used for testing and shouldn't be accessed by
@@ -156,6 +155,11 @@ class MethodChannelFlutterTwilioConversations
     });
   }
 
+  Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
+    return await _methodChannel.invokeMethod(
+        'Messages#setAllMessagesReadWithResult', {'channelSid': _channel.sid});
+  }
+
   @override
   Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
     return await _methodChannel.invokeMethod('Messages#sendMessage', {
@@ -183,8 +187,10 @@ class MethodChannelFlutterTwilioConversations
   }
 
   Stream<Map<dynamic, dynamic>>? channelStream(String sid) {
-       try {
-      return EventChannel('flutter_twilio_conversations/$sid').receiveBroadcastStream().map((event) {
+    try {
+      return EventChannel('flutter_twilio_conversations/$sid')
+          .receiveBroadcastStream()
+          .map((event) {
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {

@@ -9,7 +9,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
-import 'package:flutter_twilio_conversations_web/methods/message_method.dart';
+import 'package:flutter_twilio_conversations_web/methods/messages_method.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'listeners/channel_listener.dart';
@@ -87,14 +87,20 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError();
   }
 
+  Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
+    return await MessagesMethods()
+        .setAllMessagesReadWithResult(_channel, _chatClient);
+  }
+
   @override
   Future<dynamic> getLastMessages(int count, Channel _channel) async {
-    return await MessageMethods().getLastMessages(count, _channel, _chatClient);
+    return await MessagesMethods()
+        .getLastMessages(count, _channel, _chatClient);
   }
 
   @override
   Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
-    return await MessageMethods().sendMessage(options, _channel, _chatClient);
+    return await MessagesMethods().sendMessage(options, _channel, _chatClient);
   }
 
   @override

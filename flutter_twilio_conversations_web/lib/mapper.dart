@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:js';
 import 'dart:js_util';
 
 import 'package:flutter/services.dart';
@@ -104,38 +106,31 @@ class Mapper {
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
               channel.getMessages());
-      final channelMap = {
-        'sid': channel.sid,
-        'type': 'UNKNOWN',
-        'messages': messagesToMap(messages.items),
-        'attributes': attributesToMap(channel.attributes),
-        'status': channel.status,
-        'synchronizationStatus': 'ALL',
-        'dateCreated': dateToString(channel.dateCreated),
-        'createdBy': channel.createdBy,
-        'dateUpdated': dateToString(channel.dateUpdated),
-        'lastMessageDate': dateToString(channel.lastMessage?.dateCreated),
-        'lastMessageIndex': channel.lastMessage?.index,
-      };
-
-      return channelMap;
+      channelsMapped(pluginInstance, channel, messages);
     } catch (e) {
-      final channelMap = {
-        'sid': channel.sid,
-        'type': 'UNKNOWN',
-        'messages': messagesToMap(<TwilioConversationsMessage>[]),
-        'attributes': attributesToMap(channel.attributes),
-        'status': channel.status,
-        'synchronizationStatus': 'ALL',
-        'dateCreated': dateToString(channel.dateCreated),
-        'createdBy': channel.createdBy,
-        'dateUpdated': dateToString(channel.dateUpdated),
-        'lastMessageDate': dateToString(channel.lastMessage?.dateCreated),
-        'lastMessageIndex': channel.lastMessage?.index,
-      };
-
-      return channelMap;
+      return channelsMapped(pluginInstance, channel, null);
     }
+  }
+
+  static channelsMapped(
+      TwilioConversationsPlugin pluginInstance,
+      TwilioConversationsChannel channel,
+      JSPaginator<TwilioConversationsMessage>? messages) {
+    final channelMap = {
+      'sid': channel.sid,
+      'type': 'UNKNOWN',
+      'messages': messagesToMap(messages?.items),
+      'attributes': attributesToMap(channel.attributes),
+      'status': channel.status,
+      'synchronizationStatus': 'ALL',
+      'dateCreated': dateToString(channel.dateCreated),
+      'createdBy': channel.createdBy,
+      'dateUpdated': dateToString(channel.dateUpdated),
+      'lastMessageDate': dateToString(channel.lastMessage?.dateCreated),
+      'lastMessageIndex': channel.lastMessage?.index,
+    };
+
+    return channelMap;
   }
 
   static Map<String, dynamic>? usersToMap(
@@ -185,10 +180,10 @@ class Mapper {
   //   }
 
   static Map<String, dynamic>? attributesToMap(JSONValue? attributes) {
-    print('attributes testing: ${attributes}');
     print('attributes testing: ${attributes?.value}');
     print('attributes testing: ${attributes?.number}');
-    print('attributes testing: ${attributes?.string}');
+    print('attributes testing: ${attributes}');
+    print('attributes testing: ${attributes?.type}');
     print('attributes testing: ${attributes?.JSONObject}');
     print('attributes testing: ${attributes?.JSONArray}');
     if (attributes == null) {

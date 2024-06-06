@@ -155,10 +155,9 @@ class Messages {
   /// Set last read message index to last message index in channel.
   Future<int?> setAllMessagesReadWithResult() async {
     try {
-      // return _lastReadMessageIndex =
-      //     await TwilioConversationsClient._methodChannel.invokeMethod(
-      //         'Messages#setAllMessagesReadWithResult',
-      //         {'channelSid': _channel.sid});
+      return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
+          .instance
+          .setAllMessagesReadWithResult(_channel);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

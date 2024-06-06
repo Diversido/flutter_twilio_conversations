@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  image_picker_for_web:
   redux: ^5.0.0
   flutter_redux: ^0.8.2
   redux_epics: ^0.15.0

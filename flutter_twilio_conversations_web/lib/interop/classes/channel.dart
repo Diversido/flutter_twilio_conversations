@@ -9,7 +9,7 @@ class TwilioConversationsChannel extends EventEmitter {
   external factory TwilioConversationsChannel();
 
   external String get sid;
-  external JSONValue? get attributes;
+  external JSONValue attributes;
   external String? createdBy;
   external dynamic dateCreated;
   external dynamic dateUpdated;
@@ -22,7 +22,7 @@ class TwilioConversationsChannel extends EventEmitter {
 
   external dynamic getMessages();
   external dynamic prepareMessage();
+  external dynamic setAllMessagesRead();
   external dynamic send();
-
-
+  external dynamic getAttributes();
 }

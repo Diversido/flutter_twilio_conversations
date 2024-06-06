@@ -1,9 +1,9 @@
 import 'package:js/js.dart';
 
-@JS('Twilio.JSONValue')
+@JS('Twilio.Conversations.JSONValue')
 class JSONValue {
-  external dynamic get NULL;
-  external dynamic get string;
+  external dynamic string;
+  external dynamic type;
   external dynamic get number;
   external dynamic get boolean;
   external dynamic get JSONObject;
