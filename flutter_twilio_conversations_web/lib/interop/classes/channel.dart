@@ -1,5 +1,6 @@
 import 'package:flutter_twilio_conversations_web/interop/classes/conversation_state.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/event_emitter.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/last_message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:js/js.dart';
@@ -9,7 +10,7 @@ class TwilioConversationsChannel extends EventEmitter {
   external factory TwilioConversationsChannel();
 
   external String get sid;
-  external JSONValue attributes;
+  external JSMap attributes;
   external String? createdBy;
   external dynamic dateCreated;
   external dynamic dateUpdated;

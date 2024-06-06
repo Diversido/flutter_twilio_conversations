@@ -16,6 +16,7 @@ class Attributes {
     final type =
         EnumToString.fromString(AttributesType.values, map['type'] ?? 'null') ??
             AttributesType.NULL;
+    print('p: Attributes.fromMap type: $type and ${map['data']}');
     return Attributes(type, map['data'] ?? '');
   }
 

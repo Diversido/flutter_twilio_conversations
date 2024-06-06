@@ -1,4 +1,5 @@
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:js/js.dart';
@@ -16,7 +17,7 @@ class TwilioConversationsMessage {
 
   external int index;
   // external List<Media> attachedMedia;
-  external JSONValue attributes;
+  external JSMap attributes;
 
   external TwilioConversationsMember getParticipant();
 }

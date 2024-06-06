@@ -1,7 +1,38 @@
 @JS()
 library js_map;
 
+import 'dart:js';
+import 'dart:js_util';
+
 import 'package:js/js.dart';
+
+Map jsToMap(jsObject) {
+  return new Map.fromIterable(_getKeysOfObject(jsObject), value: (key) {
+    var property = getProperty(jsObject, key);
+    if (property is !String) {
+      return jsToMap(property);
+    } else {
+      return property;
+    }
+  });
+}
+
+// https://www.phind.com/search?cache=q0tfe6yb900vsbhbykhl2ejx
+//   static Object jsToDart(jsObject) {
+//   if (jsObject is JsArray || jsObject is Iterable) {
+//     return jsObject.map(jsToDart).toList();
+//   }
+//   if (jsObject is JsObject) {
+//     return Map.fromIterable(
+//       getObjectKeys(jsObject),
+//       value: (key) => jsToDart(jsObject[key]),
+//     );
+//   }
+//   return jsObject;
+// }
+
+@JS('Object.keys')
+external List<String> _getKeysOfObject(jsObject);
 
 @JS('Map')
 class JSMap<K, V> {

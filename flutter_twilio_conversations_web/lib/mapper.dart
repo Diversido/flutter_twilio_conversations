@@ -63,10 +63,6 @@ class Mapper {
     //TODO Implement the same as Mapper.kt
     // Setting flutter event listener for the given channel if one does not yet exist.
 
-    /* _chatStream = FlutterTwilioConversationsPlatform.instance
-            .chatClientStream()!
-            .listen((_parseEvents));
-    */
     if (!pluginInstance.channelChannels.containsKey(channel.sid)) {
       final channelStreamController =
           StreamController<Map<String, dynamic>>.broadcast();
@@ -75,7 +71,6 @@ class Mapper {
         channel,
         channelStreamController,
       );
-      //  EventChannel('flutter_twilio_conversations/${channel.sid}') as ChannelEventListener;
 
       pluginInstance.channelChannels[channel.sid]!.addListeners();
 
@@ -106,7 +101,7 @@ class Mapper {
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
               channel.getMessages());
-      channelsMapped(pluginInstance, channel, messages);
+      return channelsMapped(pluginInstance, channel, messages);
     } catch (e) {
       return channelsMapped(pluginInstance, channel, null);
     }
@@ -179,26 +174,32 @@ class Mapper {
   //       if (attrObject != null) return Attributes(attrObject); else return null;
   //   }
 
-  static Map<String, dynamic>? attributesToMap(JSONValue? attributes) {
-    print('attributes testing: ${attributes?.value}');
-    print('attributes testing: ${attributes?.number}');
-    print('attributes testing: ${attributes}');
-    print('attributes testing: ${attributes?.type}');
-    print('attributes testing: ${attributes?.JSONObject}');
-    print('attributes testing: ${attributes?.JSONArray}');
-    if (attributes == null) {
-      return {"type": "NULL", "data": null};
-    } else if (attributes.number != null) {
-      return {"type": "NUMBER", "data": attributes.number?.toString()};
-    } else if (attributes.string != null) {
-      return {"type": "STRING", "data": attributes.string};
-    } else if (attributes.JSONArray != null) {
-      return {"type": "ARRAY", "data": attributes.JSONArray};
-    } else if (attributes.JSONObject != null) {
-      return {"type": "OBJECT", "data": attributes.JSONObject};
-    } else {
+  static Map<String, dynamic>? attributesToMap(dynamic attributes) {
+    try {
+      if (attributes == null) {
+        return {"type": "NULL", "data": null};
+      }
+      final map = jsToMap(attributes);
+      if (map.isEmpty) {
+        return {"type": "NULL", "data": null};
+      }
+      return {"type": "OBJECT", "data": json.encode(map)};
+    } catch (e) {
       return {"type": "NULL", "data": null};
     }
+    // TODO untested
+    // if (attributes == null) {
+    //   return {"type": "NULL", "data": null};
+    // } else if (attributes.number != null) {
+    //   return {"type": "NUMBER", "data": attributes.number?.toString()};
+    // } else if (attributes.string != null) {
+    //   return {"type": "STRING", "data": attributes.string};
+    // } else if (attributes.JSONArray != null) {
+    //   return {"type": "ARRAY", "data": attributes.JSONArray};
+    // } else if (attributes.JSONObject != null) {
+    // } else {
+    //   return {"type": "NULL", "data": null};
+    // }
   }
 
   static Map<String, dynamic>? messagesToMap(
