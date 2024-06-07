@@ -269,8 +269,8 @@ class ChatClient {
   /// Method to update the authentication token for this client.
   Future<void> updateToken(String token) async {
     try {
-      // return await TwilioConversationsClient._methodChannel.invokeMethod(
-      //     'ChatClient#updateToken', <String, Object>{'token': token});
+      return await FlutterTwilioConversationsPlatform.instance
+          .updateToken(token);
     } on PlatformException {
       return;
     }

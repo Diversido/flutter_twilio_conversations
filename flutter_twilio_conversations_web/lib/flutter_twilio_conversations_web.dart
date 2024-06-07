@@ -10,6 +10,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 import 'package:flutter_twilio_conversations_web/methods/channel_methods.dart';
+import 'package:flutter_twilio_conversations_web/methods/channels_methods.dart';
 import 'package:flutter_twilio_conversations_web/methods/messages_methods.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -51,13 +52,20 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     }
   }
 
+  Future<void> updateToken(String token) async {
+    _chatClient =
+        await promiseToFuture<TwilioWebClient.TwilioConversationsClient>(
+            _chatClient!.updateToken(token));
+  }
+
   Future<Map<dynamic, dynamic>> createChannel(
       String friendlyName, String channelType) async {
     throw UnimplementedError('createChannel() has not been implemented.');
   }
 
-  Future<dynamic> getChannel(String channelSidOrUniqueName) {
-    throw UnimplementedError('getChannel() has not been implemented.');
+  Future<dynamic> getChannel(String channelSidOrUniqueName) async {
+    return await ChannelsMethods()
+        .getChannel(channelSidOrUniqueName, _chatClient);
   }
 
   @override
@@ -78,13 +86,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Future<String> getFriendlyNameChannel(String channelSid) {
     print('web event: getFriendlyNameChannel');
     // TODO: implement getFriendlyNameChannel
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<int> getMembersCountChannel(String channelSid) {
-    print('web event: getMembersCountChannel');
-    // TODO: implement getMembersCountChannel
     throw UnimplementedError();
   }
 
@@ -122,6 +123,11 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Future<int> getUnreadMessagesCount(String channelSid) async {
     return await ChannelMethods()
         .getUnreadMessagesCount(channelSid, _chatClient);
+  }
+
+  @override
+  Future<void> typingChannel(String channelSid) async {
+    return await ChannelMethods().typing(channelSid, _chatClient);
   }
 
   @override
@@ -189,13 +195,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<void> typingChannel(String channelSid) {
-    print('web event: typingChannel');
-    // TODO: implement typingChannel
-    throw UnimplementedError();
-  }
-
-  @override
   Stream<Map<String, dynamic>> chatClientStream() {
     print('TwilioConversationsPlugin.create => starting stream');
     return _chatClientStreamController.stream;
@@ -213,7 +212,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 }
 
 /*
-ChannelMethods___
+___ChannelMethods___
 getMembersCount
 setAttributes
 getFriendlyName
@@ -228,20 +227,20 @@ typing
 destroy
 getMessagesCount
 getUnreadMessagesCount
-ChannelsMethods___
+___ChannelsMethods___
 getChannel
 getPublicChannelsList
 getUserChannelsList
 createChannel
-ChatClientMethods__
+___ChatClientMethods__
 updateToken
 shutdown
-MemberMethods__
+___MemberMethods__
 getChannel
 getUserDescriptor
 getAndSubscribeUser
 setAttributes
-MembersMethods__
+___MembersMethods__
 getChannel
 getMembersList
 getMember

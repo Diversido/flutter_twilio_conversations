@@ -36,6 +36,12 @@ class MethodChannelFlutterTwilioConversations
         <String, Object>{'token': token, 'properties': properties.toMap()});
   }
 
+  @override
+  Future<void> updateToken(String token) async {
+    return await _methodChannel.invokeMethod(
+        'ChatClient#updateToken', <String, Object>{'token': token});
+  }
+
   Future<Map<dynamic, dynamic>> createChannel(
       String friendlyName, String channelType) async {
     return await _methodChannel.invokeMethod(
@@ -45,7 +51,6 @@ class MethodChannelFlutterTwilioConversations
     });
   }
 
-// TODO Nic see if dynamic doesn't need to be returned
   Future<dynamic> getChannel(String channelSidOrUniqueName) {
     return _methodChannel.invokeMethod('Channels#getChannel',
         <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
