@@ -54,8 +54,7 @@ class MessagesMethods {
       }
 
       if (optionsMapped["attributes"] != null) {
-        messagePreparator.setAttributes(
-            optionsMapped["attributes"] as Map<String, dynamic>?);
+        messagePreparator.setAttributes(jsify(optionsMapped["attributes"]));
       }
 
       if (optionsMapped["input"] != null &&
