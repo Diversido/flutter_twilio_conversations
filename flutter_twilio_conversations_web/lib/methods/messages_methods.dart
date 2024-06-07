@@ -14,10 +14,8 @@ import 'package:flutter_twilio_conversations_web/mapper.dart';
 class MessagesMethods {
   Future<dynamic> getLastMessages(int count, Channel _channel,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
-    // check channel exists
-    // confused as to why we use this to get messages????
-    // chatclient get conversation
-    //channel get lastmessages???
+    // TODO check channel exists
+
     final channels =
         await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
       _chatClient!.getSubscribedConversations(),

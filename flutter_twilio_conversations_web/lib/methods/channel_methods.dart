@@ -33,4 +33,16 @@ class ChannelMethods {
 
     return unreadMessagesCount;
   }
+
+  Future<void> typing(String channelSid,
+      TwilioWebClient.TwilioConversationsClient? _chatClient) async {
+    final channels =
+        await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+      _chatClient!.getSubscribedConversations(),
+    );
+
+    await promiseToFuture<int>(channels.items
+        .firstWhere((element) => element.sid == channelSid)
+        .typing());
+  }
 }

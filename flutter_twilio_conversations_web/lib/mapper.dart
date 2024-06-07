@@ -70,6 +70,7 @@ class Mapper {
       pluginInstance.channelChannels[channel.sid] = ChannelEventListener(
         channel,
         channelStreamController,
+        pluginInstance,
       );
 
       pluginInstance.channelChannels[channel.sid]!.addListeners();

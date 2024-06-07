@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
+import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
 
 import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
@@ -23,13 +26,17 @@ import 'package:js/js.dart';
 class ChannelEventListener extends BaseListener {
   final TwilioClientConversation.TwilioConversationsChannel _channel;
   final StreamController<Map<String, dynamic>> _channelStreamController;
+  final TwilioConversationsPlugin pluginInstance;
 
-  ChannelEventListener(this._channel, this._channelStreamController) {}
+  ChannelEventListener(
+      this._channel, this._channelStreamController, this.pluginInstance) {}
 
   void addListeners() {
     debug('Adding chatClientEventListeners for ${_channel.sid}');
     _on('messageAdded', messageAdded);
     _on('messageUpdated', messageUpdated);
+    _on('typingStarted', onTypingStarted);
+    _on('typingEnded', onTypingEnded);
   }
 
   void _on(String eventName, Function eventHandler) => _channel.on(
@@ -53,6 +60,26 @@ class ChannelEventListener extends BaseListener {
     sendEvent("messageUpdated", {
       "message": await Mapper.messageToMap(data.message),
       "reason": {"type": "message", "value": data.reason.toString()}
+    });
+  }
+
+  onTypingEnded(
+      TwilioConversationsChannel channel, TwilioConversationsMember member) {
+    debug(
+        "ChannelListener.onTypingEnded => channelSid = ${channel.sid}, memberSid = ${member.sid}");
+    sendEvent("typingEnded", {
+      "channel": Mapper.channelToMap(pluginInstance, channel),
+      "member": Mapper.memberToMap(member)
+    });
+  }
+
+  onTypingStarted(
+      TwilioConversationsChannel channel, TwilioConversationsMember member) {
+    debug(
+        "ChannelListener.onTypingStarted => channelSid = ${channel.sid}, memberSid = ${member.sid}");
+    sendEvent("typingStarted", {
+      "channel": Mapper.channelToMap(pluginInstance, channel),
+      "member": Mapper.memberToMap(member)
     });
   }
 
@@ -80,16 +107,6 @@ class ChannelEventListener extends BaseListener {
   // override fun onParticipantDeleted(member: Participant) {
   //     Log.d("TwilioInfo", "ChannelListener.onMemberDeleted => memberSid = ${member.sid}")
   //     sendEvent("memberDeleted", mapOf("member" to Mapper.memberToMap(member)))
-  // }
-
-  // override fun onTypingStarted(channel: Conversation, member: Participant) {
-  //     Log.d("TwilioInfo", "ChannelListener.onTypingStarted => channelSid = ${channel.sid}, memberSid = ${member.sid}")
-  //     sendEvent("typingStarted", mapOf("channel" to Mapper.channelToMap(pluginInstance, channel), "member" to Mapper.memberToMap(member)))
-  // }
-
-  // override fun onTypingEnded(channel: Conversation, member: Participant) {
-  //     Log.d("TwilioInfo", "ChannelListener.onTypingEnded => channelSid = ${channel.sid}, memberSid = ${member.sid}")
-  //     sendEvent("typingEnded", mapOf("channel" to Mapper.channelToMap(pluginInstance, channel), "member" to Mapper.memberToMap(member)))
   // }
 
   // override fun onSynchronizationChanged(channel: Conversation) {
