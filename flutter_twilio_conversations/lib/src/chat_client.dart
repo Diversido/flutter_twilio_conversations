@@ -301,8 +301,7 @@ class ChatClient {
         print('ChatClient => TwilioLog failed to cancel notifications stream');
       }
       TwilioConversationsClient.chatClient = null;
-      // return await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('ChatClient#shutdown', null);
+      return await FlutterTwilioConversationsPlatform.instance.shutdown();
     } on PlatformException catch (err) {
       print('ChatClient => TwilioLog shutdown error: $err');
       throw TwilioConversationsClient._convertException(err);

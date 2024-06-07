@@ -48,6 +48,10 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('updateToken() has not been implemented.');
   }
 
+  Future<void> shutdown() async {
+    throw UnimplementedError('shutdown() has not been implemented.');
+  }
+
   Future<Map<dynamic, dynamic>> createChannel(
       String friendlyName, String channelType) {
     throw UnimplementedError('createChannel() has not been implemented.');

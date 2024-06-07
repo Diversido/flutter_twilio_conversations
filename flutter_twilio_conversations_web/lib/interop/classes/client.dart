@@ -18,6 +18,6 @@ class TwilioConversationsClient extends EventEmitter {
   external List<TwilioConversationsUser> getSubscribedUsers();
   external dynamic getConversationBySid(String channelSid);
   external dynamic updateToken(String token);
+  external dynamic shutdown();
   external dynamic getConversationByUniqueName(String UniqueName);
-
 }

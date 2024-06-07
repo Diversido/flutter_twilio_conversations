@@ -42,6 +42,11 @@ class MethodChannelFlutterTwilioConversations
         'ChatClient#updateToken', <String, Object>{'token': token});
   }
 
+  @override
+  Future<void> shutdown() async {
+    return await _methodChannel.invokeMethod('ChatClient#shutdown', null);
+  }
+
   Future<Map<dynamic, dynamic>> createChannel(
       String friendlyName, String channelType) async {
     return await _methodChannel.invokeMethod(
