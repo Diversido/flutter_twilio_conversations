@@ -9,6 +9,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
+import 'package:flutter_twilio_conversations_web/methods/channel_methods.dart';
 import 'package:flutter_twilio_conversations_web/methods/messages_methods.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -118,10 +119,14 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<int> getMessagesCountChannel(String channelSid) {
-    print('web event: getMessagesCountChannel');
-    // TODO: implement getMessagesCountChannel
-    throw UnimplementedError();
+  Future<int> getUnreadMessagesCount(String channelSid) async {
+    return await ChannelMethods()
+        .getUnreadMessagesCount(channelSid, _chatClient);
+  }
+
+  @override
+  Future<int> getMessagesCount(String channelSid) async {
+    return await ChannelMethods().getMessagesCount(channelSid, _chatClient);
   }
 
   @override
@@ -135,13 +140,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Future<String> getUniqueNameChannel(String channelSid) {
     print('web event: getUniqueNameChannel');
     // TODO: implement getUniqueNameChannel
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<int> getUnreadMessagesCountChannel(String channelSid) {
-    print('web event: getUnreadMessagesCountChannel');
-    // TODO: implement getUnreadMessagesCountChannel
     throw UnimplementedError();
   }
 

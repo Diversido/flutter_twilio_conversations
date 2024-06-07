@@ -76,7 +76,7 @@ class MethodChannelFlutterTwilioConversations
   }
 
   @override
-  Future<int> getMessagesCountChannel(String channelSid) async {
+  Future<int> getMessagesCount(String channelSid) async {
     return await _methodChannel
         .invokeMethod('Channel#getMessagesCount', {'channelSid': channelSid});
   }
@@ -94,7 +94,7 @@ class MethodChannelFlutterTwilioConversations
   }
 
   @override
-  Future<int> getUnreadMessagesCountChannel(String channelSid) async {
+  Future<int> getUnreadMessagesCount(String channelSid) async {
     return await _methodChannel.invokeMethod(
         'Channel#getUnreadMessagesCount', {'channelSid': channelSid});
   }
@@ -145,6 +145,12 @@ class MethodChannelFlutterTwilioConversations
   Future<void> typingChannel(String channelSid) {
     return _methodChannel
         .invokeMethod('Channel#typing', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<dynamic> getMessageByIndex(Channel _channel, int messageIndex) async {
+    return await _methodChannel.invokeMethod('Messages#getMessageByIndex',
+        {'channelSid': _channel.sid, 'messageIndex': messageIndex});
   }
 
   @override

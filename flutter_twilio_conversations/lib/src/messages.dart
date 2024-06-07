@@ -83,7 +83,6 @@ class Messages {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getLastMessages(count, _channel);
-      print('methodData: $methodData');
       final List<Map<String, dynamic>> messageMapList = methodData
           .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
           .toList();
@@ -102,11 +101,11 @@ class Messages {
   /// Get message object by known index.
   Future<Message?> getMessageByIndex(int messageIndex) async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Messages#getMessageByIndex',
-      //         {'channelSid': _channel.sid, 'messageIndex': messageIndex});
-      // final messageMap = Map<String, dynamic>.from(methodData);
-      // return Message._fromMap(messageMap, this);
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getMessageByIndex(_channel, messageIndex);
+
+      final messageMap = Map<String, dynamic>.from(methodData);
+      return Message._fromMap(messageMap, this);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

@@ -334,7 +334,7 @@ class Channel {
   Future<int> getMessagesCount() async {
     try {
       return await FlutterTwilioConversationsPlatform.instance
-          .getMessagesCountChannel(_sid);
+          .getMessagesCount(_sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -352,7 +352,7 @@ class Channel {
   Future<int?> getUnreadMessagesCount() async {
     try {
       return await FlutterTwilioConversationsPlatform.instance
-          .getUnreadMessagesCountChannel(_sid);
+          .getUnreadMessagesCount(_sid);
     } on PlatformException {
       return 0;
     }

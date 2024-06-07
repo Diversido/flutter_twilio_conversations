@@ -72,9 +72,8 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
         'getMembersCountChannel() has not been implemented');
   }
 
-  Future<int> getMessagesCountChannel(String channelSid) {
-    throw UnimplementedError(
-        'getMessagesCountChannel() has not been implemented');
+  Future<int> getMessagesCount(String channelSid) {
+    throw UnimplementedError('getMessagesCount() has not been implemented');
   }
 
   Future<String> getNotificationLevelChannel(String channelSid) {
@@ -86,9 +85,9 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getUniqueNameChannel() has not been implemented');
   }
 
-  Future<int> getUnreadMessagesCountChannel(String channelSid) {
+  Future<int> getUnreadMessagesCount(String channelSid) {
     throw UnimplementedError(
-        'getUnreadMessagesCountChannel() has not been implemented');
+        'getUnreadMessagesCount() has not been implemented');
   }
 
   Future<void> joinChannel(String channelSid) {
@@ -130,6 +129,11 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
 
   Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
     throw UnimplementedError('getLastMessages() has not been implemented');
+  }
+
+  Future<dynamic> getMessageByIndex(Channel _channel, int messageIndex) async {
+    throw UnimplementedError(
+        'getMessgetMessageByIndexagesAfter() has not been implemented');
   }
 
   Future<dynamic> getLastMessages(int count, Channel _channel) async {
