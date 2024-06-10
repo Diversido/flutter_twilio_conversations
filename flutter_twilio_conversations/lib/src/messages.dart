@@ -115,12 +115,9 @@ class Messages {
   Future<int?> setLastReadMessageIndexWithResult(
       int lastReadMessageIndex) async {
     try {
-      // return _lastReadMessageIndex = await TwilioConversationsClient
-      //     ._methodChannel
-      //     .invokeMethod('Messages#setLastReadMessageIndexWithResult', {
-      //   'channelSid': _channel.sid,
-      //   'lastReadMessageIndex': lastReadMessageIndex
-      // });
+      return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
+          .instance
+          .setLastReadMessageIndexWithResult(_channel, lastReadMessageIndex);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -132,12 +129,10 @@ class Messages {
   Future<int?> advanceLastReadMessageIndexWithResult(
       int lastReadMessageIndex) async {
     try {
-      // return _lastReadMessageIndex = await TwilioConversationsClient
-      //     ._methodChannel
-      //     .invokeMethod('Messages#advanceLastReadMessageIndexWithResult', {
-      //   'channelSid': _channel.sid,
-      //   'lastReadMessageIndex': lastReadMessageIndex
-      // });
+      return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
+          .instance
+          .advanceLastReadMessageIndexWithResult(
+              _channel, lastReadMessageIndex);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -157,10 +152,9 @@ class Messages {
   /// Set last read message index before the first message index in channel.
   Future<int?> setNoMessagesReadWithResult() async {
     try {
-      // return _lastReadMessageIndex =
-      //     await TwilioConversationsClient._methodChannel.invokeMethod(
-      //         'Messages#setNoMessagesReadWithResult',
-      //         {'channelSid': _channel.sid});
+      return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
+          .instance
+          .setNoMessagesReadWithResult(_channel);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

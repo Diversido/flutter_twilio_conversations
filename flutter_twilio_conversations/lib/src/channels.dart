@@ -72,11 +72,10 @@ class Channels {
   /// Returned list is wrapped in a [Paginator].
   Future<Paginator<ChannelDescriptor>?> getPublicChannelsList() async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Channels#getPublicChannelsList');
-      // final paginatorMap = Map<String, dynamic>.from(methodData);
-      // return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
-      return null;
+      final methodData = await TwilioConversationsClient._methodChannel
+          .invokeMethod('Channels#getPublicChannelsList');
+      final paginatorMap = Map<String, dynamic>.from(methodData);
+      return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

@@ -103,10 +103,40 @@ class MethodChannelFlutterTwilioConversations
         .invokeMethod('Channel#getUniqueName', {'channelSid': channelSid});
   }
 
+  Future<void> removeMessage(Channel _channel, Message message) async {
+    await _methodChannel.invokeMethod('Messages#removeMessage',
+        {'channelSid': _channel.sid, 'messageIndex': message.messageIndex});
+  }
+
   @override
-  Future<int?> getUnreadMessagesCount(String channelSid) async {
+  Future<int> getUnreadMessagesCount(String channelSid) async {
     return await _methodChannel.invokeMethod(
         'Channel#getUnreadMessagesCount', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<int?> setLastReadMessageIndexWithResult(
+      Channel _channel, int lastReadMessageIndex) async {
+    return await _methodChannel.invokeMethod(
+        'Messages#setLastReadMessageIndexWithResult', {
+      'channelSid': _channel.sid,
+      'lastReadMessageIndex': lastReadMessageIndex
+    });
+  }
+
+  @override
+  Future<int?> advanceLastReadMessageIndexWithResult(
+      Channel _channel, int lastReadMessageIndex) async {
+    return await _methodChannel.invokeMethod(
+        'Messages#advanceLastReadMessageIndexWithResult', {
+      'channelSid': _channel.sid,
+      'lastReadMessageIndex': lastReadMessageIndex
+    });
+  }
+
+  Future<int?> setNoMessagesReadWithResult(Channel _channel) async {
+    return _methodChannel.invokeMethod(
+        'Messages#setNoMessagesReadWithResult', {'channelSid': _channel.sid});
   }
 
   @override

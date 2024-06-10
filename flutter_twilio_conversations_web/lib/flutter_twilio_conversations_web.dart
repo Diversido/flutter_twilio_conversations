@@ -135,6 +135,27 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     return await ChannelMethods().getMessagesCount(channelSid, _chatClient);
   }
 
+  Future<int?> setLastReadMessageIndexWithResult(
+      Channel _channel, int lastReadMessageIndex) async {
+    throw UnimplementedError(
+        'setLastReadMessageIndexWithResult() has not been implemented');
+  }
+
+  Future<int?> advanceLastReadMessageIndexWithResult(
+      Channel _channel, int lastReadMessageIndex) async {
+    throw UnimplementedError(
+        'advanceLastReadMessageIndexWithResult() has not been implemented');
+  }
+
+  Future<int?> setNoMessagesReadWithResult(Channel _channel) async {
+    throw UnimplementedError(
+        'setNoMessagesReadWithResult() has not been implemented');
+  }
+
+  Future<void> removeMessage(Channel _channel, Message message) async {
+    throw UnimplementedError('removeMessage() has not been implemented');
+  }
+
   @override
   Future<String> getNotificationLevelChannel(String channelSid) {
     print('web event: getNotificationLevelChannel');

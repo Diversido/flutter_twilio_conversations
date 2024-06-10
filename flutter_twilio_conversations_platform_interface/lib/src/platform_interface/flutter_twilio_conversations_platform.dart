@@ -84,6 +84,27 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getMessagesCount() has not been implemented');
   }
 
+  Future<int?> setLastReadMessageIndexWithResult(
+      Channel _channel, int lastReadMessageIndex) async {
+    throw UnimplementedError(
+        'setLastReadMessageIndexWithResult() has not been implemented');
+  }
+
+  Future<int?> advanceLastReadMessageIndexWithResult(
+      Channel _channel, int lastReadMessageIndex) async {
+    throw UnimplementedError(
+        'advanceLastReadMessageIndexWithResult() has not been implemented');
+  }
+
+  Future<void> removeMessage(Channel _channel, Message message) async {
+    throw UnimplementedError('removeMessage() has not been implemented');
+  }
+
+  Future<int?> setNoMessagesReadWithResult(Channel _channel) async {
+    throw UnimplementedError(
+        'setNoMessagesReadWithResult() has not been implemented');
+  }
+
   Future<String> getNotificationLevelChannel(String channelSid) {
     throw UnimplementedError(
         'getNotificationLevelChannel() has not been implemented');
