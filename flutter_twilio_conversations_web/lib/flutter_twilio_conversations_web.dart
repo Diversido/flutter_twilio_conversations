@@ -58,6 +58,10 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
             _chatClient!.updateToken(token));
   }
 
+  Future<void> shutdown() async {
+    await promiseToFuture<void>(_chatClient!.shutdown());
+  }
+
   Future<Map<dynamic, dynamic>> createChannel(
       String friendlyName, String channelType) async {
     throw UnimplementedError('createChannel() has not been implemented.');
@@ -247,12 +251,12 @@ getMember
 addByIdentity
 inviteByIdentity
 removeByIdentity
-MessageMethods__
+___MessageMethods__
 getChannel
 updateMessageBody
 setAttributes
 getMedia
-MessagesMethods___
+___MessagesMethods___
 removeMessage
 getMessagesBefore
 getMessagesAfter
@@ -262,9 +266,9 @@ setLastReadMessageIndexWithResult
 advanceLastReadMessageIndexWithResult
 setAllMessagesReadWithResult
 setNoMessagesReadWithResult
-Users__
+___Users__
 unsubscribe
-Users__
+___Users__
 getChannelUserDescriptors
 getUserDescriptor
 getAndSubscribeUser
