@@ -32,9 +32,8 @@ class Messages {
   /// Removes a message from the channel.
   Future<void> removeMessage(Message message) async {
     try {
-      // await TwilioConversationsClient._methodChannel.invokeMethod(
-      //     'Messages#removeMessage',
-      //     {'channelSid': _channel.sid, 'messageIndex': message.messageIndex});
+      await FlutterTwilioConversationsPlatform.instance
+          .removeMessage(_channel, message);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

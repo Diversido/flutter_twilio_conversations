@@ -72,8 +72,8 @@ class Channels {
   /// Returned list is wrapped in a [Paginator].
   Future<Paginator<ChannelDescriptor>?> getPublicChannelsList() async {
     try {
-      final methodData = await TwilioConversationsClient._methodChannel
-          .invokeMethod('Channels#getPublicChannelsList');
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getPublicChannelsList();
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
     } on PlatformException catch (err) {
@@ -91,11 +91,10 @@ class Channels {
   /// Returned list is wrapped in a [Paginator].
   Future<Paginator<ChannelDescriptor>?> getUserChannelsList() async {
     try {
-      return null;
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Channels#getUserChannelsList');
-      // final paginatorMap = Map<String, dynamic>.from(methodData);
-      // return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getUserChannelsList();
+      final paginatorMap = Map<String, dynamic>.from(methodData);
+      return Paginator<ChannelDescriptor>._fromMap(paginatorMap);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -106,19 +105,16 @@ class Channels {
   /// The effect of this function is to find and return all Member instances across multiple channels with the given identity.
   Future<List<Member>?> getMembersByIdentity(String identity) async {
     try {
-      return null;
-      //   final methodData = await TwilioConversationsClient._methodChannel
-      //       .invokeMethod(
-      //           'Channels#getMembersByIdentity', {'identity': identity});
-      //   final List<Map<String, dynamic>> memberMapList = methodData
-      //       .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
-      //       .toList();
+      final methodData = await FlutterTwilioConversationsPlatform.instance.getMembersByIdentity(identity);
+      final List<Map<String, dynamic>> memberMapList = methodData
+          .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
+          .toList();
 
-      //   var memberList = <Member>[];
-      //   for (final memberMap in memberMapList) {
-      //     memberList.add(Member._fromMap(memberMap));
-      //   }
-      //   return memberList;
+      var memberList = <Member>[];
+      for (final memberMap in memberMapList) {
+        memberList.add(Member._fromMap(memberMap));
+      }
+      return memberList;
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

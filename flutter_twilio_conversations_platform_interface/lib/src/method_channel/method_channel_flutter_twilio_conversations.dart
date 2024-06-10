@@ -61,6 +61,19 @@ class MethodChannelFlutterTwilioConversations
         <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
   }
 
+  Future<dynamic> getPublicChannelsList() async {
+    return await _methodChannel.invokeMethod('Channels#getPublicChannelsList');
+  }
+
+  Future<dynamic> getUserChannelsList() async {
+    return await _methodChannel.invokeMethod('Channels#getUserChannelsList');
+  }
+
+  Future<dynamic> getMembersByIdentity(String identity) async {
+    return await _methodChannel
+        .invokeMethod('Channels#getMembersByIdentity', {'identity': identity});
+  }
+
   @override
   Future<void> declineInvitationChannel(String channelSid) {
     return _methodChannel
@@ -185,6 +198,31 @@ class MethodChannelFlutterTwilioConversations
   Future<void> typingChannel(String channelSid) {
     return _methodChannel
         .invokeMethod('Channel#typing', {'channelSid': channelSid});
+  }
+
+  @override
+  Future<String> updateMessageBody(
+      String? _channelSid, int? _messageIndex, String body) async {
+    return await _methodChannel.invokeMethod('Message#updateMessageBody', {
+          'channelSid': _channelSid,
+          'messageIndex': _messageIndex,
+          'body': body,
+        }) ??
+        '';
+  }
+
+  Future<dynamic> setAttributes(String? _channelSid, int? _messageIndex,
+      Map<String, dynamic> attributes) async {
+    return await _methodChannel.invokeMethod('Message#setAttributes', {
+      'channelSid': _channelSid,
+      'messageIndex': _messageIndex,
+      'attributes': attributes,
+    });
+  }
+
+  Future<dynamic> requestNextPage(String _pageId, String _itemType) async {
+    return await _methodChannel.invokeMethod('Paginator#requestNextPage',
+        <String, Object>{'pageId': _pageId, 'itemType': _itemType});
   }
 
   @override

@@ -143,13 +143,8 @@ class Message {
   /// Updates the body for a message.
   Future<void> updateMessageBody(String body) async {
     try {
-      // _messageBody = await TwilioConversationsClient._methodChannel
-      //         .invokeMethod('Message#updateMessageBody', {
-      //       'channelSid': _channelSid,
-      //       'messageIndex': _messageIndex,
-      //       'body': body,
-      //     }) ??
-      //     '';
+      _messageBody = await FlutterTwilioConversationsPlatform.instance
+          .updateMessageBody(_channelSid, _messageIndex, body);
     } on PlatformException catch (err) {
       throw throw TwilioConversationsClient._convertException(err);
     }
@@ -159,13 +154,9 @@ class Message {
   Future<Map<String, dynamic>?> setAttributes(
       Map<String, dynamic> attributes) async {
     try {
-      // return Map<String, dynamic>.from(await TwilioConversationsClient
-      //     ._methodChannel
-      //     .invokeMethod('Message#setAttributes', {
-      //   'channelSid': _channelSid,
-      //   'messageIndex': _messageIndex,
-      //   'attributes': attributes,
-      // }));
+      return Map<String, dynamic>.from(await FlutterTwilioConversationsPlatform
+          .instance
+          .setAttributes(_channelSid, _messageIndex, attributes));
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

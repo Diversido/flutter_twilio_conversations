@@ -61,6 +61,20 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getChannel() has not been implemented.');
   }
 
+  Future<dynamic> getPublicChannelsList() async {
+    throw UnimplementedError(
+        'getPublicChannelsList() has not been implemented.');
+  }
+
+  Future<dynamic> getUserChannelsList() async {
+    throw UnimplementedError('getUserChannelsList() has not been implemented.');
+  }
+
+  Future<dynamic> getMembersByIdentity(String identity) async {
+    throw UnimplementedError(
+        'getMembersByIdentity() has not been implemented.');
+  }
+
   Future<void> declineInvitationChannel(String channelSid) {
     throw UnimplementedError(
         'declineInvitationChannel() has not been implemented');
@@ -82,6 +96,16 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
 
   Future<int> getMessagesCount(String channelSid) {
     throw UnimplementedError('getMessagesCount() has not been implemented');
+  }
+
+  Future<String> updateMessageBody(
+      String? _channelSid, int? _messageIndex, String body) async {
+    throw UnimplementedError('updateMessageBody() has not been implemented');
+  }
+
+  Future<dynamic> setAttributes(String? _channelSid, int? _messageIndex,
+      Map<String, dynamic> attributes) async {
+    throw UnimplementedError('setAttributes() has not been implemented');
   }
 
   Future<int?> setLastReadMessageIndexWithResult(
@@ -181,6 +205,10 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
 
   Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
     throw UnimplementedError('sendMessage() has not been implemented');
+  }
+
+  Future<dynamic> requestNextPage(String _pageId, String _itemType) async {
+    throw UnimplementedError('requestNextPage() has not been implemented');
   }
 
   /// This stream is used to update the ChatClient in a plugin implementation.

@@ -20,7 +20,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   static final _chatClientStreamController =
       StreamController<Map<String, dynamic>>.broadcast();
 
-  // TODO update dynamic in both maps
   Map<String, ChannelEventListener> channelChannels = {};
   Map<String, StreamController<Map<String, dynamic>>> channelListeners = {};
 
@@ -68,11 +67,23 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
         .getChannel(channelSidOrUniqueName, _chatClient, this);
   }
 
-  @override
+  Future<dynamic> getPublicChannelsList() async {
+    throw UnimplementedError(
+        'getPublicChannelsList() has not been implemented.');
+  }
+
+  Future<dynamic> getUserChannelsList() async {
+    throw UnimplementedError('getUserChannelsList() has not been implemented.');
+  }
+
+  Future<dynamic> getMembersByIdentity(String identity) async {
+    throw UnimplementedError(
+        'getMembersByIdentity() has not been implemented.');
+  }
+
   Future<void> declineInvitationChannel(String channelSid) {
-    print('web event: declineInvitationChannel');
-    // TODO: implement declineInvitationChannel
-    throw UnimplementedError();
+    throw UnimplementedError(
+        'declineInvitationChannel() has not been implemented');
   }
 
   @override
@@ -123,6 +134,16 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Future<int> getUnreadMessagesCount(String channelSid) async {
     return await ChannelMethods()
         .getUnreadMessagesCount(channelSid, _chatClient);
+  }
+
+  Future<String> updateMessageBody(
+      String? _channelSid, int? _messageIndex, String body) async {
+    throw UnimplementedError('updateMessageBody() has not been implemented');
+  }
+
+  Future<dynamic> setAttributes(String? _channelSid, int? _messageIndex,
+      Map<String, dynamic> attributes) async {
+    throw UnimplementedError('setAttributes() has not been implemented');
   }
 
   @override
@@ -213,6 +234,11 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     print('web event: setUniqueNameChannel');
     // TODO: implement setUniqueNameChannel
     throw UnimplementedError();
+  }
+
+  @override
+  Future<dynamic> requestNextPage(String _pageId, String _itemType) async {
+    throw UnimplementedError('requestNextPage() has not been implemented');
   }
 
   @override
