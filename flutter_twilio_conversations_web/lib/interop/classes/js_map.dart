@@ -19,20 +19,6 @@ Map jsToMap(jsObject) {
   }
 }
 
-// https://www.phind.com/search?cache=q0tfe6yb900vsbhbykhl2ejx
-//   static Object jsToDart(jsObject) {
-//   if (jsObject is JsArray || jsObject is Iterable) {
-//     return jsObject.map(jsToDart).toList();
-//   }
-//   if (jsObject is JsObject) {
-//     return Map.fromIterable(
-//       getObjectKeys(jsObject),
-//       value: (key) => jsToDart(jsObject[key]),
-//     );
-//   }
-//   return jsObject;
-// }
-
 @JS('Object.keys')
 external List<String> _getKeysOfObject(jsObject);
 

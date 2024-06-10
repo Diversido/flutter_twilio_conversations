@@ -93,7 +93,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getUniqueNameChannel() has not been implemented');
   }
 
-  Future<int> getUnreadMessagesCount(String channelSid) {
+  Future<int?> getUnreadMessagesCount(String channelSid) {
     throw UnimplementedError(
         'getUnreadMessagesCount() has not been implemented');
   }

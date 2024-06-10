@@ -1,19 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:js';
 import 'dart:js_util';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/media.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioClient;
-import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
 import 'package:flutter_twilio_conversations_web/listeners/channel_listener.dart';
 import 'package:intl/intl.dart';
@@ -35,7 +30,6 @@ class Mapper {
     };
   }
 
-//MappedListIterable<TwilioConversationsChannel, Future<Map<String, dynamic>?>> (())
   static String connectionStateToString(ConnectionState state) {
     return state.toString().split('.').last;
   }
@@ -60,9 +54,6 @@ class Mapper {
       return null;
     }
 
-    //TODO Implement the same as Mapper.kt
-    // Setting flutter event listener for the given channel if one does not yet exist.
-
     if (!pluginInstance.channelChannels.containsKey(channel.sid)) {
       final channelStreamController =
           StreamController<Map<String, dynamic>>.broadcast();
@@ -74,28 +65,7 @@ class Mapper {
       );
 
       pluginInstance.channelChannels[channel.sid]!.addListeners();
-
       pluginInstance.channelListeners[channel.sid] = channelStreamController;
-
-      /* pluginInstance.channelChannels[channel.sid]?.setStreamHandler(
-        StreamHandler(
-          onListen: (arguments, EventSink events) {
-            print(
-                "TwilioInfo: Mapper.channelToMap => EventChannel for Channel(${channel.sid}) attached");
-            pluginInstance.channelListeners[channel.sid] =
-                ChannelListener(pluginInstance, events);
-            channel.addListener(pluginInstance.channelListeners[channel.sid]);
-          },
-          onCancel: (arguments) {
-            print(
-                "TwilioInfo: Mapper.channelToMap => EventChannel for Channel(${channel.sid}) detached");
-            channel
-                .removeListener(pluginInstance.channelListeners[channel.sid]);
-            pluginInstance.channelListeners.remove(channel.sid);
-            pluginInstance.channelChannels.remove(channel.sid);
-          },
-        ),
-      ); */
     }
 
     try {
@@ -168,12 +138,6 @@ class Mapper {
       };
     }
   }
-
-  // static Attributes? mapToAttributes( Map<String, dynamic>? map) {
-  //       if (map == null) return null;
-  //       val attrObject = mapToJSONObject(map);
-  //       if (attrObject != null) return Attributes(attrObject); else return null;
-  //   }
 
   static Map<String, dynamic>? attributesToMap(dynamic attributes) {
     try {
@@ -267,7 +231,7 @@ class Mapper {
   }
 
   static Map<String, dynamic>? errorInfoToMap(ErrorInfo? e) {
-    //TODO user introp for error info here?
+    //TODO user interop for error info here?
     if (e == null) return null;
     return {"code": e.code, "message": e.message, "status": e.status};
   }

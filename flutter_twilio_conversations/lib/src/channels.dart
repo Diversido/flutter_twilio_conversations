@@ -52,11 +52,10 @@ class Channels {
 
   /// Retrieves a [Channel] with the specified SID or unique name.
   Future<Channel> getChannel(String channelSidOrUniqueName) async {
-    print("p: get channel called");
     try {
-      final methodData = FlutterTwilioConversationsPlatform.instance
+      final methodData = await FlutterTwilioConversationsPlatform.instance
           .getChannel(channelSidOrUniqueName);
-
+      print("p: get channel called");
       final channelMap = Map<String, dynamic>.from(methodData as Map);
       _updateChannelFromMap(channelMap);
       return _channelsMap[channelMap['sid']]!;

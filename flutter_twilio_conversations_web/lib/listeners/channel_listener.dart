@@ -3,26 +3,21 @@ import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
-    as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 
 import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 import 'package:js/js.dart';
 
-// TODO implement this listener
-// messageAdded
-// messageRemoved
-// messageUpdated
+// TODO
 // participantJoined
 // participantLeft
 // participantUpdated
 // pushNotification
-// typingEnded
-// typingStarted
+
 class ChannelEventListener extends BaseListener {
   final TwilioClientConversation.TwilioConversationsChannel _channel;
   final StreamController<Map<String, dynamic>> _channelStreamController;
@@ -35,8 +30,13 @@ class ChannelEventListener extends BaseListener {
     debug('Adding chatClientEventListeners for ${_channel.sid}');
     _on('messageAdded', messageAdded);
     _on('messageUpdated', messageUpdated);
+    _on('messageRemoved', messageRemoved);
+    _on('participantJoined', participantJoined);
+    _on('participantLeft', participantLeft);
+    _on('participantUpdated', participantUpdated);
     _on('typingStarted', onTypingStarted);
     _on('typingEnded', onTypingEnded);
+    _on('updated', onSynchronizationChanged);
   }
 
   void _on(String eventName, Function eventHandler) => _channel.on(
@@ -83,36 +83,36 @@ class ChannelEventListener extends BaseListener {
     });
   }
 
-  // override fun onMessageDeleted(message: Message) {
-  //     Log.d("TwilioInfo", "ChannelListener.onMessageDeleted => messageSid = ${message.sid}")
-  //     sendEvent("messageDeleted", mapOf("message" to Mapper.messageToMap(message)))
-  // }
+  messageRemoved(TwilioConversationsMessage message) {
+    debug("ChannelListener.onMessageDeleted => messageSid = ${message.sid}");
+    sendEvent("messageDeleted", {"message": Mapper.messageToMap(message)});
+  }
 
-  // override fun onParticipantAdded(member: Participant) {
-  //     Log.d("TwilioInfo", "ChannelListener.onMemberAdded => memberSid = ${member.sid}")
-  //     sendEvent("memberAdded", mapOf("member" to Mapper.memberToMap(member)))
-  // }
+  participantJoined(TwilioConversationsMember member) {
+    debug("ChannelListener.onMemberAdded => memberSid = ${member.sid}");
+    sendEvent("memberAdded", {"member": Mapper.memberToMap(member)});
+  }
 
-  // override fun onParticipantUpdated(member: Participant, reason: Participant.UpdateReason) {
-  //     Log.d("TwilioInfo", "ChannelListener.onMemberUpdated => memberSid = ${member.sid}, reason = $reason")
-  //     sendEvent("memberUpdated", mapOf(
-  //             "member" to Mapper.memberToMap(member),
-  //             "reason" to mapOf(
-  //                     "type" to "member",
-  //                     "value" to reason.toString()
-  //             )
-  //     ))
-  // }
+  participantLeft(TwilioConversationsMember member) {
+    debug("ChannelListener.onMemberDeleted => memberSid = ${member.sid}");
+    sendEvent("memberDeleted", {"member": Mapper.memberToMap(member)});
+  }
 
-  // override fun onParticipantDeleted(member: Participant) {
-  //     Log.d("TwilioInfo", "ChannelListener.onMemberDeleted => memberSid = ${member.sid}")
-  //     sendEvent("memberDeleted", mapOf("member" to Mapper.memberToMap(member)))
-  // }
+  participantUpdated(TwilioConversationsMember member, dynamic reason) {
+    debug(
+        "ChannelListener.onMemberUpdated => => memberSid = ${member.sid}, reason = $reason");
+    sendEvent("memberUpdated", {
+      "member": Mapper.memberToMap(member),
+      "reason": {"type": "member", "value": reason.toString()}
+    });
+  }
 
-  // override fun onSynchronizationChanged(channel: Conversation) {
-  //     Log.d("TwilioInfo", "ChannelListener.onSynchronizationChanged => channelSid = ${channel.sid}")
-  //     sendEvent("synchronizationChanged", mapOf("channel" to Mapper.channelToMap(pluginInstance, channel)))
-  // }
+  onSynchronizationChanged(TwilioConversationsChannel channel) {
+    debug(
+        "ChannelListener.onSynchronizationChanged => channelSid = ${channel.sid}");
+    sendEvent("synchronizationChanged",
+        {"channel": Mapper.channelToMap(pluginInstance, channel)});
+  }
 
   sendEvent(String name, dynamic data, {ErrorInfo? e}) {
     final eventData = {

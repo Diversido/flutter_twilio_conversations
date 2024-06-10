@@ -2,11 +2,8 @@ import 'dart:async';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
-import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 import 'package:flutter_twilio_conversations_web/methods/channel_methods.dart';
@@ -16,7 +13,6 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'listeners/channel_listener.dart';
 
-// TODO look at channel listeners and controllers
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   static TwilioWebClient.TwilioConversationsClient? _chatClient;
   static ChatClientEventListener? _chatClientListener;
@@ -69,7 +65,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   Future<dynamic> getChannel(String channelSidOrUniqueName) async {
     return await ChannelsMethods()
-        .getChannel(channelSidOrUniqueName, _chatClient);
+        .getChannel(channelSidOrUniqueName, _chatClient, this);
   }
 
   @override

@@ -8,5 +8,4 @@ class TwilioConversationsMedia {
   external String type;
   external DateTime size;
   external String channelSid;
-  external String _messageIndex;
 }

@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
 import 'dart:js_util';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
@@ -14,22 +11,25 @@ import 'package:flutter_twilio_conversations_web/mapper.dart';
 class MessagesMethods {
   Future<dynamic> getLastMessages(int count, Channel _channel,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
-    // TODO check channel exists
+    try {
+      final channels =
+          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+        _chatClient!.getSubscribedConversations(),
+      );
 
-    final channels =
-        await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-      _chatClient!.getSubscribedConversations(),
-    );
+      final messages =
+          await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
+              channels.items
+                  .firstWhere((element) => element.sid == _channel.sid)
+                  .getMessages(50, 0, "forward"));
 
-    final messages =
-        await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(channels
-            .items
-            .firstWhere((element) => element.sid == _channel.sid)
-            .getMessages(50, 0, "forward"));
-
-    final messageList = await Future.wait(
-        messages.items.map((message) => Mapper.messageToMap(message)));
-    return messageList;
+      final messageList = await Future.wait(
+          messages.items.map((message) => Mapper.messageToMap(message)));
+      return messageList;
+    } catch (e) {
+      print('error: getLastMessages ${e}');
+      return null;
+    }
   }
 
   Future<dynamic> sendMessage(MessageOptions options, Channel _channel,
@@ -68,25 +68,37 @@ class MessagesMethods {
 
         messagePreparator.addMedia(media);
       }
-      messagePreparator
-          .build()
-          .send()
-          .then((value) => Mapper.messageToMap(value));
+      final index =
+          await promiseToFuture<int>(messagePreparator.build().send());
+
+      final messages =
+          await await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
+              channels.items
+                  .firstWhere((element) => element.sid == _channel.sid)
+                  .getMessages(50, 0, "forward"));
+
+      Mapper.messageToMap(
+          messages.items.firstWhere((element) => element.index == index));
     } catch (e) {
-      print(e);
+      print('error: sendMessage ${e}');
     }
   }
 
   Future<int?> setAllMessagesReadWithResult(Channel _channel,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
-    final channels =
-        await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-      _chatClient!.getSubscribedConversations(),
-    );
+    try {
+      final channels =
+          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+        _chatClient!.getSubscribedConversations(),
+      );
 
-    return await channels.items
-        .firstWhere((element) => element.sid == _channel.sid)
-        .setAllMessagesRead();
+      return await promiseToFuture<int>(channels.items
+          .firstWhere((element) => element.sid == _channel.sid)
+          .setAllMessagesRead());
+    } catch (e) {
+      print('error: setAllMessagesReadWithResult ${e}');
+      return 0;
+    }
   }
 
   Future<dynamic> getMessagesDirection(
@@ -95,13 +107,18 @@ class MessagesMethods {
       Channel _channel,
       TwilioWebClient.TwilioConversationsClient? _chatClient,
       String direction) async {
-    final channels =
-        await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-      _chatClient!.getSubscribedConversations(),
-    );
+    try {
+      final channels =
+          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+        _chatClient!.getSubscribedConversations(),
+      );
 
-    return await channels.items
-        .firstWhere((element) => element.sid == _channel.sid)
-        .getMessages(50, index, direction);
+      return await channels.items
+          .firstWhere((element) => element.sid == _channel.sid)
+          .getMessages(count, index, direction);
+    } catch (e) {
+      print('error: getMessagesDirection ${e}');
+      return null;
+    }
   }
 }

@@ -95,16 +95,16 @@ class ChatClientEventListener extends BaseListener {
 
   void conversationUpdated(dynamic data) async {
     debug('Conversation Updated ChatClient Event');
-    // sendEvent(
-    //   'channelUpdated',
-    //   {
-    //     "channel": await Mapper.channelToMap(pluginInstance, data.conversation),
-    //     "reason": {
-    //       "type": "channel",
-    //       "value": data.updateReasons[0],
-    //     }
-    //   },
-    // );
+    sendEvent(
+      'channelUpdated',
+      {
+        "channel": await Mapper.channelToMap(pluginInstance, data.conversation),
+        "reason": {
+          "type": "channel",
+          "value": data.updateReasons[0],
+        }
+      },
+    );
   }
 
   void conversationAdded(dynamic channelAdded) async {
