@@ -19,15 +19,15 @@ import 'package:js/js.dart';
 // pushNotification
 
 class ChannelEventListener extends BaseListener {
+  final TwilioConversationsPlugin pluginInstance;
   final TwilioClientConversation.TwilioConversationsChannel _channel;
   final StreamController<Map<String, dynamic>> _channelStreamController;
-  final TwilioConversationsPlugin pluginInstance;
 
   ChannelEventListener(
-      this._channel, this._channelStreamController, this.pluginInstance) {}
+      this.pluginInstance, this._channel, this._channelStreamController) {}
 
   void addListeners() {
-    debug('Adding chatClientEventListeners for ${_channel.sid}');
+    debug('Adding channelEventListeners for ${_channel.sid}');
     _on('messageAdded', messageAdded);
     _on('messageUpdated', messageUpdated);
     _on('messageRemoved', messageRemoved);
@@ -51,7 +51,7 @@ class ChannelEventListener extends BaseListener {
 
   messageAdded(dynamic message) async {
     debug('Message Added Channel Event');
-    sendEvent("messageAdded", await Mapper.messageToMap(message));
+    sendEvent("messageAdded", {"message": await Mapper.messageToMap(message)});
   }
 
   messageUpdated(dynamic data) async {
@@ -63,29 +63,30 @@ class ChannelEventListener extends BaseListener {
     });
   }
 
-  onTypingEnded(
-      TwilioConversationsChannel channel, TwilioConversationsMember member) {
+  onTypingEnded(TwilioConversationsChannel channel,
+      TwilioConversationsMember member) async {
     debug(
         "ChannelListener.onTypingEnded => channelSid = ${channel.sid}, memberSid = ${member.sid}");
     sendEvent("typingEnded", {
-      "channel": Mapper.channelToMap(pluginInstance, channel),
+      "channel": await Mapper.channelToMap(pluginInstance, channel),
       "member": Mapper.memberToMap(member)
     });
   }
 
-  onTypingStarted(
-      TwilioConversationsChannel channel, TwilioConversationsMember member) {
+  onTypingStarted(TwilioConversationsChannel channel,
+      TwilioConversationsMember member) async {
     debug(
         "ChannelListener.onTypingStarted => channelSid = ${channel.sid}, memberSid = ${member.sid}");
     sendEvent("typingStarted", {
-      "channel": Mapper.channelToMap(pluginInstance, channel),
+      "channel": await Mapper.channelToMap(pluginInstance, channel),
       "member": Mapper.memberToMap(member)
     });
   }
 
-  messageRemoved(TwilioConversationsMessage message) {
+  messageRemoved(TwilioConversationsMessage message) async {
     debug("ChannelListener.onMessageDeleted => messageSid = ${message.sid}");
-    sendEvent("messageDeleted", {"message": Mapper.messageToMap(message)});
+    sendEvent(
+        "messageDeleted", {"message": await Mapper.messageToMap(message)});
   }
 
   participantJoined(TwilioConversationsMember member) {
@@ -107,11 +108,12 @@ class ChannelEventListener extends BaseListener {
     });
   }
 
-  onSynchronizationChanged(TwilioConversationsChannel channel) {
+  onSynchronizationChanged(dynamic data) async {
     debug(
-        "ChannelListener.onSynchronizationChanged => channelSid = ${channel.sid}");
-    sendEvent("synchronizationChanged",
-        {"channel": Mapper.channelToMap(pluginInstance, channel)});
+        "ChannelListener.onSynchronizationChanged => channelSid = ${data.conversation.sid}");
+    sendEvent("synchronizationChanged", {
+      "channel": await Mapper.channelToMap(pluginInstance, data.conversation)
+    });
   }
 
   sendEvent(String name, dynamic data, {ErrorInfo? e}) {

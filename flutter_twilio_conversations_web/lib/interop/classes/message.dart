@@ -13,6 +13,7 @@ class TwilioConversationsMessage {
   external String body;
   external String channelSid;
   external String participantSid;
+  external String attachedMedia;
 
   external int index;
   //TODO external List<Media> attachedMedia;

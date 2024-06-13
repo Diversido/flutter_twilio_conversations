@@ -239,7 +239,6 @@ class Channel {
 
     _messages = Messages(this);
     _members = Members(_sid);
-    print('p: channel constructor called $_sid');
 
     _channelStreams[_sid] ??=
         FlutterTwilioConversationsPlatform.instance.channelStream(_sid)!;
@@ -482,7 +481,6 @@ class Channel {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-    // print("p: updateFromMap in channel $map");
     _synchronizationStatus = EnumToString.fromString(
         ChannelSynchronizationStatus.values, map['synchronizationStatus']);
     if (_synchronizationStatus == ChannelSynchronizationStatus.ALL) {
@@ -490,36 +488,28 @@ class Channel {
     }
 
     if (map['messages'] != null) {
-      //  print("p: in channel updating messages");
       final messagesMap = Map<String, dynamic>.from(map['messages']);
       _messages?._updateFromMap(messagesMap);
     }
 
     if (map['attributes'] != null) {
-      // print("p: in channel updating attributes");
       _attributes =
           Attributes.fromMap(map['attributes'].cast<String, dynamic>());
     }
-
     _status = EnumToString.fromString(ChannelStatus.values, map['status']);
-    // print("p: status: $_status");
     _createdBy ??= map['createdBy'];
-
     _dateCreated ??=
         map['dateCreated'] != null ? DateTime.parse(map['dateCreated']) : null;
     _dateUpdated =
         map['dateUpdated'] != null ? DateTime.parse(map['dateUpdated']) : null;
-
     _lastMessageDate = map['lastMessageDate'] != null
         ? DateTime.parse(map['lastMessageDate'])
         : null;
-    // print("p: _lastMessageDate passed");
     _lastMessageIndex = map['lastMessageIndex'];
   }
 
   /// Parse native channel events to the right event streams.
   void _parseEvents(dynamic event) {
-    print('p: parse Event Channel');
     final String eventName = event['name'];
     TwilioConversationsClient._log(
         "Channel => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");

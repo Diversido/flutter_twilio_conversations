@@ -22,7 +22,6 @@ class Channels {
   /// Construct from a map.
   factory Channels._fromMap(Map<String, dynamic> map) {
     var channels = Channels();
-    print('p: channels from map $map');
     channels._updateFromMap(map);
     return channels;
   }
@@ -33,7 +32,6 @@ class Channels {
   /// This operation creates a new channel entity on the backend.
   Future<Channel> createChannel(
       String friendlyName, ChannelType channelType) async {
-    print("p: create channel called");
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .createChannel(
@@ -55,7 +53,6 @@ class Channels {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getChannel(channelSidOrUniqueName);
-      print("p: get channel called");
       final channelMap = Map<String, dynamic>.from(methodData as Map);
       _updateChannelFromMap(channelMap);
       return _channelsMap[channelMap['sid']]!;
@@ -105,7 +102,8 @@ class Channels {
   /// The effect of this function is to find and return all Member instances across multiple channels with the given identity.
   Future<List<Member>?> getMembersByIdentity(String identity) async {
     try {
-      final methodData = await FlutterTwilioConversationsPlatform.instance.getMembersByIdentity(identity);
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getMembersByIdentity(identity);
       final List<Map<String, dynamic>> memberMapList = methodData
           .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
           .toList();
@@ -147,15 +145,12 @@ class Channels {
         var sid = subscribedChannelMap['sid'];
         _updateChannelFromMap(subscribedChannelMap);
         _channelsMap[sid]!._isSubscribed = true;
-        print(
-            'pc: updated subscribed $sid = ${_channelsMap[sid]!._isSubscribed}');
       }
     }
   }
 
   /// Update individual channel from a map.
   static void _updateChannelFromMap(Map<String, dynamic> channelMap) {
-    // print('p: updating channel from map');
     var sid = channelMap['sid'];
     if (_channelsMap[sid] == null) {
       _channelsMap[sid] = Channel._fromMap(channelMap);

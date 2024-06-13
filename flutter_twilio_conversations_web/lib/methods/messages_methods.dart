@@ -77,7 +77,7 @@ class MessagesMethods {
                   .firstWhere((element) => element.sid == _channel.sid)
                   .getMessages(50, 0, "forward"));
 
-      Mapper.messageToMap(
+      return await Mapper.messageToMap(
           messages.items.firstWhere((element) => element.index == index));
     } catch (e) {
       print('error: sendMessage ${e}');
@@ -113,9 +113,14 @@ class MessagesMethods {
         _chatClient!.getSubscribedConversations(),
       );
 
-      return await channels.items
-          .firstWhere((element) => element.sid == _channel.sid)
-          .getMessages(count, index, direction);
+      final messages =
+          await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
+              channels.items
+                  .firstWhere((element) => element.sid == _channel.sid)
+                  .getMessages(count, index, direction));
+
+      return await Future.wait(
+          messages.items.map((message) => Mapper.messageToMap(message)));
     } catch (e) {
       print('error: getMessagesDirection ${e}');
       return null;

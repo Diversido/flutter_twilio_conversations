@@ -62,11 +62,10 @@ class Messages {
   Future<List<Message>> getMessagesAfter(int index, int count) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .getMessagesBefore(index, count, _channel);
+          .getMessagesAfter(index, count, _channel);
       final List<Map<String, dynamic>> messageMapList = methodData
           .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
           .toList();
-
       var messages = <Message>[];
       for (final messageMap in messageMapList) {
         messages.add(Message._fromMap(messageMap, this));
@@ -88,7 +87,6 @@ class Messages {
 
       var messages = <Message>[];
       for (final messageMap in messageMapList) {
-        print('messageMap: $messageMap');
         messages.add(Message._fromMap(messageMap, this));
       }
       return messages;

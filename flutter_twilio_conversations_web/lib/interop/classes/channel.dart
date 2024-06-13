@@ -28,5 +28,4 @@ class TwilioConversationsChannel extends EventEmitter {
   external dynamic typing();
   external dynamic send();
   external dynamic getAttributes();
-  
 }

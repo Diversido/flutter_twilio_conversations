@@ -59,9 +59,9 @@ class Mapper {
           StreamController<Map<String, dynamic>>.broadcast();
 
       pluginInstance.channelChannels[channel.sid] = ChannelEventListener(
+        pluginInstance,
         channel,
         channelStreamController,
-        pluginInstance,
       );
 
       pluginInstance.channelChannels[channel.sid]!.addListeners();
@@ -72,13 +72,13 @@ class Mapper {
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
               channel.getMessages(50, 0, "forward"));
-      return channelsMapped(pluginInstance, channel, messages);
+      return channelMapped(pluginInstance, channel, messages);
     } catch (e) {
-      return channelsMapped(pluginInstance, channel, null);
+      return channelMapped(pluginInstance, channel, null);
     }
   }
 
-  static channelsMapped(
+  static channelMapped(
       TwilioConversationsPlugin pluginInstance,
       TwilioConversationsChannel channel,
       JSPaginator<TwilioConversationsMessage>? messages) {
@@ -210,11 +210,24 @@ class Mapper {
       "messageIndex": message.index,
       "hasMedia":
           false, //message.getAttachedMedia().isNotEmpty(), //TODO Implement
-      // "media": mediaToMap(message), //TODO Implement
+      "media": mediaToMap(message), //TODO Implement
       "attributes": attributesToMap(message.attributes),
     };
 
     return messageMapped;
+  }
+
+  static Map<String, dynamic>? mediaToMap(TwilioConversationsMessage message) {
+    // if (message.attachedMedia.isEmpty) return null;
+    return null;
+    // return mapOf<String, Any?>(
+    //         "sid" to message.getAttachedMedia()[0].sid,
+    //         "fileName" to message.getAttachedMedia()[0].filename,
+    //         "type" to message.getAttachedMedia()[0].contentType,
+    //         "size" to message.getAttachedMedia()[0].size,
+    //         "channelSid" to message.conversationSid,
+    //         "messageIndex" to message.messageIndex
+    // )
   }
 
   static Map<String, dynamic>? memberToMap(TwilioConversationsMember? member) {
@@ -222,7 +235,7 @@ class Mapper {
     return {
       "sid": member.sid,
       "lastReadMessageIndex": member.lastReadMessageIndex,
-      "lastReadTimestamp": dateToString(member.lastReadTimestamp),
+      "lastReadTimestamp": dateToString(member.lastReadTimestamp) ?? "",
       "channelSid": member.conversation.sid,
       "identity": member.identity,
       "type": member.type,

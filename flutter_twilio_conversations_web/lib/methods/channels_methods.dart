@@ -19,9 +19,9 @@ class ChannelsMethods {
             await promiseToFuture<TwilioConversationsChannel>(
           _chatClient?.getConversationBySid(channelSidOrUniqueName),
         );
-        return Mapper.channelToMap(pluginInstance, channelByUniqueName);
+        return await Mapper.channelToMap(pluginInstance, channelByUniqueName);
       } else {
-        return Mapper.channelToMap(pluginInstance, channelBySid);
+        return await Mapper.channelToMap(pluginInstance, channelBySid);
       }
     } catch (e) {
       print('error: getChannel ${e}');

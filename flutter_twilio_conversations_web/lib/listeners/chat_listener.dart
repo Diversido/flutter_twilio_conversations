@@ -94,14 +94,33 @@ class ChatClientEventListener extends BaseListener {
   }
 
   void conversationUpdated(dynamic data) async {
-    debug('Conversation Updated ChatClient Event');
+    debug('Conversation Updated ChatClient Event ${data.updateReasons}');
+
+    late String reason;
+    switch (data.updateReasons[0]) {
+      case 'friendlyName':
+        reason = 'FRIENDLY_NAME';
+        break;
+      case 'lastMessage':
+        reason = 'LAST_MESSAGE';
+        break;
+      case 'uniqueName':
+        reason = 'UNIQUE_NAME';
+        break;
+      case 'notificationLevel':
+        reason = 'NOTIFICATION_LEVEL';
+        break;
+      default:
+        reason = data.updateReasons[0];
+    }
+
     sendEvent(
       'channelUpdated',
       {
         "channel": await Mapper.channelToMap(pluginInstance, data.conversation),
         "reason": {
           "type": "channel",
-          "value": data.updateReasons[0],
+          "value": reason,
         }
       },
     );
