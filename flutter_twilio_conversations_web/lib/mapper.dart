@@ -210,7 +210,7 @@ class Mapper {
       "messageIndex": message.index,
       "hasMedia":
           false, //message.getAttachedMedia().isNotEmpty(), //TODO Implement
-      "media": mediaToMap(message), //TODO Implement
+      "media": mediaToMap(message),
       "attributes": attributesToMap(message.attributes),
     };
 
@@ -218,6 +218,7 @@ class Mapper {
   }
 
   static Map<String, dynamic>? mediaToMap(TwilioConversationsMessage message) {
+    //TODO Implement
     // if (message.attachedMedia.isEmpty) return null;
     return null;
     // return mapOf<String, Any?>(
@@ -238,9 +239,24 @@ class Mapper {
       "lastReadTimestamp": dateToString(member.lastReadTimestamp) ?? "",
       "channelSid": member.conversation.sid,
       "identity": member.identity,
-      "type": member.type,
+      "type": memberTypeToString(member.type),
       "attributes": attributesToMap(member.attributes)
     };
+  }
+
+  static memberTypeToString(String type) {
+    switch (type) {
+      case "chat":
+        return "CHAT";
+      case "sms":
+        return "SMS";
+      case "unset":
+        return "UNSET";
+      case "whatsapp":
+        return "WHATSAPP";
+      default:
+        return "OTHER";
+    }
   }
 
   static Map<String, dynamic>? errorInfoToMap(ErrorInfo? e) {
