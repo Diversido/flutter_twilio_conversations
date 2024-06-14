@@ -35,12 +35,11 @@ class Users {
   Future<Paginator<UserDescriptor>?> getChannelUserDescriptors(
       String channelSid) async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod(
-      //         'Users#getChannelUserDescriptors', {'channelSid': channelSid});
-      // final paginatorMap = Map<String, dynamic>.from(methodData);
-      // return Paginator<UserDescriptor>._fromMap(paginatorMap,
-      //     passOn: {'channels': this});
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getChannelUserDescriptors(channelSid);
+      final paginatorMap = Map<String, dynamic>.from(methodData);
+      return Paginator<UserDescriptor>._fromMap(paginatorMap,
+          passOn: {'channels': this});
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -49,10 +48,10 @@ class Users {
   /// Get user descriptor based on user identity.
   Future<UserDescriptor?> getUserDescriptor(String identity) async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Users#getUserDescriptor', {'identity': identity});
-      // final userDescriptorMap = Map<String, dynamic>.from(methodData);
-      // return UserDescriptor._fromMap(userDescriptorMap);
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getUserDescriptor(identity);
+      final userDescriptorMap = Map<String, dynamic>.from(methodData);
+      return UserDescriptor._fromMap(userDescriptorMap);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -74,12 +73,12 @@ class Users {
   /// There's a limit on the number of simultaneously subscribed objects in the SDK. This is to reduce read memory and network traffic.
   Future<User?> getAndSubscribeUser(String identity) async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Users#getAndSubscribeUser', {'identity': identity});
-      // final userMap = Map<String, dynamic>.from(methodData);
-      // final user = User._fromMap(userMap);
-      // _subscribedUsers.add(user);
-      // return user;
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getAndSubscribeUser(identity);
+      final userMap = Map<String, dynamic>.from(methodData);
+      final user = User._fromMap(userMap);
+      _subscribedUsers.add(user);
+      return user;
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -88,11 +87,13 @@ class Users {
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
     if (map['myUser'] != null) {
+      print("setting myUser ${map['myUser']}");
       final myUserMap = Map<String, dynamic>.from(map['myUser']);
       _myUser ??= User._fromMap(myUserMap);
       _myUser?._updateFromMap(myUserMap);
     }
     if (map['subscribedUsers'] != null) {
+      print("subscribedUsers: ${map['subscribedUsers']}");
       final List<Map<String, dynamic>> subscribedUsersList =
           map['subscribedUsers']
               .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))

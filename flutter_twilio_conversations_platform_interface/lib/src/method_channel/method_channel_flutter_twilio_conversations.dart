@@ -56,8 +56,23 @@ class MethodChannelFlutterTwilioConversations
     });
   }
 
-  Future<dynamic> getChannel(String channelSidOrUniqueName) {
-    return _methodChannel.invokeMethod('Channels#getChannel',
+  Future<dynamic> getChannelUserDescriptors(String channelSid) async {
+    return await _methodChannel.invokeMethod(
+        'Users#getChannelUserDescriptors', {'channelSid': channelSid});
+  }
+
+  Future<UserDescriptor?> getUserDescriptor(String identity) async {
+    return await _methodChannel
+        .invokeMethod('Users#getUserDescriptor', {'identity': identity});
+  }
+
+  Future<dynamic> getAndSubscribeUser(String identity) async {
+    return await _methodChannel
+        .invokeMethod('Users#getAndSubscribeUser', {'identity': identity});
+  }
+
+  Future<dynamic> getChannel(String channelSidOrUniqueName) async {
+    return await _methodChannel.invokeMethod('Channels#getChannel',
         <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
   }
 

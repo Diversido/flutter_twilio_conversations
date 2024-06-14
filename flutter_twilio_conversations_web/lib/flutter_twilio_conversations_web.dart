@@ -86,6 +86,19 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
         'declineInvitationChannel() has not been implemented');
   }
 
+  Future<dynamic> getAndSubscribeUser(String identity) async {
+    throw UnimplementedError('getAndSubscribeUser() has not been implemented.');
+  }
+
+  Future<dynamic> getUserDescriptor(String identity) async {
+    throw UnimplementedError('getUserDescriptor() has not been implemented.');
+  }
+
+  Future<dynamic> getChannelUserDescriptors(String channelSid) async {
+    throw UnimplementedError(
+        'getChannelUserDescriptors() has not been implemented.');
+  }
+
   @override
   Future<void> destroyChannel(String channelSid) {
     print('web event: destroyChannel');

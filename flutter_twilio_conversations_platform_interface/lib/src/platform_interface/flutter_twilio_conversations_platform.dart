@@ -70,6 +70,19 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getUserChannelsList() has not been implemented.');
   }
 
+  Future<dynamic> getUserDescriptor(String identity) async {
+    throw UnimplementedError('getUserDescriptor() has not been implemented.');
+  }
+
+  Future<dynamic> getChannelUserDescriptors(String channelSid) async {
+    throw UnimplementedError(
+        'getChannelUserDescriptors() has not been implemented.');
+  }
+
+  Future<dynamic> getAndSubscribeUser(String identity) async {
+    throw UnimplementedError('getAndSubscribeUser() has not been implemented.');
+  }
+
   Future<dynamic> getMembersByIdentity(String identity) async {
     throw UnimplementedError(
         'getMembersByIdentity() has not been implemented.');

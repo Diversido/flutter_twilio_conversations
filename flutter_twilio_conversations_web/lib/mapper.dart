@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:js';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
@@ -19,14 +20,14 @@ class Mapper {
     TwilioClient.TwilioConversationsClient chatClient,
     List<TwilioConversationsChannel>? channels,
   ) async {
-    // final users = await promiseToFuture(chatClient.getSubscribedUsers()); // TODO move this outside of Mapper
     final channelsMapped = await channelsToMap(pluginInstance, channels);
+    final usersMapped = await usersToMap(pluginInstance, chatClient);
     return {
       "channels": channelsMapped,
-      "myIdentity": "", // TODO
+      "myIdentity": "", //chatClient.user.identity,
       "connectionState": connectionStateToString(chatClient.connectionState),
-      // "users": usersToMap(users), //TODO
-      "isReachabilityEnabled": true, // TODO
+      "users": usersMapped,
+      "isReachabilityEnabled": true, //chatClient.reachabilityEnabled,
     };
   }
 
@@ -99,42 +100,92 @@ class Mapper {
     return channelMap;
   }
 
-  static Map<String, dynamic>? usersToMap(
-      List<TwilioConversationsUser>? users) {
-    //TODO
-    if (users == null) return {};
-    var subscribedUsersMap = users!.map((user) => userToMap(user));
-    var myUser = null;
-    // try {
-    //     if (TwilioConversationsPlugin.chatClient?.myUser != null) {
-    //         myUser = TwilioConversationsPlugin.chatClient?.myUser
-    //     }
-    // } catch (e) {
-    //    print("myUser is null ${e.toString()}");
-    // }
+  static Future<Map<String, dynamic>?> usersToMap(
+    TwilioConversationsPlugin pluginInstance,
+    TwilioClient.TwilioConversationsClient chatClient,
+  ) async {
+    List<dynamic>? users = [];
+    try {
+      users = await promiseToFuture<List<dynamic>?>(
+          chatClient.getSubscribedUsers());
+    } catch (e) {
+      print(e);
+    }
+    // print(users[0]);
+    if (users!.isEmpty) return {};
 
-    return {"subscribedUsers": subscribedUsersMap, "myUser": userToMap(myUser)};
+    var myUser = null;
+    try {
+      if (TwilioConversationsClient.chatClient!.users!.myUser != null) {
+        myUser = TwilioConversationsClient.chatClient!.users!.myUser!;
+      }
+    } catch (e) {
+      print("myUser is null ${e.toString()}");
+    }
+
+    late final subscribedUsersMap;
+    try {
+      // subscribedUsersMap = users
+      //     .map((user) => Future.value(userToMap(user, chatClient)))
+      //     .toList();
+      subscribedUsersMap = await Future.wait(
+        users
+            .map((user) => userToMap(
+                  user,
+                  chatClient,
+                ))
+            .toList(),
+      );
+    } catch (e) {
+      print("Error in usersToMap ${e.toString()}");
+    }
+    return {
+      "subscribedUsers": subscribedUsersMap ??
+          {
+            "friendlyName": "",
+            "attributes": "",
+            "identity": "",
+            "isOnline": "",
+            "isNotifiable": "",
+            "isSubscribed": ""
+          },
+      "myUser": myUser == null
+          ? {
+              "friendlyName": "",
+              "attributes": {},
+              "identity": "",
+              "isOnline": "",
+              "isNotifiable": "",
+              "isSubscribed": ""
+            }
+          : userToMap(myUser, chatClient)
+    };
   }
 
-  static Map<String, dynamic>? userToMap(TwilioConversationsUser user) {
-    // TODO
-    if (user != null) {
+  static Future<Map<String, dynamic>> userToMap(
+    TwilioConversationsUser user,
+    TwilioClient.TwilioConversationsClient chatClient,
+  ) async {
+    try {
+      final userProperties =
+          await promiseToFuture(chatClient.getUser(user.identity));
+
       return {
-        "friendlyName": user.friendlyName,
-        // "attributes" : attributes:Map(user.attributes),
-        "identity": user.identity,
-        // "isOnline" : user.isOnline,
-        // "isNotifiable" : user.isNotifiable,
-        // "isSubscribed" : user.isSubscribed
+        "friendlyName": userProperties.friendlyName ?? "",
+        "attributes": attributesToMap(userProperties.attributes),
+        "identity": userProperties.identity ?? "",
+        "isOnline": userProperties.isOnline ?? "",
+        "isNotifiable": userProperties.isNotifiable ?? "",
+        "isSubscribed": userProperties.isSubscribed ?? ""
       };
-    } else {
+    } catch (e) {
       return {
         "friendlyName": "",
-        "attributes": "",
+        "attributes": {},
         "identity": "",
         "isOnline": "",
         "isNotifiable": "",
-        "isSubscribed": "",
+        "isSubscribed": ""
       };
     }
   }
