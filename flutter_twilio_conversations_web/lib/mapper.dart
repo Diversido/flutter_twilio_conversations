@@ -149,16 +149,16 @@ class Mapper {
             "isNotifiable": "",
             "isSubscribed": ""
           },
-      "myUser": myUser == null
+      "myUser": myUser == null || myUser.identity == null
           ? {
               "friendlyName": "",
               "attributes": {},
-              "identity": "",
+              "identity": "8c5a3702-1732-4bdd-aaa1-c72d14736f19",
               "isOnline": "",
               "isNotifiable": "",
               "isSubscribed": ""
             }
-          : userToMap(myUser, chatClient)
+          : await userToMap(myUser, chatClient)
     };
   }
 
