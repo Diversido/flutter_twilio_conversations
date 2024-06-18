@@ -84,28 +84,20 @@ class Member {
 
   /// Return user descriptor for current member.
   Future<UserDescriptor?> getUserDescriptor() async {
-    return null;
-    // final userDescriptorData = await TwilioConversationsClient._methodChannel
-    //     .invokeMethod('Member#getUserDescriptor', {
-    //   'identity': _identity,
-    //   'channelSid': _channelSid,
-    // });
-    // final userDescriptor =
-    //     UserDescriptor._fromMap(userDescriptorData.cast<String, dynamic>());
-    // return userDescriptor;
+    final userDescriptorData = await FlutterTwilioConversationsPlatform.instance
+        .getUserDescriptor(_identity, _channelSid);
+    final userDescriptor =
+        UserDescriptor._fromMap(userDescriptorData.cast<String, dynamic>());
+    return userDescriptor;
   }
 
   /// Return subscribed user object for current member.
   Future<User?> getAndSubscribeUser() async {
     try {
-      return null;
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Member#getAndSubscribeUser', {
-      //   'memberSid': _sid,
-      //   'channelSid': _channelSid,
-      // });
-      // final userMap = Map<String, dynamic>.from(methodData);
-      // return User._fromMap(userMap);
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .getAndSubscribeUser(_identity, _channelSid);
+      final userMap = Map<String, dynamic>.from(methodData);
+      return User._fromMap(userMap);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -115,14 +107,9 @@ class Member {
   Future<Map<String, dynamic>?> setAttributes(
       Map<String, dynamic> attributes) async {
     try {
-      return null;
-      // return Map<String, dynamic>.from(await TwilioConversationsClient
-      //     ._methodChannel
-      //     .invokeMethod('Member#setAttributes', {
-      //   'memberSid': _sid,
-      //   'channelSid': _channelSid,
-      //   'attributes': attributes
-      // }));
+      return Map<String, dynamic>.from(await FlutterTwilioConversationsPlatform
+          .instance
+          .setAttributesMember(_sid, _channelSid, attributes));
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

@@ -74,6 +74,58 @@ class MethodChannelFlutterTwilioConversations
         .invokeMethod('Channels#getMembersByIdentity', {'identity': identity});
   }
 
+  Future<dynamic> getMember(String _channelSid, String identity) async {
+    return await _methodChannel.invokeMethod('Members#getMember', {
+      'channelSid': _channelSid,
+      'identity': identity,
+    });
+  }
+
+  Future<dynamic> getMembersList(String _channelSid) async {
+    return await _methodChannel.invokeMethod('Members#getMembersList', {
+      'channelSid': _channelSid,
+    });
+  }
+
+  Future<bool?> addByIdentity(String _channelSid, String identity) async {
+    return _methodChannel.invokeMethod('Members#addByIdentity',
+        {'identity': identity, 'channelSid': _channelSid});
+  }
+
+  Future<bool?> removeByIdentity(String _channelSid, String identity) async {
+    return _methodChannel.invokeMethod('Members#removeByIdentity',
+        {'identity': identity, 'channelSid': _channelSid});
+  }
+
+  Future<bool?> inviteByIdentity(String _channelSid, String identity) async {
+    return _methodChannel.invokeMethod('Members#inviteByIdentity',
+        {'identity': identity, 'channelSid': _channelSid});
+  }
+
+  Future<dynamic> setAttributesMember(
+      String _sid, String? _channelSid, Map<String, dynamic> attributes) async {
+    return _methodChannel.invokeMethod('Member#setAttributes', {
+      'memberSid': _sid,
+      'channelSid': _channelSid,
+      'attributes': attributes
+    });
+  }
+
+  Future<dynamic> getUserDescriptor(
+      String? _identity, String? _channelSid) async {
+    return await _methodChannel.invokeMethod('Member#getUserDescriptor', {
+      'identity': _identity,
+      'channelSid': _channelSid,
+    });
+  }
+
+  Future<dynamic> getAndSubscribeUser(String? _sid, String? _channelSid) async {
+    return await _methodChannel.invokeMethod('Member#getAndSubscribeUser', {
+      'memberSid': _sid,
+      'channelSid': _channelSid,
+    });
+  }
+
   @override
   Future<void> declineInvitationChannel(String channelSid) {
     return _methodChannel

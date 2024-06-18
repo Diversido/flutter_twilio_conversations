@@ -81,6 +81,40 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
         'getMembersByIdentity() has not been implemented.');
   }
 
+  Future<dynamic> getMember(String _channelSid, String identity) async {
+    throw UnimplementedError('getMember() has not been implemented');
+  }
+
+  Future<dynamic> getMembersList(String _channelSid) async {
+    throw UnimplementedError('getMembersList() has not been implemented');
+  }
+
+  Future<bool?> addByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('addByIdentity() has not been implemented');
+  }
+
+  Future<bool?> removeByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('removeByIdentity() has not been implemented');
+  }
+
+  Future<bool?> inviteByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('inviteByIdentity() has not been implemented');
+  }
+
+  Future<dynamic> setAttributesMember(
+      String _sid, String? _channelSid, Map<String, dynamic> attributes) async {
+    throw UnimplementedError('setAttributesMember() has not been implemented');
+  }
+
+   Future<dynamic> getAndSubscribeUser(String? _identity, String? _sid) async {
+    throw UnimplementedError('getAndSubscribeUser() has not been implemented');
+  }
+
+  Future<dynamic> getUserDescriptor(
+      String? _identity, String? _channelSid) async {
+    throw UnimplementedError('getUserDescriptor() has not been implemented');
+  }
+
   Future<void> declineInvitationChannel(String channelSid) {
     throw UnimplementedError(
         'declineInvitationChannel() has not been implemented');
