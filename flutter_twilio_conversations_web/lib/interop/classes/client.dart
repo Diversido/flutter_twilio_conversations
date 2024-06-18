@@ -16,6 +16,7 @@ class TwilioConversationsClient extends EventEmitter {
 
   external JSPaginator<TwilioConversationsChannel> getSubscribedConversations();
   external dynamic getSubscribedUsers();
+
   external dynamic getConversationBySid(String channelSid);
   external dynamic updateToken(String token);
   external dynamic shutdown();

@@ -35,7 +35,7 @@ class Mapper {
       "myIdentity": chatClient.user.identity,
       "connectionState": connectionStateToString(chatClient.connectionState),
       "users": usersMapped,
-      "isReachabilityEnabled": true, //chatClient.reachabilityEnabled,
+      "isReachabilityEnabled": chatClient.reachabilityEnabled,
     };
   }
 
@@ -129,6 +129,14 @@ class Mapper {
       }
     } catch (e) {
       print("myUser is null ${e.toString()}");
+      myUser = {
+        "friendlyName": "",
+        "attributes": {},
+        "identity": chatClient.user.identity,
+        "isOnline": "",
+        "isNotifiable": "",
+        "isSubscribed": ""
+      };
     }
 
     late final subscribedUsersMap;
@@ -147,12 +155,10 @@ class Mapper {
     try {
       return {
         "subscribedUsers": subscribedUsersMap ?? {},
-        "myUser": myUser == null || myUser.identity == null
-            ? emptyUser
-            : await userToMap(myUser, chatClient)
+        "myUser": await userToMap(myUser, chatClient)
       };
     } catch (e) {
-      print("My user mapping error: $e");
+      print("myUser mapping error: $e");
       return {"subscribedUsers": subscribedUsersMap ?? {}, "myUser": emptyUser};
     }
   }
