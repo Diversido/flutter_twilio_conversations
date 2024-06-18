@@ -75,8 +75,7 @@ class User {
   //#region Public API methods
   Future<void> unsubscribe() async {
     try {
-      // await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('User#unsubscribe', {'identity': _identity});
+      await FlutterTwilioConversationsPlatform.instance.unsubscribe(_identity);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

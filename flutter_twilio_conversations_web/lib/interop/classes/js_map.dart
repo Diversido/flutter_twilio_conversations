@@ -1,7 +1,26 @@
 @JS()
 library js_map;
 
+import 'dart:js_util';
 import 'package:js/js.dart';
+
+Map jsToMap(jsObject) {
+  try {
+    return new Map.fromIterable(_getKeysOfObject(jsObject), value: (key) {
+      var property = getProperty(jsObject, key);
+      if (property is JSMap) {
+        return jsToMap(property);
+      }
+
+      return property;
+    });
+  } catch (e) {
+    return {};
+  }
+}
+
+@JS('Object.keys')
+external List<String> _getKeysOfObject(jsObject);
 
 @JS('Map')
 class JSMap<K, V> {

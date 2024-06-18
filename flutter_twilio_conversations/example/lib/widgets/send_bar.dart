@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:image_picker/image_picker.dart';
@@ -72,9 +73,14 @@ class _SendBarState extends State<SendBar> {
                             );
 
                             if (pickedImage != null) {
-                              final image = File(pickedImage.path);
-
+                              dynamic image; //File(pickedImage.path);
+                              if (kIsWeb) {
+                                image = Image.network(pickedImage.path);
+                              } else {
+                                image = Image.file(File(pickedImage.path));
+                              }
                               // send picked file
+                              // TODO something wrong here
                               viewModel.sendImage(image);
                             }
                           } catch (e) {
@@ -142,7 +148,10 @@ class _ViewModel with EquatableMixin {
   _ViewModel(this._store) : dialog = _store.state.selectedDialog;
 
   Future<bool> hasGalleryAccess() async {
-    if (Platform.isIOS) {
+    if (kIsWeb) {
+      print('Permission: Web');
+      return true;
+    } else if (Platform.isIOS) {
       final permission = await Permission.photos.request();
       print('Permission: $permission');
       return permission.isGranted;

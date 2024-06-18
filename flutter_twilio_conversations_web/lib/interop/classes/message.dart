@@ -1,5 +1,6 @@
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/twilio_json.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
 import 'package:js/js.dart';
 
 @JS('Twilio.Conversations.Message')
@@ -11,9 +12,12 @@ class TwilioConversationsMessage {
   external DateTime dateCreated;
   external String body;
   external String channelSid;
-  external String participantSid; //TODO needs to be done
+  external String participantSid;
+  external String attachedMedia;
 
   external int index;
-  // external List<Media> attachedMedia;
-  external JSONValue attributes;
+  //TODO external List<Media> attachedMedia;
+  external JSMap attributes;
+
+  external TwilioConversationsMember getParticipant();
 }

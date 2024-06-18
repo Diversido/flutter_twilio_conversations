@@ -1,27 +1,25 @@
 import 'dart:async';
+import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
-import 'package:flutter_twilio_conversations_web/methods/listeners/chat_listener.dart';
-import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
+import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
+import 'package:flutter_twilio_conversations_web/mapper.dart';
+import 'package:flutter_twilio_conversations_web/methods/channel_methods.dart';
+import 'package:flutter_twilio_conversations_web/methods/channels_methods.dart';
+import 'package:flutter_twilio_conversations_web/methods/messages_methods.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
-import 'methods/listeners/channel_listener.dart';
+import 'listeners/channel_listener.dart';
 
-// TODO look at channel listeners and controllers
 class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   static TwilioWebClient.TwilioConversationsClient? _chatClient;
   static ChatClientEventListener? _chatClientListener;
-  static ChannelEventListener? _channelListener;
 
   static final _chatClientStreamController =
       StreamController<Map<String, dynamic>>.broadcast();
 
-  static final _channelStreamController =
-      StreamController<Map<String, dynamic>>.broadcast();
-
-  // TODO update dynamic in both maps
   Map<String, ChannelEventListener> channelChannels = {};
   Map<String, StreamController<Map<String, dynamic>>> channelListeners = {};
 
@@ -49,20 +47,96 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     }
   }
 
+  Future<void> updateToken(String token) async {
+    _chatClient =
+        await promiseToFuture<TwilioWebClient.TwilioConversationsClient>(
+            _chatClient!.updateToken(token));
+  }
+
+  Future<void> shutdown() async {
+    await promiseToFuture<void>(_chatClient!.shutdown());
+  }
+
   Future<Map<dynamic, dynamic>> createChannel(
       String friendlyName, String channelType) async {
     throw UnimplementedError('createChannel() has not been implemented.');
   }
 
-  Future<dynamic> getChannel(String channelSidOrUniqueName) {
-    throw UnimplementedError('getChannel() has not been implemented.');
+  Future<dynamic> getChannel(String channelSidOrUniqueName) async {
+    return await ChannelsMethods()
+        .getChannel(channelSidOrUniqueName, _chatClient, this);
   }
 
-  @override
+  Future<dynamic> getPublicChannelsList() async {
+    throw UnimplementedError(
+        'getPublicChannelsList() has not been implemented.');
+  }
+
+  Future<dynamic> getUserChannelsList() async {
+    throw UnimplementedError('getUserChannelsList() has not been implemented.');
+  }
+
+  Future<void> unsubscribe(String? _identity) async {
+    throw UnimplementedError('unsubscribe() has not been implemented.');
+  }
+
+  Future<dynamic> getMembersByIdentity(String identity) async {
+    throw UnimplementedError(
+        'getMembersByIdentity() has not been implemented.');
+  }
+
+  Future<dynamic> getMember(String _channelSid, String identity) async {
+    throw UnimplementedError('getMember() has not been implemented');
+  }
+
+  Future<dynamic> getMembersList(String _channelSid) async {
+    throw UnimplementedError('getMembersList() has not been implemented');
+  }
+
+  Future<bool?> addByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('addByIdentity() has not been implemented');
+  }
+
+  Future<bool?> removeByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('removeByIdentity() has not been implemented');
+  }
+
+  Future<bool?> inviteByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('inviteByIdentity() has not been implemented');
+  }
+
+  Future<dynamic> setAttributesMember(
+      String _sid, String? _channelSid, Map<String, dynamic> attributes) async {
+    throw UnimplementedError('setAttributesMember() has not been implemented');
+  }
+
+  Future<dynamic> memberGetAndSubscribeUser(
+      String? _identity, String? _sid) async {
+    throw UnimplementedError('getAndSubscribeUser() has not been implemented');
+  }
+
+  Future<dynamic> memberGetUserDescriptor(
+      String? _identity, String? _channelSid) async {
+    throw UnimplementedError(
+        'memberGetUserDescriptor() has not been implemented');
+  }
+
   Future<void> declineInvitationChannel(String channelSid) {
-    print('web event: declineInvitationChannel');
-    // TODO: implement declineInvitationChannel
-    throw UnimplementedError();
+    throw UnimplementedError(
+        'declineInvitationChannel() has not been implemented');
+  }
+
+  Future<dynamic> getAndSubscribeUser(String identity) async {
+    throw UnimplementedError('getAndSubscribeUser() has not been implemented.');
+  }
+
+  Future<dynamic> getUserDescriptor(String identity) async {
+    throw UnimplementedError('getUserDescriptor() has not been implemented.');
+  }
+
+  Future<dynamic> getChannelUserDescriptors(String channelSid) async {
+    throw UnimplementedError(
+        'getChannelUserDescriptors() has not been implemented.');
   }
 
   @override
@@ -79,18 +153,81 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError();
   }
 
-  @override
-  Future<int> getMembersCountChannel(String channelSid) {
-    print('web event: getMembersCountChannel');
-    // TODO: implement getMembersCountChannel
-    throw UnimplementedError();
+  Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
+    return await MessagesMethods()
+        .setAllMessagesReadWithResult(_channel, _chatClient);
   }
 
   @override
-  Future<int> getMessagesCountChannel(String channelSid) {
-    print('web event: getMessagesCountChannel');
-    // TODO: implement getMessagesCountChannel
-    throw UnimplementedError();
+  Future<dynamic> getMessagesAfter(
+      int index, int count, Channel _channel) async {
+    return await MessagesMethods()
+        .getMessagesDirection(index, count, _channel, _chatClient, "forward");
+  }
+
+  @override
+  Future<dynamic> getMessagesBefore(
+      int index, int count, Channel _channel) async {
+    return await MessagesMethods()
+        .getMessagesDirection(index, count, _channel, _chatClient, "backwards");
+  }
+
+  @override
+  Future<dynamic> getLastMessages(int count, Channel _channel) async {
+    return await MessagesMethods()
+        .getLastMessages(count, _channel, _chatClient);
+  }
+
+  @override
+  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
+    return await MessagesMethods().sendMessage(options, _channel, _chatClient);
+  }
+
+  @override
+  Future<int> getUnreadMessagesCount(String channelSid) async {
+    return await ChannelMethods()
+        .getUnreadMessagesCount(channelSid, _chatClient);
+  }
+
+  Future<String> updateMessageBody(
+      String? _channelSid, int? _messageIndex, String body) async {
+    throw UnimplementedError('updateMessageBody() has not been implemented');
+  }
+
+  Future<dynamic> setAttributes(String? _channelSid, int? _messageIndex,
+      Map<String, dynamic> attributes) async {
+    throw UnimplementedError('setAttributes() has not been implemented');
+  }
+
+  @override
+  Future<void> typingChannel(String channelSid) async {
+    return await ChannelMethods().typing(channelSid, _chatClient);
+  }
+
+  @override
+  Future<int> getMessagesCount(String channelSid) async {
+    return await ChannelMethods().getMessagesCount(channelSid, _chatClient);
+  }
+
+  Future<int?> setLastReadMessageIndexWithResult(
+      Channel _channel, int lastReadMessageIndex) async {
+    throw UnimplementedError(
+        'setLastReadMessageIndexWithResult() has not been implemented');
+  }
+
+  Future<int?> advanceLastReadMessageIndexWithResult(
+      Channel _channel, int lastReadMessageIndex) async {
+    throw UnimplementedError(
+        'advanceLastReadMessageIndexWithResult() has not been implemented');
+  }
+
+  Future<int?> setNoMessagesReadWithResult(Channel _channel) async {
+    throw UnimplementedError(
+        'setNoMessagesReadWithResult() has not been implemented');
+  }
+
+  Future<void> removeMessage(Channel _channel, Message message) async {
+    throw UnimplementedError('removeMessage() has not been implemented');
   }
 
   @override
@@ -104,13 +241,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   Future<String> getUniqueNameChannel(String channelSid) {
     print('web event: getUniqueNameChannel');
     // TODO: implement getUniqueNameChannel
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<int> getUnreadMessagesCountChannel(String channelSid) {
-    print('web event: getUnreadMessagesCountChannel');
-    // TODO: implement getUnreadMessagesCountChannel
     throw UnimplementedError();
   }
 
@@ -160,10 +290,8 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<void> typingChannel(String channelSid) {
-    print('web event: typingChannel');
-    // TODO: implement typingChannel
-    throw UnimplementedError();
+  Future<dynamic> requestNextPage(String _pageId, String _itemType) async {
+    throw UnimplementedError('requestNextPage() has not been implemented');
   }
 
   @override
@@ -173,12 +301,71 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Stream<Map<String, dynamic>> channelStream(String channelId) {
+  Stream<Map<String, dynamic>> channelStream(String channelSid) {
     print('TwilioConversationsPlugin.channel => starting stream');
-    return channelListeners[channelId]!.stream;
+    return channelListeners[channelSid]!.stream;
   }
 
   Future<void> platformDebug(bool dart, bool native, bool sdk) {
     throw UnimplementedError('debug() has not been implemented');
   }
 }
+
+/*
+___ChannelMethods___
+getMembersCount
+setAttributes
+getFriendlyName
+setFriendlyName
+getNotificationLevel
+setNotificationLevel
+getUniqueName
+setUniqueName
+join
+leave
+typing
+destroy
+getMessagesCount
+getUnreadMessagesCount
+___ChannelsMethods___
+getChannel
+getPublicChannelsList
+getUserChannelsList
+createChannel
+___ChatClientMethods__
+updateToken
+shutdown
+___MemberMethods__
+getChannel
+getUserDescriptor
+getAndSubscribeUser
+setAttributes
+___MembersMethods__
+getChannel
+getMembersList
+getMember
+addByIdentity
+inviteByIdentity
+removeByIdentity
+___MessageMethods__
+getChannel
+updateMessageBody
+setAttributes
+getMedia
+___MessagesMethods___
+removeMessage
+getMessagesBefore
+getMessagesAfter
+getLastMessages
+getMessageByIndex
+setLastReadMessageIndexWithResult
+advanceLastReadMessageIndexWithResult
+setAllMessagesReadWithResult
+setNoMessagesReadWithResult
+___Users__
+unsubscribe
+___Users__
+getChannelUserDescriptors
+getUserDescriptor
+getAndSubscribeUser
+*/

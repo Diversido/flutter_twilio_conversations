@@ -6,8 +6,8 @@ import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
-import 'package:flutter_twilio_conversations_web/methods/listeners/base_listener.dart';
-import 'package:flutter_twilio_conversations_web/methods/mapper.dart';
+import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
+import 'package:flutter_twilio_conversations_web/mapper.dart';
 
 class ChatClientEventListener extends BaseListener {
   final TwilioChatClient.TwilioConversationsClient _client;
@@ -89,19 +89,38 @@ class ChatClientEventListener extends BaseListener {
     sendEvent('clientSynchronization', {
       "synchronizationStatus": state,
       "chatClient":
-          Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
+          await Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
     });
   }
 
   void conversationUpdated(dynamic data) async {
-    debug('Conversation Updated ChatClient Event');
+    debug('Conversation Updated ChatClient Event ${data.updateReasons}');
+
+    late String reason;
+    switch (data.updateReasons[0]) {
+      case 'friendlyName':
+        reason = 'FRIENDLY_NAME';
+        break;
+      case 'lastMessage':
+        reason = 'LAST_MESSAGE';
+        break;
+      case 'uniqueName':
+        reason = 'UNIQUE_NAME';
+        break;
+      case 'notificationLevel':
+        reason = 'NOTIFICATION_LEVEL';
+        break;
+      default:
+        reason = data.updateReasons[0];
+    }
+
     sendEvent(
       'channelUpdated',
       {
-        "channel": Mapper.channelToMap(pluginInstance, data.conversation),
+        "channel": await Mapper.channelToMap(pluginInstance, data.conversation),
         "reason": {
           "type": "channel",
-          "value": data.updateReasons,
+          "value": reason,
         }
       },
     );
@@ -110,25 +129,25 @@ class ChatClientEventListener extends BaseListener {
   void conversationAdded(dynamic channelAdded) async {
     debug('Conversation Added ChatClient Event');
     sendEvent('channelAdded', {
-      "channel": Mapper.channelToMap(pluginInstance, channelAdded),
+      "channel": await Mapper.channelToMap(pluginInstance, channelAdded),
       "chatClient":
-          Mapper.chatClientToMap(pluginInstance, _client, [channelAdded])
+          await Mapper.chatClientToMap(pluginInstance, _client, [channelAdded])
     });
   }
 
   void conversationJoined(dynamic channel) async {
     debug('Conversation Joined ChatClient Event');
     sendEvent('channelAdded', {
-      "channel": Mapper.channelToMap(pluginInstance, channel),
+      "channel": await Mapper.channelToMap(pluginInstance, channel),
     });
   }
 
-  void conversationLeft(dynamic data) {
+  void conversationLeft(dynamic data) async {
     debug('Conversation Left ChatClient Event');
     sendEvent(
       'channelDeleted',
       {
-        "channel": Mapper.channelToMap(pluginInstance, data.conversation),
+        "channel": await Mapper.channelToMap(pluginInstance, data.conversation),
       },
     );
   }
@@ -161,12 +180,12 @@ class ChatClientEventListener extends BaseListener {
     );
   }
 
-  void userUpdated(dynamic data) {
+  Future<void> userUpdated(dynamic data) async {
     debug('User Updated ChatClient Event');
     sendEvent(
       'userUpdated',
       {
-        "user": Mapper.userToMap(data),
+        "user": await Mapper.userToMap(data, _client),
         "reason": {
           "type": "user",
           "value": data.updateReasons,
@@ -175,23 +194,23 @@ class ChatClientEventListener extends BaseListener {
     );
   }
 
-  void userSubscribed(dynamic data) {
+  Future<void> userSubscribed(dynamic data) async {
     debug('User Subscribed ChatClient Event');
     sendEvent(
       'userSubsubscribed',
       {
-        "user": Mapper.userToMap(data),
+        "user": await Mapper.userToMap(data, _client),
       },
     );
   }
 
-  void userUnsubscribed(dynamic data) {
+  Future<void> userUnsubscribed(dynamic data) async {
     debug('User Unsubscribed ChatClient Event');
 
     sendEvent(
       'userUnsubsubscribed',
       {
-        "user": Mapper.userToMap(data),
+        "user": await Mapper.userToMap(data, _client),
       },
     );
   }

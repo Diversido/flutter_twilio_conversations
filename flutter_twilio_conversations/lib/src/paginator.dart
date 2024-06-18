@@ -54,11 +54,10 @@ class Paginator<T> {
   /// Query the next page.
   Future<Paginator<T>?> requestNextPage() async {
     try {
-      // final methodData = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('Paginator#requestNextPage',
-      //         <String, Object>{'pageId': _pageId, 'itemType': _itemType});
-      // final paginatorMap = Map<String, dynamic>.from(methodData);
-      // return Paginator<T>._fromMap(paginatorMap, passOn: _passOn);
+      final methodData = await FlutterTwilioConversationsPlatform.instance
+          .requestNextPage(_pageId, _itemType);
+      final paginatorMap = Map<String, dynamic>.from(methodData);
+      return Paginator<T>._fromMap(paginatorMap, passOn: _passOn);
     } on PlatformException catch (err) {
       if (err.code == 'ERROR' || err.code == 'IllegalStateException') {
         rethrow;

@@ -248,11 +248,9 @@ class ChatClient {
     // onNotificationRegistered = _onNotificationRegisteredCtrl.stream;
     // onNotificationDeregistered = _onNotificationDeregisteredCtrl.stream;
     // onNotificationFailed = _onNotificationFailedCtrl.stream;
-    print('p: ChatClient initialized $this');
     _chatStream = FlutterTwilioConversationsPlatform.instance
         .chatClientStream()!
         .listen((_parseEvents));
-    print('p: chat stream: initialized $_chatStream');
     // _notificationStream = TwilioConversationsClient._notificationChannel
     //     .receiveBroadcastStream(0)
     //     .listen(_parseNotificationEvents);
@@ -269,8 +267,8 @@ class ChatClient {
   /// Method to update the authentication token for this client.
   Future<void> updateToken(String token) async {
     try {
-      // return await TwilioConversationsClient._methodChannel.invokeMethod(
-      //     'ChatClient#updateToken', <String, Object>{'token': token});
+      return await FlutterTwilioConversationsPlatform.instance
+          .updateToken(token);
     } on PlatformException {
       return;
     }
@@ -301,8 +299,7 @@ class ChatClient {
         print('ChatClient => TwilioLog failed to cancel notifications stream');
       }
       TwilioConversationsClient.chatClient = null;
-      // return await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('ChatClient#shutdown', null);
+      return await FlutterTwilioConversationsPlatform.instance.shutdown();
     } on PlatformException catch (err) {
       print('ChatClient => TwilioLog shutdown error: $err');
       throw TwilioConversationsClient._convertException(err);
@@ -353,20 +350,17 @@ class ChatClient {
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-    print('p: updateFromMap map: $map');
     _connectionState =
         EnumToString.fromString(ConnectionState.values, map['connectionState']);
     _isReachabilityEnabled = map['isReachabilityEnabled'];
 
     if (map['channels'] != null) {
-      print("p: channels update from map $map");
       final channelsMap = Map<String, dynamic>.from(map['channels']);
       _channels ??= Channels._fromMap(channelsMap);
       _channels?._updateFromMap(channelsMap);
     }
 
     if (map['users'] != null) {
-      print("p: users update from map");
       final usersMap = Map<String, dynamic>.from(map['users']);
       _users ??= Users._fromMap(usersMap);
       _users?._updateFromMap(usersMap);
@@ -375,13 +369,9 @@ class ChatClient {
 
   /// Parse native chat client events to the right event streams.
   void _parseEvents(dynamic event) {
-    print('p: chatClient event recieved: ${event['name']}');
     final String eventName = event['name'];
-
     final data = Map<String, dynamic>.from(event['data'] ?? {});
-    print('p: parse event data: $data');
     if (data['chatClient'] != null) {
-      print("p: chatClient in parse events does not equal null");
       final chatClientMap = Map<String, dynamic>.from(data['chatClient']);
       _updateFromMap(chatClientMap);
     }
@@ -420,14 +410,12 @@ class ChatClient {
             UserUpdateReason.values, reasonMap['value']);
       }
     }
-    print('event Name: $eventName');
     switch (eventName) {
       case 'addedToChannelNotification':
         _onAddedToChannelNotificationCtrl.add(channelSid!);
         break;
       case 'channelAdded':
         assert(channelMap != null);
-        print('p: event channelAdded and the map is $channelMap');
         Channels._updateChannelFromMap(channelMap!);
         _onChannelAddedCtrl.add(Channels._channelsMap[channelMap['sid']]!);
         break;
@@ -471,7 +459,6 @@ class ChatClient {
         }
         break;
       case 'connectionStateChange':
-        print('p: event connectionStateChange');
         var connectionState = EnumToString.fromString(
             ConnectionState.values, data['connectionState']);
         assert(connectionState != null);
