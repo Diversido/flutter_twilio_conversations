@@ -56,8 +56,28 @@ class MethodChannelFlutterTwilioConversations
     });
   }
 
-  Future<dynamic> getChannel(String channelSidOrUniqueName) {
-    return _methodChannel.invokeMethod('Channels#getChannel',
+  Future<dynamic> getChannelUserDescriptors(String channelSid) async {
+    return await _methodChannel.invokeMethod(
+        'Users#getChannelUserDescriptors', {'channelSid': channelSid});
+  }
+
+  Future<UserDescriptor?> getUserDescriptor(String identity) async {
+    return await _methodChannel
+        .invokeMethod('Users#getUserDescriptor', {'identity': identity});
+  }
+
+  Future<void> unsubscribe(String? _identity) async {
+    await _methodChannel
+        .invokeMethod('User#unsubscribe', {'identity': _identity});
+  }
+
+  Future<dynamic> getAndSubscribeUser(String identity) async {
+    return await _methodChannel
+        .invokeMethod('Users#getAndSubscribeUser', {'identity': identity});
+  }
+
+  Future<dynamic> getChannel(String channelSidOrUniqueName) async {
+    return await _methodChannel.invokeMethod('Channels#getChannel',
         <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
   }
 
@@ -72,6 +92,59 @@ class MethodChannelFlutterTwilioConversations
   Future<dynamic> getMembersByIdentity(String identity) async {
     return await _methodChannel
         .invokeMethod('Channels#getMembersByIdentity', {'identity': identity});
+  }
+
+  Future<dynamic> getMember(String _channelSid, String identity) async {
+    return await _methodChannel.invokeMethod('Members#getMember', {
+      'channelSid': _channelSid,
+      'identity': identity,
+    });
+  }
+
+  Future<dynamic> getMembersList(String _channelSid) async {
+    return await _methodChannel.invokeMethod('Members#getMembersList', {
+      'channelSid': _channelSid,
+    });
+  }
+
+  Future<bool?> addByIdentity(String _channelSid, String identity) async {
+    return _methodChannel.invokeMethod('Members#addByIdentity',
+        {'identity': identity, 'channelSid': _channelSid});
+  }
+
+  Future<bool?> removeByIdentity(String _channelSid, String identity) async {
+    return _methodChannel.invokeMethod('Members#removeByIdentity',
+        {'identity': identity, 'channelSid': _channelSid});
+  }
+
+  Future<bool?> inviteByIdentity(String _channelSid, String identity) async {
+    return _methodChannel.invokeMethod('Members#inviteByIdentity',
+        {'identity': identity, 'channelSid': _channelSid});
+  }
+
+  Future<dynamic> setAttributesMember(
+      String _sid, String? _channelSid, Map<String, dynamic> attributes) async {
+    return _methodChannel.invokeMethod('Member#setAttributes', {
+      'memberSid': _sid,
+      'channelSid': _channelSid,
+      'attributes': attributes
+    });
+  }
+
+  Future<dynamic> memberGetUserDescriptor(
+      String? _identity, String? _channelSid) async {
+    return await _methodChannel.invokeMethod('Member#getUserDescriptor', {
+      'identity': _identity,
+      'channelSid': _channelSid,
+    });
+  }
+
+  Future<dynamic> memberGetAndSubscribeUser(
+      String? _sid, String? _channelSid) async {
+    return await _methodChannel.invokeMethod('Member#getAndSubscribeUser', {
+      'memberSid': _sid,
+      'channelSid': _channelSid,
+    });
   }
 
   @override

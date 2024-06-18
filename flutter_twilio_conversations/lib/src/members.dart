@@ -17,27 +17,22 @@ class Members {
   }
 
   Future<List<Member>?> getMembersList() async {
-    // final membersListData = await TwilioConversationsClient._methodChannel
-    //     .invokeMethod('Members#getMembersList', {
-    //   'channelSid': _channelSid,
-    // });
-    // if (membersListData['membersList'] != null) {
-    //   return membersListData['membersList']
-    //       .map<Member>((m) => Member._fromMap(m.cast<String, dynamic>()))
-    //       .toList();
-    // } else {
+    final membersListData = await FlutterTwilioConversationsPlatform.instance
+        .getMembersList(_channelSid);
+    if (membersListData['membersList'] != null) {
+      return membersListData['membersList']
+          .map<Member>((m) => Member._fromMap(m.cast<String, dynamic>()))
+          .toList();
+    } else {
       return null;
-   // }
+    }
   }
 
   /// Get a channel member by identity.
   Future<Member?> getMember(String identity) async {
-    // final memberData = await TwilioConversationsClient._methodChannel
-    //     .invokeMethod('Members#getMember', {
-    //   'channelSid': _channelSid,
-    //   'identity': identity,
-    // });
-    // return Member._fromMap(memberData?.cast<String, dynamic>());
+    final memberData = await FlutterTwilioConversationsPlatform.instance
+        .getMember(_channelSid, identity);
+    return Member._fromMap(memberData?.cast<String, dynamic>());
   }
 
   /// Add member to the channel.
@@ -53,9 +48,8 @@ class Members {
   /// If the member is already present in the channel roster an error will be returned.
   Future<bool?> addByIdentity(String identity) async {
     try {
-      // return TwilioConversationsClient._methodChannel.invokeMethod(
-      //     'Members#addByIdentity',
-      //     {'identity': identity, 'channelSid': _channelSid});
+      return FlutterTwilioConversationsPlatform.instance
+          .addByIdentity(_channelSid, identity);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -69,9 +63,8 @@ class Members {
   /// Invite specified username to this channel.
   Future<bool?> inviteByIdentity(String identity) async {
     try {
-      // return TwilioConversationsClient._methodChannel.invokeMethod(
-      //     'Members#inviteByIdentity',
-      //     {'identity': identity, 'channelSid': _channelSid});
+      return FlutterTwilioConversationsPlatform.instance
+          .inviteByIdentity(_channelSid, identity);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -85,9 +78,8 @@ class Members {
   /// Remove specified username from this channel.
   Future<bool?> removeByIdentity(String identity) async {
     try {
-      // return TwilioConversationsClient._methodChannel.invokeMethod(
-      //     'Members#removeByIdentity',
-      //     {'identity': identity, 'channelSid': _channelSid});
+      return FlutterTwilioConversationsPlatform.instance
+          .removeByIdentity(_channelSid, identity);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
