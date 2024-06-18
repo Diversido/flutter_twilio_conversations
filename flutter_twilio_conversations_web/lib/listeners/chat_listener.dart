@@ -180,12 +180,12 @@ class ChatClientEventListener extends BaseListener {
     );
   }
 
-  void userUpdated(dynamic data) {
+  Future<void> userUpdated(dynamic data) async {
     debug('User Updated ChatClient Event');
     sendEvent(
       'userUpdated',
       {
-        "user": Mapper.userToMap(data),
+        "user": await Mapper.userToMap(data, _client),
         "reason": {
           "type": "user",
           "value": data.updateReasons,
@@ -194,23 +194,23 @@ class ChatClientEventListener extends BaseListener {
     );
   }
 
-  void userSubscribed(dynamic data) {
+  Future<void> userSubscribed(dynamic data) async {
     debug('User Subscribed ChatClient Event');
     sendEvent(
       'userSubsubscribed',
       {
-        "user": Mapper.userToMap(data),
+        "user": await Mapper.userToMap(data, _client),
       },
     );
   }
 
-  void userUnsubscribed(dynamic data) {
+  Future<void> userUnsubscribed(dynamic data) async {
     debug('User Unsubscribed ChatClient Event');
 
     sendEvent(
       'userUnsubsubscribed',
       {
-        "user": Mapper.userToMap(data),
+        "user": await Mapper.userToMap(data, _client),
       },
     );
   }

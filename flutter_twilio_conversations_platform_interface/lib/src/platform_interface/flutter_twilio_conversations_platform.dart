@@ -70,6 +70,23 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getUserChannelsList() has not been implemented.');
   }
 
+  Future<dynamic> getUserDescriptor(String identity) async {
+    throw UnimplementedError('getUserDescriptor() has not been implemented.');
+  }
+
+  Future<dynamic> getChannelUserDescriptors(String channelSid) async {
+    throw UnimplementedError(
+        'getChannelUserDescriptors() has not been implemented.');
+  }
+
+  Future<dynamic> getAndSubscribeUser(String identity) async {
+    throw UnimplementedError('getAndSubscribeUser() has not been implemented.');
+  }
+
+  Future<void> unsubscribe(String? _identity) async {
+    throw UnimplementedError('unsubscribe() has not been implemented.');
+  }
+
   Future<dynamic> getMembersByIdentity(String identity) async {
     throw UnimplementedError(
         'getMembersByIdentity() has not been implemented.');
@@ -92,6 +109,43 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
   Future<int> getMembersCountChannel(String channelSid) {
     throw UnimplementedError(
         'getMembersCountChannel() has not been implemented');
+  }
+
+  Future<dynamic> getMember(String _channelSid, String identity) async {
+    throw UnimplementedError('getMember() has not been implemented');
+  }
+
+  Future<dynamic> getMembersList(String _channelSid) async {
+    throw UnimplementedError('getMembersList() has not been implemented');
+  }
+
+  Future<bool?> addByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('addByIdentity() has not been implemented');
+  }
+
+  Future<bool?> removeByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('removeByIdentity() has not been implemented');
+  }
+
+  Future<bool?> inviteByIdentity(String _channelSid, String identity) async {
+    throw UnimplementedError('inviteByIdentity() has not been implemented');
+  }
+
+  Future<dynamic> setAttributesMember(
+      String _sid, String? _channelSid, Map<String, dynamic> attributes) async {
+    throw UnimplementedError('setAttributesMember() has not been implemented');
+  }
+
+  Future<dynamic> memberGetUserDescriptor(
+      String? _identity, String? _channelSid) async {
+    throw UnimplementedError(
+        'memberGetUserDescriptor() has not been implemented');
+  }
+
+  Future<dynamic> memberGetAndSubscribeUser(
+      String? _identity, String? _sid) async {
+    throw UnimplementedError(
+        'memberGetAndSubscribeUser() has not been implemented');
   }
 
   Future<int> getMessagesCount(String channelSid) {
