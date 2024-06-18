@@ -85,7 +85,7 @@ class Member {
   /// Return user descriptor for current member.
   Future<UserDescriptor?> getUserDescriptor() async {
     final userDescriptorData = await FlutterTwilioConversationsPlatform.instance
-        .getUserDescriptor(_identity, _channelSid);
+        .memberGetUserDescriptor(_identity, _channelSid);
     final userDescriptor =
         UserDescriptor._fromMap(userDescriptorData.cast<String, dynamic>());
     return userDescriptor;
@@ -95,7 +95,7 @@ class Member {
   Future<User?> getAndSubscribeUser() async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .getAndSubscribeUser(_identity, _channelSid);
+          .memberGetAndSubscribeUser(_identity, _channelSid);
       final userMap = Map<String, dynamic>.from(methodData);
       return User._fromMap(userMap);
     } on PlatformException catch (err) {

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:js';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
@@ -9,9 +10,17 @@ import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioClient;
-import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
 import 'package:flutter_twilio_conversations_web/listeners/channel_listener.dart';
 import 'package:intl/intl.dart';
+
+final emptyUser = {
+  "friendlyName": "",
+  "attributes": {},
+  "identity": "",
+  "isOnline": "",
+  "isNotifiable": "",
+  "isSubscribed": ""
+};
 
 class Mapper {
   static Future<Map<String, dynamic>?> chatClientToMap(
@@ -19,14 +28,14 @@ class Mapper {
     TwilioClient.TwilioConversationsClient chatClient,
     List<TwilioConversationsChannel>? channels,
   ) async {
-    // final users = await promiseToFuture(chatClient.getSubscribedUsers()); // TODO move this outside of Mapper
     final channelsMapped = await channelsToMap(pluginInstance, channels);
+    final usersMapped = await usersToMap(pluginInstance, chatClient);
     return {
       "channels": channelsMapped,
-      "myIdentity": "", // TODO
+      "myIdentity": chatClient.user.identity,
       "connectionState": connectionStateToString(chatClient.connectionState),
-      // "users": usersToMap(users), //TODO
-      "isReachabilityEnabled": true, // TODO
+      "users": usersMapped,
+      "isReachabilityEnabled": chatClient.reachabilityEnabled,
     };
   }
 
@@ -99,43 +108,79 @@ class Mapper {
     return channelMap;
   }
 
-  static Map<String, dynamic>? usersToMap(
-      List<TwilioConversationsUser>? users) {
-    //TODO
-    if (users == null) return {};
-    var subscribedUsersMap = users!.map((user) => userToMap(user));
+  static Future<Map<String, dynamic>?> usersToMap(
+    TwilioConversationsPlugin pluginInstance,
+    TwilioClient.TwilioConversationsClient chatClient,
+  ) async {
+    List<dynamic>? users = [];
+    try {
+      users = await promiseToFuture<List<dynamic>?>(
+          chatClient.getSubscribedUsers());
+    } catch (e) {
+      print(e);
+    }
+
+    if (users!.isEmpty) return {};
+
     var myUser = null;
-    // try {
-    //     if (TwilioConversationsPlugin.chatClient?.myUser != null) {
-    //         myUser = TwilioConversationsPlugin.chatClient?.myUser
-    //     }
-    // } catch (e) {
-    //    print("myUser is null ${e.toString()}");
-    // }
-
-    return {"subscribedUsers": subscribedUsersMap, "myUser": userToMap(myUser)};
-  }
-
-  static Map<String, dynamic>? userToMap(TwilioConversationsUser user) {
-    // TODO
-    if (user != null) {
-      return {
-        "friendlyName": user.friendlyName,
-        // "attributes" : attributes:Map(user.attributes),
-        "identity": user.identity,
-        // "isOnline" : user.isOnline,
-        // "isNotifiable" : user.isNotifiable,
-        // "isSubscribed" : user.isSubscribed
-      };
-    } else {
-      return {
+    try {
+      if (TwilioConversationsClient.chatClient!.users!.myUser != null) {
+        myUser = TwilioConversationsClient.chatClient!.users!.myUser!;
+      }
+    } catch (e) {
+      print("myUser is null ${e.toString()}");
+      myUser = {
         "friendlyName": "",
-        "attributes": "",
-        "identity": "",
+        "attributes": {},
+        "identity": chatClient.user.identity,
         "isOnline": "",
         "isNotifiable": "",
-        "isSubscribed": "",
+        "isSubscribed": ""
       };
+    }
+
+    late final subscribedUsersMap;
+    try {
+      subscribedUsersMap = await Future.wait(
+        users
+            .map((user) => userToMap(
+                  user,
+                  chatClient,
+                ))
+            .toList(),
+      );
+    } catch (e) {
+      print("Error in userToMap ${e.toString()}");
+    }
+    try {
+      return {
+        "subscribedUsers": subscribedUsersMap ?? {},
+        "myUser": await userToMap(myUser, chatClient)
+      };
+    } catch (e) {
+      print("myUser mapping error: $e");
+      return {"subscribedUsers": subscribedUsersMap ?? {}, "myUser": emptyUser};
+    }
+  }
+
+  static Future<Map<String, dynamic>> userToMap(
+    dynamic user,
+    TwilioClient.TwilioConversationsClient chatClient,
+  ) async {
+    try {
+      final userProperties =
+          await promiseToFuture(chatClient.getUser(user.identity));
+
+      return {
+        "friendlyName": userProperties.friendlyName,
+        "attributes": attributesToMap(userProperties.attributes),
+        "identity": userProperties.identity,
+        "isOnline": userProperties.isOnline,
+        "isNotifiable": userProperties.isNotifiable,
+        "isSubscribed": userProperties.isSubscribed
+      };
+    } catch (e) {
+      return emptyUser;
     }
   }
 
@@ -260,7 +305,6 @@ class Mapper {
   }
 
   static Map<String, dynamic>? errorInfoToMap(ErrorInfo? e) {
-    //TODO user interop for error info here?
     if (e == null) return null;
     return {"code": e.code, "message": e.message, "status": e.status};
   }

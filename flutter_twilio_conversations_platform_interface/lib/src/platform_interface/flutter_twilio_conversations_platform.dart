@@ -70,6 +70,23 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getUserChannelsList() has not been implemented.');
   }
 
+  Future<dynamic> getUserDescriptor(String identity) async {
+    throw UnimplementedError('getUserDescriptor() has not been implemented.');
+  }
+
+  Future<dynamic> getChannelUserDescriptors(String channelSid) async {
+    throw UnimplementedError(
+        'getChannelUserDescriptors() has not been implemented.');
+  }
+
+  Future<dynamic> getAndSubscribeUser(String identity) async {
+    throw UnimplementedError('getAndSubscribeUser() has not been implemented.');
+  }
+
+  Future<void> unsubscribe(String? _identity) async {
+    throw UnimplementedError('unsubscribe() has not been implemented.');
+  }
+
   Future<dynamic> getMembersByIdentity(String identity) async {
     throw UnimplementedError(
         'getMembersByIdentity() has not been implemented.');
@@ -119,13 +136,16 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('setAttributesMember() has not been implemented');
   }
 
-  Future<dynamic> getUserDescriptor(
+  Future<dynamic> memberGetUserDescriptor(
       String? _identity, String? _channelSid) async {
-    throw UnimplementedError('getUserDescriptor() has not been implemented');
+    throw UnimplementedError(
+        'memberGetUserDescriptor() has not been implemented');
   }
 
-  Future<dynamic> getAndSubscribeUser(String? _identity, String? _sid) async {
-    throw UnimplementedError('getAndSubscribeUser() has not been implemented');
+  Future<dynamic> memberGetAndSubscribeUser(
+      String? _identity, String? _sid) async {
+    throw UnimplementedError(
+        'memberGetAndSubscribeUser() has not been implemented');
   }
 
   Future<int> getMessagesCount(String channelSid) {

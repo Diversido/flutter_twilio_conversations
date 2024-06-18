@@ -72,7 +72,7 @@ class MessagesMethods {
           await promiseToFuture<int>(messagePreparator.build().send());
 
       final messages =
-          await await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
+          await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
               channels.items
                   .firstWhere((element) => element.sid == _channel.sid)
                   .getMessages(50, 0, "forward"));
