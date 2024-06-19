@@ -251,6 +251,11 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError();
   }
 
+  Future<dynamic> getDownloadURL(
+      String _channelSid, int _messageIndex) async {
+    throw UnimplementedError('getDownloadURL() has not been implemented');
+  }
+
   @override
   Future<void> leaveChannel(String channelSid) {
     print('web event: leaveChannel');

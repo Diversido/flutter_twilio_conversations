@@ -293,6 +293,14 @@ class MethodChannelFlutterTwilioConversations
     });
   }
 
+  Future<dynamic> getDownloadURL(
+      String _channelSid, int _messageIndex) async {
+    return await _methodChannel.invokeMethod('Message#getMedia', {
+      'channelSid': _channelSid,
+      'messageIndex': _messageIndex,
+    });
+  }
+
   Future<dynamic> requestNextPage(String _pageId, String _itemType) async {
     return await _methodChannel.invokeMethod('Paginator#requestNextPage',
         <String, Object>{'pageId': _pageId, 'itemType': _itemType});

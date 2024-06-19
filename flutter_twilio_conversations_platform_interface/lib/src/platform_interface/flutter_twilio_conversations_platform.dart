@@ -197,6 +197,11 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
         'getUnreadMessagesCount() has not been implemented');
   }
 
+  Future<dynamic> getDownloadURL(
+      String _channelSid, int _messageIndex) async {
+    throw UnimplementedError('getDownloadURL() has not been implemented');
+  }
+
   Future<void> joinChannel(String channelSid) {
     throw UnimplementedError('joinChannel() has not been implemented');
   }
