@@ -6,5 +6,4 @@ class TwilioConversationsMedia {
   external String fileName;
   external String contentType;
   external int size;
-
 }

@@ -6,7 +6,6 @@ import 'package:js/js.dart';
 @JS('Twilio.Conversations.Message')
 class TwilioConversationsMessage {
   external dynamic get updated;
-
   external TwilioConversationsChannel conversation;
   external String sid;
   external String author;
@@ -14,11 +13,8 @@ class TwilioConversationsMessage {
   external String body;
   external String channelSid;
   external String participantSid;
-
   external int index;
-  //TODO external List<Media> attachedMedia;
   external JSMap attributes;
-
-  external TwilioConversationsMember getParticipant();
   external dynamic attachedMedia;
+  external TwilioConversationsMember getParticipant();
 }
