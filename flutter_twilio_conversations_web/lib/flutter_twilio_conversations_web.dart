@@ -8,6 +8,7 @@ import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 import 'package:flutter_twilio_conversations_web/methods/channel_methods.dart';
 import 'package:flutter_twilio_conversations_web/methods/channels_methods.dart';
+import 'package:flutter_twilio_conversations_web/methods/message_methods.dart';
 import 'package:flutter_twilio_conversations_web/methods/messages_methods.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -251,9 +252,9 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError();
   }
 
-  Future<dynamic> getDownloadURL(
-      String _channelSid, int _messageIndex) async {
-    throw UnimplementedError('getDownloadURL() has not been implemented');
+  Future<dynamic> getDownloadURL(String _channelSid, int _messageIndex) async {
+    return await MessageMethods().getMedia(
+        _channelSid, _messageIndex, _chatClient!);
   }
 
   @override

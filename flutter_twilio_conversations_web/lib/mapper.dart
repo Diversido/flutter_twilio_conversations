@@ -261,14 +261,16 @@ class Mapper {
   }
 
   static Map<String, dynamic>? mediaToMap(TwilioConversationsMessage message) {
-    if (message.attachedMedia?.isEmpty ?? true) return null;
+    if (message.attachedMedia?.isEmpty ?? true) {
+      return null;
+    }
 
     return {
       "sid": message.attachedMedia[0].sid,
       "fileName": message.attachedMedia[0].filename,
       "type": message.attachedMedia[0].contentType,
       "size": message.attachedMedia[0].size,
-      "channelSid": message.sid,
+      "channelSid": message.conversation.sid,
       "messageIndex": message.index
     };
   }
