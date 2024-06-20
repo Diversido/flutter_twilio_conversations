@@ -8,7 +8,10 @@ Map jsToMap(jsObject) {
   try {
     return new Map.fromIterable(_getKeysOfObject(jsObject), value: (key) {
       var property = getProperty(jsObject, key);
-      if (property is JSMap) {
+
+      if (property is List && property[0] is JSMap) {
+        return [jsToMap(property[0])];
+      } else if (property is JSMap) {
         return jsToMap(property);
       }
 

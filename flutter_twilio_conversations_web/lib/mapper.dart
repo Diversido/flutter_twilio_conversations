@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:js';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
@@ -253,8 +252,7 @@ class Mapper {
       "memberSid": message.participantSid,
       "member": memberToMap(member),
       "messageIndex": message.index,
-      "hasMedia":
-          false, //message.getAttachedMedia().isNotEmpty(), //TODO Implement
+      "hasMedia": message.attachedMedia?.isNotEmpty ?? false,
       "media": mediaToMap(message),
       "attributes": attributesToMap(message.attributes),
     };
@@ -263,17 +261,18 @@ class Mapper {
   }
 
   static Map<String, dynamic>? mediaToMap(TwilioConversationsMessage message) {
-    //TODO Implement
-    // if (message.attachedMedia.isEmpty) return null;
-    return null;
-    // return mapOf<String, Any?>(
-    //         "sid" to message.getAttachedMedia()[0].sid,
-    //         "fileName" to message.getAttachedMedia()[0].filename,
-    //         "type" to message.getAttachedMedia()[0].contentType,
-    //         "size" to message.getAttachedMedia()[0].size,
-    //         "channelSid" to message.conversationSid,
-    //         "messageIndex" to message.messageIndex
-    // )
+    if (message.attachedMedia?.isEmpty ?? true) {
+      return null;
+    }
+
+    return {
+      "sid": message.attachedMedia[0].sid,
+      "fileName": message.attachedMedia[0].filename,
+      "type": message.attachedMedia[0].contentType,
+      "size": message.attachedMedia[0].size,
+      "channelSid": message.conversation.sid,
+      "messageIndex": message.index
+    };
   }
 
   static Map<String, dynamic>? memberToMap(TwilioConversationsMember? member) {

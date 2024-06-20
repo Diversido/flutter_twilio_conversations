@@ -31,7 +31,6 @@ class MethodChannelFlutterTwilioConversations
 
   @override
   Future<dynamic> create(String token, Properties properties) async {
-    // TODO Nic check that properties can be dynamic
     return _methodChannel.invokeMethod('create',
         <String, Object>{'token': token, 'properties': properties.toMap()});
   }
@@ -290,6 +289,13 @@ class MethodChannelFlutterTwilioConversations
       'channelSid': _channelSid,
       'messageIndex': _messageIndex,
       'attributes': attributes,
+    });
+  }
+
+  Future<dynamic> getDownloadURL(String _channelSid, int _messageIndex) async {
+    return await _methodChannel.invokeMethod('Message#getMedia', {
+      'channelSid': _channelSid,
+      'messageIndex': _messageIndex,
     });
   }
 

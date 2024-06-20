@@ -68,11 +68,8 @@ class MessageMedia {
   ///
   /// Provided file could be an existing file and a none existing file.
   Future<String?> getDownloadURL() async {
-    // return await TwilioConversationsClient._methodChannel
-    //     .invokeMethod('Message#getMedia', {
-    //   'channelSid': _channelSid,
-    //   'messageIndex': _messageIndex,
-    // });
+    return await FlutterTwilioConversationsPlatform.instance
+        .getDownloadURL(_channelSid, _messageIndex);
   }
   //#endregion
 }
