@@ -20,7 +20,7 @@ dependencies:
   permission_handler: ^8.3.0
   device_info_plus:
   image_picker: ^0.8.4+4
-  intl: ^0.18.1
+  intl: ^0.19.0
   cupertino_icons: ^1.0.4
 
 dev_dependencies:
