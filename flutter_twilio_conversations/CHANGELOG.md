@@ -1,3 +1,6 @@
+## 2.0.0+10
+* Added web support
+
 ## 1.1.7+9
 
 * Update Twilio Conversations Android SDK to [6.0.3](https://www.twilio.com/docs/conversations/android/changelog#conversations-603-october-26-2023)
