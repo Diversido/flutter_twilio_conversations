@@ -292,7 +292,7 @@ class MethodChannelFlutterTwilioConversations
     });
   }
 
-  Future<dynamic> getDownloadURL(String _channelSid, int _messageIndex) async {
+  Future<String> getDownloadURL(String _channelSid, int _messageIndex) async {
     return await _methodChannel.invokeMethod('Message#getMedia', {
       'channelSid': _channelSid,
       'messageIndex': _messageIndex,

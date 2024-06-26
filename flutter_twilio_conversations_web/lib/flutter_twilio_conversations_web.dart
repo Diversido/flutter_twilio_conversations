@@ -252,7 +252,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError();
   }
 
-  Future<dynamic> getDownloadURL(String _channelSid, int _messageIndex) async {
+  Future<String> getDownloadURL(String _channelSid, int _messageIndex) async {
     return await MessageMethods().getMedia(
         _channelSid, _messageIndex, _chatClient!);
   }
