@@ -30,7 +30,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<dynamic> create(String token, Properties properties) async {
+  Future<dynamic> createChatClient(String token, Properties properties) async {
     try {
       _chatClient = await TwilioWebClient.TwilioConversationsClient(token);
 
@@ -253,8 +253,8 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   Future<String> getDownloadURL(String _channelSid, int _messageIndex) async {
-    return await MessageMethods().getMedia(
-        _channelSid, _messageIndex, _chatClient!);
+    return await MessageMethods()
+        .getMedia(_channelSid, _messageIndex, _chatClient!);
   }
 
   @override

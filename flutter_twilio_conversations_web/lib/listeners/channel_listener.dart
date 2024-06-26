@@ -7,16 +7,9 @@ import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
-
 import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 import 'package:js/js.dart';
-
-// TODO
-// participantJoined
-// participantLeft
-// participantUpdated
-// pushNotification
 
 class ChannelEventListener extends BaseListener {
   final TwilioConversationsPlugin pluginInstance;

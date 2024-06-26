@@ -40,7 +40,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<dynamic> create(String token, Properties properties) {
+  Future<dynamic> createChatClient(String token, Properties properties) {
     throw UnimplementedError('create() has not been implemented.');
   }
 
@@ -197,8 +197,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
         'getUnreadMessagesCount() has not been implemented');
   }
 
-  Future<String> getDownloadURL(
-      String _channelSid, int _messageIndex) async {
+  Future<String> getDownloadURL(String _channelSid, int _messageIndex) async {
     throw UnimplementedError('getDownloadURL() has not been implemented');
   }
 

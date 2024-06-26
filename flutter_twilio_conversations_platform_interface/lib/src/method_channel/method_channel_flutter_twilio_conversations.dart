@@ -30,7 +30,7 @@ class MethodChannelFlutterTwilioConversations
   );
 
   @override
-  Future<dynamic> create(String token, Properties properties) async {
+  Future<dynamic> createChatClient(String token, Properties properties) async {
     return _methodChannel.invokeMethod('create',
         <String, Object>{'token': token, 'properties': properties.toMap()});
   }

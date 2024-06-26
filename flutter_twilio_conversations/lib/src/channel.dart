@@ -511,7 +511,7 @@ class Channel {
   /// Parse native channel events to the right event streams.
   void _parseEvents(dynamic event) {
     final String eventName = event['name'];
-    TwilioConversationsClient._log(
+    TwilioConversationsClient.log(
         "Channel => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
     final data = Map<String, dynamic>.from(event['data']);
 
@@ -584,7 +584,7 @@ class Channel {
         _onSynchronizationChangedCtrl.add(this);
         break;
       default:
-        TwilioConversationsClient._log(
+        TwilioConversationsClient.log(
             "Event '$eventName' not yet implemented");
         break;
     }
