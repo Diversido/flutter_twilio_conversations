@@ -17,7 +17,7 @@ class DialogsList extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
-            'Dialog Page',
+            'Dialogs',
           ),
         ),
         body: viewModel.dialogs.isNotEmpty
