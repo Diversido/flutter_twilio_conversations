@@ -28,7 +28,7 @@ void main() {
 
   group('.debug()', () {
     test('should enable debug in dart', () async {
-      //await TwilioConversationsClient.debug(dart: true);
+      await TwilioConversationsClient.debug(dart: true);
 
       expect(nativeDebugIsCalled, true);
       expect(methodCalls, <Matcher>[
@@ -40,7 +40,7 @@ void main() {
     });
 
     test('should disable debug in dart', () async {
-      //await TwilioConversationsClient.debug(dart: false);
+      await TwilioConversationsClient.debug(dart: false);
 
       expect(nativeDebugIsCalled, true);
       expect(methodCalls, <Matcher>[

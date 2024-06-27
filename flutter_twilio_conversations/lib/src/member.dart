@@ -83,7 +83,7 @@ class Member {
   }
 
   /// Return user descriptor for current member.
-  Future<UserDescriptor?> getUserDescriptor() async {
+  Future<UserDescriptor> getUserDescriptor() async {
     final userDescriptorData = await FlutterTwilioConversationsPlatform.instance
         .memberGetUserDescriptor(_identity, _channelSid);
     final userDescriptor =
@@ -92,7 +92,7 @@ class Member {
   }
 
   /// Return subscribed user object for current member.
-  Future<User?> getAndSubscribeUser() async {
+  Future<User> getAndSubscribeUser() async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .memberGetAndSubscribeUser(_identity, _channelSid);

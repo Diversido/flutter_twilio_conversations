@@ -32,7 +32,7 @@ class Users {
   /// Get paginated user descriptors from a given channel.
   ///
   /// This is a convenience function allowing to query user list in a channel. The returned paginator can be used to iterate full user list in the channel roster.
-  Future<Paginator<UserDescriptor>?> getChannelUserDescriptors(
+  Future<Paginator<UserDescriptor>> getChannelUserDescriptors(
       String channelSid) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
@@ -46,7 +46,7 @@ class Users {
   }
 
   /// Get user descriptor based on user identity.
-  Future<UserDescriptor?> getUserDescriptor(String identity) async {
+  Future<UserDescriptor> getUserDescriptor(String identity) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getUserDescriptor(identity);
@@ -71,7 +71,7 @@ class Users {
   /// Get user based on user identity and subscribe to real-time updates for this user.
   ///
   /// There's a limit on the number of simultaneously subscribed objects in the SDK. This is to reduce read memory and network traffic.
-  Future<User?> getAndSubscribeUser(String identity) async {
+  Future<User> getAndSubscribeUser(String identity) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getAndSubscribeUser(identity);

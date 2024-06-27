@@ -18,7 +18,7 @@ class Messages {
 
   //#region Public API methods
   /// Sends a message to the channel.
-  Future<Message?> sendMessage(MessageOptions options) async {
+  Future<Message> sendMessage(MessageOptions options) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .sendMessage(options, _channel);
@@ -96,7 +96,7 @@ class Messages {
   }
 
   /// Get message object by known index.
-  Future<Message?> getMessageByIndex(int messageIndex) async {
+  Future<Message> getMessageByIndex(int messageIndex) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getMessageByIndex(_channel, messageIndex);

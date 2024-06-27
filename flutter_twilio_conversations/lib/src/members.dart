@@ -29,7 +29,7 @@ class Members {
   }
 
   /// Get a channel member by identity.
-  Future<Member?> getMember(String identity) async {
+  Future<Member> getMember(String identity) async {
     final memberData = await FlutterTwilioConversationsPlatform.instance
         .getMember(_channelSid, identity);
     return Member._fromMap(memberData?.cast<String, dynamic>());
