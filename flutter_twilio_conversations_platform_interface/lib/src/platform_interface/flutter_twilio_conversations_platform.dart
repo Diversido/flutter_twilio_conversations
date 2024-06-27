@@ -236,6 +236,11 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
         'registerForNotification() has not been implemented');
   }
 
+  Future<void> unregisterForNotification(String token) async {
+    throw UnimplementedError(
+        'unregisterForNotification() has not been implemented');
+  }
+
   Future<String> setUniqueNameChannel(String channelSid, String uniqueName) {
     throw UnimplementedError('setUniqueNameChannel() has not been implemented');
   }

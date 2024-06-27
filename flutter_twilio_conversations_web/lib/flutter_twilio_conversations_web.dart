@@ -328,6 +328,12 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     return '';
   }
 
+  Future<void> unregisterForNotification(String token) async {
+    TwilioConversationsClient.log(
+        'unregisterForNotification() has not been implemented');
+    return null;
+  }
+
   @override
   Future<String> setUniqueNameChannel(
       String channelSid, String uniqueName) async {

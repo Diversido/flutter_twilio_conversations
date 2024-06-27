@@ -327,8 +327,8 @@ class ChatClient {
   /// Token is only used on Android. iOS implementation retrieves APNs token itself.
   Future<void> unregisterForNotification(String token) async {
     try {
-      // await TwilioConversationsClient._methodChannel.invokeMethod(
-      //     'unregisterForNotification', <String, Object>{'token': token});
+      await FlutterTwilioConversationsPlatform.instance
+          .unregisterForNotification(token);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

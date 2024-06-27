@@ -261,6 +261,11 @@ class MethodChannelFlutterTwilioConversations
         'registerForNotification', <String, Object>{'token': token});
   }
 
+  Future<void> unregisterForNotification(String token) async {
+    return await _methodChannel.invokeMethod(
+        'unregisterForNotification', <String, Object>{'token': token});
+  }
+
   @override
   Future<String> setUniqueNameChannel(
       String channelSid, String uniqueName) async {
