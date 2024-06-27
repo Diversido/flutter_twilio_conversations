@@ -28,7 +28,7 @@ class UiMiddleware extends EpicMiddleware<AppState> {
               await FlutterLocalNotificationsPlugin().initialize(
                 InitializationSettings(
                   android: AndroidInitializationSettings('ic_launcher'),
-           //     iOS: IOSInitializationSettings(),
+                  iOS: DarwinInitializationSettings(),
                 ),
               );
 
@@ -47,9 +47,9 @@ class UiMiddleware extends EpicMiddleware<AppState> {
                     showWhen: false,
                     styleInformation: BigTextStyleInformation(''),
                   ),
-                  // iOS: IOSNotificationDetails(
-                  //   threadIdentifier: 'flutter_twilio_conversations',
-                  // ),
+                  iOS: DarwinNotificationDetails(
+                    threadIdentifier: 'flutter_twilio_conversations',
+                  ),
                 ),
               );
             } catch (e) {
