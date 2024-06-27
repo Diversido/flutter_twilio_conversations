@@ -52,7 +52,7 @@ class Paginator<T> {
   }
 
   /// Query the next page.
-  Future<Paginator<T>?> requestNextPage() async {
+  Future<Paginator<T>> requestNextPage() async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .requestNextPage(_pageId, _itemType);

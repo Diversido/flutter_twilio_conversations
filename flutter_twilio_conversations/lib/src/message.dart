@@ -151,7 +151,7 @@ class Message {
   }
 
   /// Set attributes associated with this message.
-  Future<Map<String, dynamic>?> setAttributes(
+  Future<Map<String, dynamic>> setAttributes(
       Map<String, dynamic> attributes) async {
     try {
       return Map<String, dynamic>.from(await FlutterTwilioConversationsPlatform

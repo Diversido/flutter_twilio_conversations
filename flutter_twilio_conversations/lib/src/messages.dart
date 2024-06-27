@@ -77,7 +77,7 @@ class Messages {
   }
 
   /// Load last messages in chat.
-  Future<List<Message>?> getLastMessages(int count) async {
+  Future<List<Message>> getLastMessages(int count) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getLastMessages(count, _channel);

@@ -16,7 +16,7 @@ class Members {
     return channel;
   }
 
-  Future<List<Member>?> getMembersList() async {
+  Future<List<Member>> getMembersList() async {
     final membersListData = await FlutterTwilioConversationsPlatform.instance
         .getMembersList(_channelSid);
     if (membersListData['membersList'] != null) {

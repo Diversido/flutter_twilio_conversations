@@ -53,7 +53,7 @@ class Channels {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getChannel(channelSidOrUniqueName);
-      final channelMap = Map<String, dynamic>.from(methodData as Map);
+      final channelMap = Map<String, dynamic>.from(methodData);
       _updateChannelFromMap(channelMap);
       return _channelsMap[channelMap['sid']]!;
     } on PlatformException catch (err) {
@@ -67,7 +67,7 @@ class Channels {
   /// To get channels already joined by current user see [Channels.getUserChannelsList].
   ///
   /// Returned list is wrapped in a [Paginator].
-  Future<Paginator<ChannelDescriptor>?> getPublicChannelsList() async {
+  Future<Paginator<ChannelDescriptor>> getPublicChannelsList() async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getPublicChannelsList();
@@ -86,7 +86,7 @@ class Channels {
   /// Per iOS docs: Retrieve a list of channel descriptors the user has a participation state on, for example invited, joined, creator.
   ///
   /// Returned list is wrapped in a [Paginator].
-  Future<Paginator<ChannelDescriptor>?> getUserChannelsList() async {
+  Future<Paginator<ChannelDescriptor>> getUserChannelsList() async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getUserChannelsList();
@@ -100,7 +100,7 @@ class Channels {
   /// Get list of all [Channel] members with a given identity.
   ///
   /// The effect of this function is to find and return all Member instances across multiple channels with the given identity.
-  Future<List<Member>?> getMembersByIdentity(String identity) async {
+  Future<List<Member>> getMembersByIdentity(String identity) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
           .getMembersByIdentity(identity);
