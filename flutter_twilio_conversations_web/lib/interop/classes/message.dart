@@ -16,7 +16,6 @@ class TwilioConversationsMessage {
   external String participantSid;
 
   external int index;
-  //TODO external List<Media> attachedMedia;
   external JSMap attributes;
 
   external TwilioConversationsMember getParticipant();
