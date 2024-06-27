@@ -73,14 +73,13 @@ class _SendBarState extends State<SendBar> {
                             );
 
                             if (pickedImage != null) {
-                              dynamic image; //File(pickedImage.path);
+                              dynamic image;
                               if (kIsWeb) {
                                 image = Image.network(pickedImage.path);
                               } else {
                                 image = Image.file(File(pickedImage.path));
                               }
                               // send picked file
-                              // TODO something wrong here
                               viewModel.sendImage(image);
                             }
                           } catch (e) {
