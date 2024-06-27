@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-  return StoreConnector<AppState, _ViewModel>(
+    return StoreConnector<AppState, _ViewModel>(
       distinct: true,
       converter: (store) => _ViewModel(store),
       builder: (context, viewModel) => Scaffold(
