@@ -1,11 +1,9 @@
 import 'dart:js_util';
-
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
-import 'package:flutter_twilio_conversations_web/mapper.dart';
 
 class MessageMethods {
   void getChannel() {}

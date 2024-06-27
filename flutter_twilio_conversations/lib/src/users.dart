@@ -87,13 +87,11 @@ class Users {
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
     if (map['myUser'] != null) {
-      print("setting myUser ${map['myUser']}");
       final myUserMap = Map<String, dynamic>.from(map['myUser']);
       _myUser ??= User._fromMap(myUserMap);
       _myUser?._updateFromMap(myUserMap);
     }
     if (map['subscribedUsers'] != null) {
-      print("subscribedUsers: ${map['subscribedUsers']}");
       final List<Map<String, dynamic>> subscribedUsersList =
           map['subscribedUsers']
               .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))

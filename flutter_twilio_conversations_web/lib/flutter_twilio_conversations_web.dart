@@ -30,7 +30,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<dynamic> create(String token, Properties properties) async {
+  Future<dynamic> createChatClient(String token, Properties properties) async {
     try {
       _chatClient = await TwilioWebClient.TwilioConversationsClient(token);
 
@@ -77,7 +77,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError('getUserChannelsList() has not been implemented.');
   }
 
-  Future<void> unsubscribe(String? _identity) async {
+  Future<void> unsubscribe(String? identity) async {
     throw UnimplementedError('unsubscribe() has not been implemented.');
   }
 
@@ -86,38 +86,38 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
         'getMembersByIdentity() has not been implemented.');
   }
 
-  Future<dynamic> getMember(String _channelSid, String identity) async {
+  Future<dynamic> getMember(String channelSid, String identity) async {
     throw UnimplementedError('getMember() has not been implemented');
   }
 
-  Future<dynamic> getMembersList(String _channelSid) async {
+  Future<dynamic> getMembersList(String channelSid) async {
     throw UnimplementedError('getMembersList() has not been implemented');
   }
 
-  Future<bool?> addByIdentity(String _channelSid, String identity) async {
+  Future<bool?> addByIdentity(String channelSid, String identity) async {
     throw UnimplementedError('addByIdentity() has not been implemented');
   }
 
-  Future<bool?> removeByIdentity(String _channelSid, String identity) async {
+  Future<bool?> removeByIdentity(String channelSid, String identity) async {
     throw UnimplementedError('removeByIdentity() has not been implemented');
   }
 
-  Future<bool?> inviteByIdentity(String _channelSid, String identity) async {
+  Future<bool?> inviteByIdentity(String channelSid, String identity) async {
     throw UnimplementedError('inviteByIdentity() has not been implemented');
   }
 
   Future<dynamic> setAttributesMember(
-      String _sid, String? _channelSid, Map<String, dynamic> attributes) async {
+      String sid, String? channelSid, Map<String, dynamic> attributes) async {
     throw UnimplementedError('setAttributesMember() has not been implemented');
   }
 
   Future<dynamic> memberGetAndSubscribeUser(
-      String? _identity, String? _sid) async {
+      String? identity, String? sid) async {
     throw UnimplementedError('getAndSubscribeUser() has not been implemented');
   }
 
   Future<dynamic> memberGetUserDescriptor(
-      String? _identity, String? _channelSid) async {
+      String? identity, String? channelSid) async {
     throw UnimplementedError(
         'memberGetUserDescriptor() has not been implemented');
   }
@@ -154,34 +154,34 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError();
   }
 
-  Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
+  Future<int?> setAllMessagesReadWithResult(Channel channel) async {
     return await MessagesMethods()
-        .setAllMessagesReadWithResult(_channel, _chatClient);
+        .setAllMessagesReadWithResult(channel, _chatClient);
   }
 
   @override
   Future<dynamic> getMessagesAfter(
-      int index, int count, Channel _channel) async {
+      int index, int count, Channel channel) async {
     return await MessagesMethods()
-        .getMessagesDirection(index, count, _channel, _chatClient, "forward");
+        .getMessagesDirection(index, count, channel, _chatClient, "forward");
   }
 
   @override
   Future<dynamic> getMessagesBefore(
-      int index, int count, Channel _channel) async {
+      int index, int count, Channel channel) async {
     return await MessagesMethods()
-        .getMessagesDirection(index, count, _channel, _chatClient, "backwards");
+        .getMessagesDirection(index, count, channel, _chatClient, "backwards");
   }
 
   @override
-  Future<dynamic> getLastMessages(int count, Channel _channel) async {
+  Future<dynamic> getLastMessages(int count, Channel channel) async {
     return await MessagesMethods()
-        .getLastMessages(count, _channel, _chatClient);
+        .getLastMessages(count, channel, _chatClient);
   }
 
   @override
-  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
-    return await MessagesMethods().sendMessage(options, _channel, _chatClient);
+  Future<dynamic> sendMessage(MessageOptions options, Channel channel) async {
+    return await MessagesMethods().sendMessage(options, channel, _chatClient);
   }
 
   @override
@@ -191,11 +191,11 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   Future<String> updateMessageBody(
-      String? _channelSid, int? _messageIndex, String body) async {
+      String? channelSid, int? messageIndex, String body) async {
     throw UnimplementedError('updateMessageBody() has not been implemented');
   }
 
-  Future<dynamic> setAttributes(String? _channelSid, int? _messageIndex,
+  Future<dynamic> setAttributes(String? channelSid, int? messageIndex,
       Map<String, dynamic> attributes) async {
     throw UnimplementedError('setAttributes() has not been implemented');
   }
@@ -211,23 +211,23 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   Future<int?> setLastReadMessageIndexWithResult(
-      Channel _channel, int lastReadMessageIndex) async {
+      Channel channel, int lastReadMessageIndex) async {
     throw UnimplementedError(
         'setLastReadMessageIndexWithResult() has not been implemented');
   }
 
   Future<int?> advanceLastReadMessageIndexWithResult(
-      Channel _channel, int lastReadMessageIndex) async {
+      Channel channel, int lastReadMessageIndex) async {
     throw UnimplementedError(
         'advanceLastReadMessageIndexWithResult() has not been implemented');
   }
 
-  Future<int?> setNoMessagesReadWithResult(Channel _channel) async {
+  Future<int?> setNoMessagesReadWithResult(Channel channel) async {
     throw UnimplementedError(
         'setNoMessagesReadWithResult() has not been implemented');
   }
 
-  Future<void> removeMessage(Channel _channel, Message message) async {
+  Future<void> removeMessage(Channel channel, Message message) async {
     throw UnimplementedError('removeMessage() has not been implemented');
   }
 
@@ -252,9 +252,9 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError();
   }
 
-  Future<dynamic> getDownloadURL(String _channelSid, int _messageIndex) async {
-    return await MessageMethods().getMedia(
-        _channelSid, _messageIndex, _chatClient!);
+  Future<String> getDownloadURL(String channelSid, int messageIndex) async {
+    return await MessageMethods()
+        .getMedia(channelSid, messageIndex, _chatClient!);
   }
 
   @override
@@ -296,7 +296,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<dynamic> requestNextPage(String _pageId, String _itemType) async {
+  Future<dynamic> requestNextPage(String pageId, String itemType) async {
     throw UnimplementedError('requestNextPage() has not been implemented');
   }
 
@@ -316,62 +316,3 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     throw UnimplementedError('debug() has not been implemented');
   }
 }
-
-/*
-___ChannelMethods___
-getMembersCount
-setAttributes
-getFriendlyName
-setFriendlyName
-getNotificationLevel
-setNotificationLevel
-getUniqueName
-setUniqueName
-join
-leave
-typing
-destroy
-getMessagesCount
-getUnreadMessagesCount
-___ChannelsMethods___
-getChannel
-getPublicChannelsList
-getUserChannelsList
-createChannel
-___ChatClientMethods__
-updateToken
-shutdown
-___MemberMethods__
-getChannel
-getUserDescriptor
-getAndSubscribeUser
-setAttributes
-___MembersMethods__
-getChannel
-getMembersList
-getMember
-addByIdentity
-inviteByIdentity
-removeByIdentity
-___MessageMethods__
-getChannel
-updateMessageBody
-setAttributes
-getMedia
-___MessagesMethods___
-removeMessage
-getMessagesBefore
-getMessagesAfter
-getLastMessages
-getMessageByIndex
-setLastReadMessageIndexWithResult
-advanceLastReadMessageIndexWithResult
-setAllMessagesReadWithResult
-setNoMessagesReadWithResult
-___Users__
-unsubscribe
-___Users__
-getChannelUserDescriptors
-getUserDescriptor
-getAndSubscribeUser
-*/

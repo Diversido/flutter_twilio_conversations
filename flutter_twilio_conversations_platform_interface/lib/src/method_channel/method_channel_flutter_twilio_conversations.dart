@@ -5,14 +5,10 @@ import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:meta/meta.dart';
 import '../platform_interface/flutter_twilio_conversations_platform.dart';
 
-// const MethodChannel _channel =
-//     MethodChannel('plugins.flutter.io/flutter_twilio_conversations');
-
 /// An implementation of [FlutterTwilioConversationsPlatform] that uses method channels.
 class MethodChannelFlutterTwilioConversations
     extends FlutterTwilioConversationsPlatform {
-  // @visibleForTesting
-  // MethodChannel get channel => _channel;
+
   final MethodChannel _methodChannel;
   final EventChannel _chatChannel;
 
@@ -30,7 +26,7 @@ class MethodChannelFlutterTwilioConversations
   );
 
   @override
-  Future<dynamic> create(String token, Properties properties) async {
+  Future<dynamic> createChatClient(String token, Properties properties) async {
     return _methodChannel.invokeMethod('create',
         <String, Object>{'token': token, 'properties': properties.toMap()});
   }
@@ -65,9 +61,9 @@ class MethodChannelFlutterTwilioConversations
         .invokeMethod('Users#getUserDescriptor', {'identity': identity});
   }
 
-  Future<void> unsubscribe(String? _identity) async {
+  Future<void> unsubscribe(String? identity) async {
     await _methodChannel
-        .invokeMethod('User#unsubscribe', {'identity': _identity});
+        .invokeMethod('User#unsubscribe', {'identity': identity});
   }
 
   Future<dynamic> getAndSubscribeUser(String identity) async {
@@ -93,56 +89,56 @@ class MethodChannelFlutterTwilioConversations
         .invokeMethod('Channels#getMembersByIdentity', {'identity': identity});
   }
 
-  Future<dynamic> getMember(String _channelSid, String identity) async {
+  Future<dynamic> getMember(String channelSid, String identity) async {
     return await _methodChannel.invokeMethod('Members#getMember', {
-      'channelSid': _channelSid,
+      'channelSid': channelSid,
       'identity': identity,
     });
   }
 
-  Future<dynamic> getMembersList(String _channelSid) async {
+  Future<dynamic> getMembersList(String channelSid) async {
     return await _methodChannel.invokeMethod('Members#getMembersList', {
-      'channelSid': _channelSid,
+      'channelSid': channelSid,
     });
   }
 
-  Future<bool?> addByIdentity(String _channelSid, String identity) async {
+  Future<bool?> addByIdentity(String channelSid, String identity) async {
     return _methodChannel.invokeMethod('Members#addByIdentity',
-        {'identity': identity, 'channelSid': _channelSid});
+        {'identity': identity, 'channelSid': channelSid});
   }
 
-  Future<bool?> removeByIdentity(String _channelSid, String identity) async {
+  Future<bool?> removeByIdentity(String channelSid, String identity) async {
     return _methodChannel.invokeMethod('Members#removeByIdentity',
-        {'identity': identity, 'channelSid': _channelSid});
+        {'identity': identity, 'channelSid': channelSid});
   }
 
-  Future<bool?> inviteByIdentity(String _channelSid, String identity) async {
+  Future<bool?> inviteByIdentity(String channelSid, String identity) async {
     return _methodChannel.invokeMethod('Members#inviteByIdentity',
-        {'identity': identity, 'channelSid': _channelSid});
+        {'identity': identity, 'channelSid': channelSid});
   }
 
   Future<dynamic> setAttributesMember(
-      String _sid, String? _channelSid, Map<String, dynamic> attributes) async {
+      String sid, String? channelSid, Map<String, dynamic> attributes) async {
     return _methodChannel.invokeMethod('Member#setAttributes', {
-      'memberSid': _sid,
-      'channelSid': _channelSid,
+      'memberSid': sid,
+      'channelSid': channelSid,
       'attributes': attributes
     });
   }
 
   Future<dynamic> memberGetUserDescriptor(
-      String? _identity, String? _channelSid) async {
+      String? identity, String? channelSid) async {
     return await _methodChannel.invokeMethod('Member#getUserDescriptor', {
-      'identity': _identity,
-      'channelSid': _channelSid,
+      'identity': identity,
+      'channelSid': channelSid,
     });
   }
 
   Future<dynamic> memberGetAndSubscribeUser(
-      String? _sid, String? _channelSid) async {
+      String? sid, String? channelSid) async {
     return await _methodChannel.invokeMethod('Member#getAndSubscribeUser', {
-      'memberSid': _sid,
-      'channelSid': _channelSid,
+      'memberSid': sid,
+      'channelSid': channelSid,
     });
   }
 
@@ -188,9 +184,9 @@ class MethodChannelFlutterTwilioConversations
         .invokeMethod('Channel#getUniqueName', {'channelSid': channelSid});
   }
 
-  Future<void> removeMessage(Channel _channel, Message message) async {
+  Future<void> removeMessage(Channel channel, Message message) async {
     await _methodChannel.invokeMethod('Messages#removeMessage',
-        {'channelSid': _channel.sid, 'messageIndex': message.messageIndex});
+        {'channelSid': channel.sid, 'messageIndex': message.messageIndex});
   }
 
   @override
@@ -201,27 +197,27 @@ class MethodChannelFlutterTwilioConversations
 
   @override
   Future<int?> setLastReadMessageIndexWithResult(
-      Channel _channel, int lastReadMessageIndex) async {
+      Channel channel, int lastReadMessageIndex) async {
     return await _methodChannel.invokeMethod(
         'Messages#setLastReadMessageIndexWithResult', {
-      'channelSid': _channel.sid,
+      'channelSid': channel.sid,
       'lastReadMessageIndex': lastReadMessageIndex
     });
   }
 
   @override
   Future<int?> advanceLastReadMessageIndexWithResult(
-      Channel _channel, int lastReadMessageIndex) async {
+      Channel channel, int lastReadMessageIndex) async {
     return await _methodChannel.invokeMethod(
         'Messages#advanceLastReadMessageIndexWithResult', {
-      'channelSid': _channel.sid,
+      'channelSid': channel.sid,
       'lastReadMessageIndex': lastReadMessageIndex
     });
   }
 
-  Future<int?> setNoMessagesReadWithResult(Channel _channel) async {
+  Future<int?> setNoMessagesReadWithResult(Channel channel) async {
     return _methodChannel.invokeMethod(
-        'Messages#setNoMessagesReadWithResult', {'channelSid': _channel.sid});
+        'Messages#setNoMessagesReadWithResult', {'channelSid': channel.sid});
   }
 
   @override
@@ -274,80 +270,80 @@ class MethodChannelFlutterTwilioConversations
 
   @override
   Future<String> updateMessageBody(
-      String? _channelSid, int? _messageIndex, String body) async {
+      String? channelSid, int? messageIndex, String body) async {
     return await _methodChannel.invokeMethod('Message#updateMessageBody', {
-          'channelSid': _channelSid,
-          'messageIndex': _messageIndex,
+          'channelSid': channelSid,
+          'messageIndex': messageIndex,
           'body': body,
         }) ??
         '';
   }
 
-  Future<dynamic> setAttributes(String? _channelSid, int? _messageIndex,
+  Future<dynamic> setAttributes(String? channelSid, int? messageIndex,
       Map<String, dynamic> attributes) async {
     return await _methodChannel.invokeMethod('Message#setAttributes', {
-      'channelSid': _channelSid,
-      'messageIndex': _messageIndex,
+      'channelSid': channelSid,
+      'messageIndex': messageIndex,
       'attributes': attributes,
     });
   }
 
-  Future<dynamic> getDownloadURL(String _channelSid, int _messageIndex) async {
+  Future<String> getDownloadURL(String channelSid, int messageIndex) async {
     return await _methodChannel.invokeMethod('Message#getMedia', {
-      'channelSid': _channelSid,
-      'messageIndex': _messageIndex,
+      'channelSid': channelSid,
+      'messageIndex': messageIndex,
     });
   }
 
-  Future<dynamic> requestNextPage(String _pageId, String _itemType) async {
+  Future<dynamic> requestNextPage(String pageId, String itemType) async {
     return await _methodChannel.invokeMethod('Paginator#requestNextPage',
-        <String, Object>{'pageId': _pageId, 'itemType': _itemType});
+        <String, Object>{'pageId': pageId, 'itemType': itemType});
   }
 
   @override
-  Future<dynamic> getMessageByIndex(Channel _channel, int messageIndex) async {
+  Future<dynamic> getMessageByIndex(Channel channel, int messageIndex) async {
     return await _methodChannel.invokeMethod('Messages#getMessageByIndex',
-        {'channelSid': _channel.sid, 'messageIndex': messageIndex});
+        {'channelSid': channel.sid, 'messageIndex': messageIndex});
   }
 
   @override
-  Future<dynamic> getLastMessages(int count, Channel _channel) async {
+  Future<dynamic> getLastMessages(int count, Channel channel) async {
     return await _methodChannel.invokeMethod('Messages#getLastMessages', {
       'count': count,
-      'channelSid': _channel.sid,
+      'channelSid': channel.sid,
     });
   }
 
   @override
   Future<dynamic> getMessagesAfter(
-      int index, int count, Channel _channel) async {
+      int index, int count, Channel channel) async {
     return await _methodChannel.invokeMethod('Messages#getMessagesAfter', {
       'index': index,
       'count': count,
-      'channelSid': _channel.sid,
+      'channelSid': channel.sid,
     });
   }
 
   @override
   Future<dynamic> getMessagesBefore(
-      int index, int count, Channel _channel) async {
+      int index, int count, Channel channel) async {
     return await _methodChannel.invokeMethod('Messages#getMessagesBefore', {
       'index': index,
       'count': count,
-      'channelSid': _channel.sid,
+      'channelSid': channel.sid,
     });
   }
 
-  Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
+  Future<int?> setAllMessagesReadWithResult(Channel channel) async {
     return await _methodChannel.invokeMethod(
-        'Messages#setAllMessagesReadWithResult', {'channelSid': _channel.sid});
+        'Messages#setAllMessagesReadWithResult', {'channelSid': channel.sid});
   }
 
   @override
-  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
+  Future<dynamic> sendMessage(MessageOptions options, Channel channel) async {
     return await _methodChannel.invokeMethod('Messages#sendMessage', {
       'options': options.toMap(),
-      'channelSid': _channel.sid,
+      'channelSid': channel.sid,
     });
   }
 

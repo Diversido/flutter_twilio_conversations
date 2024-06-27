@@ -40,7 +40,7 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
   }
 
   /// Internal logging method for dart.
-  static void _log(dynamic msg) {
+  static void log(dynamic msg) {
     if (_dartDebug) {
       print('[   DART   ] $msg');
     }
@@ -72,17 +72,18 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
   }
 
   /// Create to a [ChatClient].
-  Future<ChatClient?> create(String token, Properties properties) async {
+  static Future<ChatClient?> create(String token, Properties properties) async {
     assert(token != '');
 
     try {
-      print('TwilioConversationsPlugin.create => starting request in Dart');
+      TwilioConversationsClient.log(
+          'TwilioConversationsPlugin.create => starting request in Dart');
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .create(token, properties);
+          .createChatClient(token, properties);
 
-      print('TwilioConversationsPlugin.create => finished request in Dart');
+      TwilioConversationsClient.log(
+          'TwilioConversationsPlugin.create => finished request in Dart');
       final chatClientMap = Map<String, dynamic>.from(methodData as Map);
-      print('chat client mapped: $chatClientMap');
       chatClient = ChatClient._fromMap(chatClientMap);
       return chatClient;
     } on PlatformException catch (err) {

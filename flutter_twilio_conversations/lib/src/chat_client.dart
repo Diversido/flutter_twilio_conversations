@@ -517,7 +517,7 @@ class ChatClient {
             users!.getUserById(userMap?['identity'])!, reason));
         break;
       default:
-        TwilioConversationsClient._log(
+        TwilioConversationsClient.log(
             "Event '$eventName' not yet implemented");
         break;
     }
@@ -526,7 +526,7 @@ class ChatClient {
   /// Parse native chat client events to the right event streams.
   void _parseNotificationEvents(dynamic event) {
     final String eventName = event['name'];
-    TwilioConversationsClient._log(
+    TwilioConversationsClient.log(
         "ChatClient => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
     final data = Map<String, dynamic>.from(event['data']);
 
@@ -550,7 +550,7 @@ class ChatClient {
             .add(NotificationRegistrationEvent(data['result'], exception));
         break;
       default:
-        TwilioConversationsClient._log(
+        TwilioConversationsClient.log(
             "Notification event '$eventName' not yet implemented");
         break;
     }

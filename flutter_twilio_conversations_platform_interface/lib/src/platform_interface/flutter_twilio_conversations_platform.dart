@@ -40,7 +40,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<dynamic> create(String token, Properties properties) {
+  Future<dynamic> createChatClient(String token, Properties properties) {
     throw UnimplementedError('create() has not been implemented.');
   }
 
@@ -83,7 +83,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('getAndSubscribeUser() has not been implemented.');
   }
 
-  Future<void> unsubscribe(String? _identity) async {
+  Future<void> unsubscribe(String? identity) async {
     throw UnimplementedError('unsubscribe() has not been implemented.');
   }
 
@@ -111,39 +111,39 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
         'getMembersCountChannel() has not been implemented');
   }
 
-  Future<dynamic> getMember(String _channelSid, String identity) async {
+  Future<dynamic> getMember(String channelSid, String identity) async {
     throw UnimplementedError('getMember() has not been implemented');
   }
 
-  Future<dynamic> getMembersList(String _channelSid) async {
+  Future<dynamic> getMembersList(String channelSid) async {
     throw UnimplementedError('getMembersList() has not been implemented');
   }
 
-  Future<bool?> addByIdentity(String _channelSid, String identity) async {
+  Future<bool?> addByIdentity(String channelSid, String identity) async {
     throw UnimplementedError('addByIdentity() has not been implemented');
   }
 
-  Future<bool?> removeByIdentity(String _channelSid, String identity) async {
+  Future<bool?> removeByIdentity(String channelSid, String identity) async {
     throw UnimplementedError('removeByIdentity() has not been implemented');
   }
 
-  Future<bool?> inviteByIdentity(String _channelSid, String identity) async {
+  Future<bool?> inviteByIdentity(String channelSid, String identity) async {
     throw UnimplementedError('inviteByIdentity() has not been implemented');
   }
 
   Future<dynamic> setAttributesMember(
-      String _sid, String? _channelSid, Map<String, dynamic> attributes) async {
+      String sid, String? channelSid, Map<String, dynamic> attributes) async {
     throw UnimplementedError('setAttributesMember() has not been implemented');
   }
 
   Future<dynamic> memberGetUserDescriptor(
-      String? _identity, String? _channelSid) async {
+      String? identity, String? channelSid) async {
     throw UnimplementedError(
         'memberGetUserDescriptor() has not been implemented');
   }
 
   Future<dynamic> memberGetAndSubscribeUser(
-      String? _identity, String? _sid) async {
+      String? identity, String? sid) async {
     throw UnimplementedError(
         'memberGetAndSubscribeUser() has not been implemented');
   }
@@ -153,32 +153,32 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
   }
 
   Future<String> updateMessageBody(
-      String? _channelSid, int? _messageIndex, String body) async {
+      String? channelSid, int? messageIndex, String body) async {
     throw UnimplementedError('updateMessageBody() has not been implemented');
   }
 
-  Future<dynamic> setAttributes(String? _channelSid, int? _messageIndex,
+  Future<dynamic> setAttributes(String? channelSid, int? messageIndex,
       Map<String, dynamic> attributes) async {
     throw UnimplementedError('setAttributes() has not been implemented');
   }
 
   Future<int?> setLastReadMessageIndexWithResult(
-      Channel _channel, int lastReadMessageIndex) async {
+      Channel channel, int lastReadMessageIndex) async {
     throw UnimplementedError(
         'setLastReadMessageIndexWithResult() has not been implemented');
   }
 
   Future<int?> advanceLastReadMessageIndexWithResult(
-      Channel _channel, int lastReadMessageIndex) async {
+      Channel channel, int lastReadMessageIndex) async {
     throw UnimplementedError(
         'advanceLastReadMessageIndexWithResult() has not been implemented');
   }
 
-  Future<void> removeMessage(Channel _channel, Message message) async {
+  Future<void> removeMessage(Channel channel, Message message) async {
     throw UnimplementedError('removeMessage() has not been implemented');
   }
 
-  Future<int?> setNoMessagesReadWithResult(Channel _channel) async {
+  Future<int?> setNoMessagesReadWithResult(Channel channel) async {
     throw UnimplementedError(
         'setNoMessagesReadWithResult() has not been implemented');
   }
@@ -197,8 +197,7 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
         'getUnreadMessagesCount() has not been implemented');
   }
 
-  Future<dynamic> getDownloadURL(
-      String _channelSid, int _messageIndex) async {
+  Future<String> getDownloadURL(String channelSid, int messageIndex) async {
     throw UnimplementedError('getDownloadURL() has not been implemented');
   }
 
@@ -239,34 +238,34 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
     throw UnimplementedError('platformDebug() has not been implemented');
   }
 
-  Future<int?> setAllMessagesReadWithResult(Channel _channel) async {
+  Future<int?> setAllMessagesReadWithResult(Channel channel) async {
     throw UnimplementedError('getLastMessages() has not been implemented');
   }
 
-  Future<dynamic> getMessageByIndex(Channel _channel, int messageIndex) async {
+  Future<dynamic> getMessageByIndex(Channel channel, int messageIndex) async {
     throw UnimplementedError(
         'getMessgetMessageByIndexagesAfter() has not been implemented');
   }
 
-  Future<dynamic> getLastMessages(int count, Channel _channel) async {
+  Future<dynamic> getLastMessages(int count, Channel channel) async {
     throw UnimplementedError('getLastMessages() has not been implemented');
   }
 
   Future<dynamic> getMessagesAfter(
-      int index, int count, Channel _channel) async {
+      int index, int count, Channel channel) async {
     throw UnimplementedError('getMessagesAfter() has not been implemented');
   }
 
   Future<dynamic> getMessagesBefore(
-      int index, int count, Channel _channel) async {
+      int index, int count, Channel channel) async {
     throw UnimplementedError('getMessagesBefore() has not been implemented');
   }
 
-  Future<dynamic> sendMessage(MessageOptions options, Channel _channel) async {
+  Future<dynamic> sendMessage(MessageOptions options, Channel channel) async {
     throw UnimplementedError('sendMessage() has not been implemented');
   }
 
-  Future<dynamic> requestNextPage(String _pageId, String _itemType) async {
+  Future<dynamic> requestNextPage(String pageId, String itemType) async {
     throw UnimplementedError('requestNextPage() has not been implemented');
   }
 

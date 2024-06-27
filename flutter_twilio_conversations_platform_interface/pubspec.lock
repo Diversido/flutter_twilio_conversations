@@ -81,14 +81,14 @@ packages:
       path: "../flutter_twilio_conversations"
       relative: true
     source: path
-    version: "1.1.7+9"
+    version: "2.0.0+10"
   flutter_twilio_conversations_web:
     dependency: transitive
     description:
       path: "../flutter_twilio_conversations_web"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "2.0.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

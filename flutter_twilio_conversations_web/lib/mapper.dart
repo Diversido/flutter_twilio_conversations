@@ -116,7 +116,7 @@ class Mapper {
       users = await promiseToFuture<List<dynamic>?>(
           chatClient.getSubscribedUsers());
     } catch (e) {
-      print(e);
+      print('error getting users: $e');
     }
 
     if (users!.isEmpty) return {};
@@ -127,7 +127,6 @@ class Mapper {
         myUser = TwilioConversationsClient.chatClient!.users!.myUser!;
       }
     } catch (e) {
-      print("myUser is null ${e.toString()}");
       myUser = {
         "friendlyName": "",
         "attributes": {},
@@ -149,7 +148,7 @@ class Mapper {
             .toList(),
       );
     } catch (e) {
-      print("Error in userToMap ${e.toString()}");
+      print("error in userToMap: $e");
     }
     try {
       return {
@@ -157,7 +156,7 @@ class Mapper {
         "myUser": await userToMap(myUser, chatClient)
       };
     } catch (e) {
-      print("myUser mapping error: $e");
+      print("error mapping myUser: $e");
       return {"subscribedUsers": subscribedUsersMap ?? {}, "myUser": emptyUser};
     }
   }
@@ -193,19 +192,6 @@ class Mapper {
     } catch (e) {
       return {"type": "NULL", "data": null};
     }
-    // TODO untested
-    // if (attributes == null) {
-    //   return {"type": "NULL", "data": null};
-    // } else if (attributes.number != null) {
-    //   return {"type": "NUMBER", "data": attributes.number?.toString()};
-    // } else if (attributes.string != null) {
-    //   return {"type": "STRING", "data": attributes.string};
-    // } else if (attributes.JSONArray != null) {
-    //   return {"type": "ARRAY", "data": attributes.JSONArray};
-    // } else if (attributes.JSONObject != null) {
-    // } else {
-    //   return {"type": "NULL", "data": null};
-    // }
   }
 
   static Map<String, dynamic>? messagesToMap(

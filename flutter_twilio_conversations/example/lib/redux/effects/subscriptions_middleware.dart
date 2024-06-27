@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:redux/redux.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/channel_actions.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/init_actions.dart';
@@ -31,15 +29,11 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
   ) {
     if (store.state.chatClient != null) {
       store.state.chatClient?.onClientSynchronization?.listen((event) async {
-        print('Client synchronized');
         // in Android there is a separate event to identify when fully initialized
         // in iOS we do check manually
         if (event == ChatClientSynchronizationStatus.CONVERSATIONS_COMPLETED ||
             (event == ChatClientSynchronizationStatus.COMPLETED &&
-                store.state.chatClient?.channels != null
-            // && Platform.isIOS // TODO check this as android is sending completed when chatclient already exists
-            // possibly another call should invoke this reload
-            )) {
+                store.state.chatClient?.channels != null)) {
           final dialogs = store.state.chatClient!.channels!.subscribedChannels
               .map(
                 (channel) =>
@@ -77,12 +71,10 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
   ) {
     try {
       action.channel.onTypingStarted?.listen((event) {
-        print('Typing started: $event');
         store.dispatch(TypingStarted(event));
       });
 
       action.channel.onTypingEnded?.listen((event) {
-        print('Typing ended: $event');
         store.dispatch(TypingEnded(event));
       });
     } catch (e) {
