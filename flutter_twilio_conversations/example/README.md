@@ -5,6 +5,7 @@ Demonstrates how to use the `flutter_twilio_conversations` plugin. Includes: aut
 ## Supported platforms
 * Android
 * iOS
+* Web
 
 ## Prerequisites
 

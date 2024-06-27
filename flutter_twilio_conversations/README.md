@@ -18,6 +18,7 @@ No special setup required, most of the tips on Console setup can be found in [Tw
 ## Supported platforms
 * Android
 * iOS
+* Web
 
 ## Platform Specifics
 
