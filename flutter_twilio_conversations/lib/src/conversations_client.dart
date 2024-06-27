@@ -2,20 +2,11 @@ part of flutter_twilio_conversations;
 
 /// Entry point for the Twilio Programmable Dart.
 class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
-  // static const MethodChannel _methodChannel =
-  //     MethodChannel('flutter_twilio_conversations');
-
-  // static const EventChannel _chatChannel =
-  //     EventChannel('flutter_twilio_conversations/room');
-
   static const EventChannel _mediaProgressChannel =
       EventChannel('flutter_twilio_conversations/media_progress');
 
   static const EventChannel _loggingChannel =
       EventChannel('flutter_twilio_conversations/logging');
-
-  // static const EventChannel _notificationChannel =
-  //     EventChannel('flutter_twilio_conversations/notification');
 
   static StreamSubscription? _loggingStream;
 
@@ -60,7 +51,6 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
     if (native && _loggingStream == null) {
       _loggingStream =
           _loggingChannel.receiveBroadcastStream().listen((dynamic event) {
-        //TODO
         if (native) {
           print('[  NATIVE  ] $event');
         }
