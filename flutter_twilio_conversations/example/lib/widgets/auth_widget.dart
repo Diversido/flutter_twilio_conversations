@@ -16,7 +16,7 @@ class AuthWidget extends StatelessWidget {
       converter: (store) => _ViewModel(store),
       onInitialBuild: (viewModel) {
         // enter test token here to use it without typing
-          _textEditingController.text = '';
+        //  _textEditingController.text = '';
       },
       builder: (context, viewModel) => Scaffold(
         backgroundColor: Colors.white,
