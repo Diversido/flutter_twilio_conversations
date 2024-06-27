@@ -174,9 +174,13 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
+  Future<dynamic> getMessageByIndex(Channel channel, int messageIndex) async {
+    throw UnimplementedError('getMessageByIndex() has not been implemented');
+  }
+
+  @override
   Future<dynamic> getLastMessages(int count, Channel channel) async {
-    return await MessagesMethods()
-        .getLastMessages(count, channel, _chatClient);
+    return await MessagesMethods().getLastMessages(count, channel, _chatClient);
   }
 
   @override
@@ -286,6 +290,16 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     print('web event: setNotificationLevelChannel');
     // TODO: implement setNotificationLevelChannel
     throw UnimplementedError();
+  }
+
+  Future<void> handleReceivedNotification() async {
+    throw UnimplementedError(
+        'handleReceivedNotification() has not been implemented');
+  }
+
+  Future<String> registerForNotification(String token) async {
+    throw UnimplementedError(
+        'registerForNotification() has not been implemented');
   }
 
   @override

@@ -226,6 +226,16 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
         'setNotificationLevelChannel() has not been implemented');
   }
 
+  Future<void> handleReceivedNotification() async {
+    throw UnimplementedError(
+        'handleReceivedNotification() has not been implemented');
+  }
+
+  Future<String> registerForNotification(String token) async {
+    throw UnimplementedError(
+        'registerForNotification() has not been implemented');
+  }
+
   Future<String> setUniqueNameChannel(String channelSid, String uniqueName) {
     throw UnimplementedError('setUniqueNameChannel() has not been implemented');
   }
@@ -239,12 +249,12 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
   }
 
   Future<int?> setAllMessagesReadWithResult(Channel channel) async {
-    throw UnimplementedError('getLastMessages() has not been implemented');
+    throw UnimplementedError(
+        'setAllMessagesReadWithResult() has not been implemented');
   }
 
   Future<dynamic> getMessageByIndex(Channel channel, int messageIndex) async {
-    throw UnimplementedError(
-        'getMessgetMessageByIndexagesAfter() has not been implemented');
+    throw UnimplementedError('getMessageByIndex() has not been implemented');
   }
 
   Future<dynamic> getLastMessages(int count, Channel channel) async {
@@ -277,5 +287,10 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
   /// This stream is used to update the Channel in a plugin implementation.
   Stream<Map<dynamic, dynamic>>? channelStream(String sid) {
     throw UnimplementedError('channelStream() has not been implemented');
+  }
+
+  /// This stream is used to update the Notification in a plugin implementation.
+  Stream<Map<dynamic, dynamic>>? notificationStream() {
+    throw UnimplementedError('notificationStream() has not been implemented');
   }
 }

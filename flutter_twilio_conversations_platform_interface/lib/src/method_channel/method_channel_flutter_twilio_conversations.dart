@@ -8,7 +8,6 @@ import '../platform_interface/flutter_twilio_conversations_platform.dart';
 /// An implementation of [FlutterTwilioConversationsPlatform] that uses method channels.
 class MethodChannelFlutterTwilioConversations
     extends FlutterTwilioConversationsPlatform {
-
   final MethodChannel _methodChannel;
   final EventChannel _chatChannel;
 
@@ -119,11 +118,8 @@ class MethodChannelFlutterTwilioConversations
 
   Future<dynamic> setAttributesMember(
       String sid, String? channelSid, Map<String, dynamic> attributes) async {
-    return _methodChannel.invokeMethod('Member#setAttributes', {
-      'memberSid': sid,
-      'channelSid': channelSid,
-      'attributes': attributes
-    });
+    return _methodChannel.invokeMethod('Member#setAttributes',
+        {'memberSid': sid, 'channelSid': channelSid, 'attributes': attributes});
   }
 
   Future<dynamic> memberGetUserDescriptor(
@@ -256,6 +252,16 @@ class MethodChannelFlutterTwilioConversations
   }
 
   @override
+  Future<void> handleReceivedNotification() async {
+    return await _methodChannel.invokeMethod('handleReceivedNotification');
+  }
+
+  Future<String> registerForNotification(String token) async {
+    return await _methodChannel.invokeMethod(
+        'registerForNotification', <String, Object>{'token': token});
+  }
+
+  @override
   Future<String> setUniqueNameChannel(
       String channelSid, String uniqueName) async {
     return await _methodChannel.invokeMethod('Channel#setUniqueName',
@@ -374,6 +380,19 @@ class MethodChannelFlutterTwilioConversations
       });
     } catch (e) {
       print('chatClientStream error: $e');
+      return null;
+    }
+  }
+
+  Stream<Map<dynamic, dynamic>>? notificationStream() {
+    try {
+      return EventChannel('flutter_twilio_conversations/notification')
+          .receiveBroadcastStream(0)
+          .map((event) {
+        return event as Map<dynamic, dynamic>;
+      });
+    } catch (e) {
+      print('notificationStream error: $e');
       return null;
     }
   }

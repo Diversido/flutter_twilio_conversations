@@ -245,15 +245,15 @@ class ChatClient {
     onUserSubscribed = _onUserSubscribedCtrl.stream;
     onUserUnsubscribed = _onUserUnsubscribedCtrl.stream;
     onUserUpdated = _onUserUpdatedCtrl.stream;
-    // onNotificationRegistered = _onNotificationRegisteredCtrl.stream;
-    // onNotificationDeregistered = _onNotificationDeregisteredCtrl.stream;
-    // onNotificationFailed = _onNotificationFailedCtrl.stream;
+    onNotificationRegistered = _onNotificationRegisteredCtrl.stream;
+    onNotificationDeregistered = _onNotificationDeregisteredCtrl.stream;
+    onNotificationFailed = _onNotificationFailedCtrl.stream;
     _chatStream = FlutterTwilioConversationsPlatform.instance
         .chatClientStream()!
         .listen((_parseEvents));
-    // _notificationStream = TwilioConversationsClient._notificationChannel
-    //     .receiveBroadcastStream(0)
-    //     .listen(_parseNotificationEvents);
+    _notificationStream ??= FlutterTwilioConversationsPlatform.instance
+        .notificationStream()!
+        .listen(_parseNotificationEvents);
   }
 
   /// Construct from a map.
@@ -314,12 +314,9 @@ class ChatClient {
   /// notifications.
   Future<String> registerForNotification(String token) async {
     try {
-      // final isInit = await TwilioConversationsClient._methodChannel
-      //     .invokeMethod(
-      //         'registerForNotification', <String, Object>{'token': token});
-
-      // return isInit;
-      return "null";
+      final isInit = await FlutterTwilioConversationsPlatform.instance
+          .registerForNotification(token);
+      return isInit;
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -340,8 +337,8 @@ class ChatClient {
   /// Returns the notification used to launch the app (iOS Only)
   Future<void> handleReceivedNotification() async {
     try {
-      // return await TwilioConversationsClient._methodChannel
-      //     .invokeMethod('handleReceivedNotification');
+      return FlutterTwilioConversationsPlatform.instance
+          .handleReceivedNotification();
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
