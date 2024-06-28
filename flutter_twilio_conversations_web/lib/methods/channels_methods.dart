@@ -1,4 +1,5 @@
 import 'dart:js_util';
+import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
@@ -24,7 +25,7 @@ class ChannelsMethods {
         return await Mapper.channelToMap(pluginInstance, channelBySid);
       }
     } catch (e) {
-      print('error: getChannel ${e}');
+      TwilioConversationsClient.log('error: getChannel ${e}');
       return null;
     }
   }

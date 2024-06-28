@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:js_util';
+import 'dart:js_util' as js_util;
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
@@ -77,9 +77,10 @@ class Mapper {
     }
 
     try {
-      final messages =
-          await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
-              channel.getMessages(50, 0, "forward"));
+      final messages = await js_util
+          .promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
+        channel.getMessages(50, 0, "forward"),
+      );
       return channelMapped(pluginInstance, channel, messages);
     } catch (e) {
       return channelMapped(pluginInstance, channel, null);
@@ -113,10 +114,11 @@ class Mapper {
   ) async {
     List<dynamic>? users = [];
     try {
-      users = await promiseToFuture<List<dynamic>?>(
-          chatClient.getSubscribedUsers());
+      users = await js_util.promiseToFuture<List<dynamic>?>(
+        chatClient.getSubscribedUsers(),
+      );
     } catch (e) {
-      print('error getting users: $e');
+      TwilioConversationsClient.log('error getting users: $e');
     }
 
     if (users!.isEmpty) return {};
@@ -148,7 +150,7 @@ class Mapper {
             .toList(),
       );
     } catch (e) {
-      print("error in userToMap: $e");
+      TwilioConversationsClient.log("error in userToMap: $e");
     }
     try {
       return {
@@ -156,7 +158,7 @@ class Mapper {
         "myUser": await userToMap(myUser, chatClient)
       };
     } catch (e) {
-      print("error mapping myUser: $e");
+      TwilioConversationsClient.log("error mapping myUser: $e");
       return {"subscribedUsers": subscribedUsersMap ?? {}, "myUser": emptyUser};
     }
   }
@@ -166,8 +168,9 @@ class Mapper {
     TwilioClient.TwilioConversationsClient chatClient,
   ) async {
     try {
-      final userProperties =
-          await promiseToFuture(chatClient.getUser(user.identity));
+      final userProperties = await js_util.promiseToFuture(
+        chatClient.getUser(user.identity),
+      );
 
       return {
         "friendlyName": userProperties.friendlyName,
@@ -208,21 +211,28 @@ class Mapper {
   }
 
   static String? dateToString(dynamic date) {
-    if (date == null) return null;
-    final dateTime = DateTime.fromMicrosecondsSinceEpoch(
-      date.getTime() * 1000,
-    ).toUtc();
-    final dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    return dateFormat.format(dateTime);
+    try {
+      if (date == null) return null;
+
+      final time = js_util.callMethod(date, 'getTime', []);
+      final dateTime = DateTime.fromMillisecondsSinceEpoch(time).toUtc();
+      final dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      return dateFormat.format(dateTime);
+    } catch (e) {
+      TwilioConversationsClient.log("error mapping dateToString: $e");
+      return null;
+    }
   }
 
   static Future<Map<String, dynamic>> messageToMap(
       TwilioConversationsMessage message) async {
     try {
-      final member = await promiseToFuture<TwilioConversationsMember>(
-          message.getParticipant());
+      final member = await js_util.promiseToFuture<TwilioConversationsMember>(
+        message.getParticipant(),
+      );
       return messageMapped(message, member);
     } catch (e) {
+      TwilioConversationsClient.log("error mapping messageToMap: $e");
       return messageMapped(message, null);
     }
   }

@@ -44,7 +44,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
       return await Mapper.chatClientToMap(this, _chatClient!, []);
     } catch (e) {
-      print('error: createConversation ${e}');
+      TwilioConversationsClient.log('error: createConversation ${e}');
     }
   }
 
@@ -350,13 +350,17 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   @override
   Stream<Map<String, dynamic>> chatClientStream() {
-    print('TwilioConversationsPlugin.create => starting stream');
+    TwilioConversationsClient.log(
+      'TwilioConversationsPlugin.create => starting stream',
+    );
     return _chatClientStreamController.stream;
   }
 
   @override
   Stream<Map<String, dynamic>> channelStream(String channelSid) {
-    print('TwilioConversationsPlugin.channel => starting stream');
+    TwilioConversationsClient.log(
+      'TwilioConversationsPlugin.channel => starting stream',
+    );
     return channelListeners[channelSid]!.stream;
   }
 
@@ -364,5 +368,13 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     TwilioConversationsClient.log(
         'getUniqueNameChannel() has not been implemented');
     return null;
+  }
+
+  @override
+  Stream<Map<dynamic, dynamic>>? notificationStream() {
+    TwilioConversationsClient.log(
+      'notificationStream() has not been implemented',
+    );
+    return Stream.empty();
   }
 }

@@ -27,7 +27,7 @@ class MessagesMethods {
           messages.items.map((message) => Mapper.messageToMap(message)));
       return messageList;
     } catch (e) {
-      print('error: getLastMessages ${e}');
+      TwilioConversationsClient.log('error: getLastMessages ${e}');
       return null;
     }
   }
@@ -45,7 +45,7 @@ class MessagesMethods {
 
       final optionsMapped = options.toMap();
 
-      dynamic messagePreparator = await channel.prepareMessage();
+      final messagePreparator = await channel.prepareMessage();
 
       if ((optionsMapped["body"]) != null) {
         messagePreparator.setBody(optionsMapped["body"]);
@@ -68,19 +68,21 @@ class MessagesMethods {
 
         messagePreparator.addMedia(media);
       }
-      final index =
-          await promiseToFuture<int>(messagePreparator.build().send());
+      final index = await promiseToFuture<int>(
+        messagePreparator.build().send(),
+      );
 
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
-              channels.items
-                  .firstWhere((element) => element.sid == _channel.sid)
-                  .getMessages(50, 0, "forward"));
+        channels.items
+            .firstWhere((element) => element.sid == _channel.sid)
+            .getMessages(50, 0, "forward"),
+      );
 
       return await Mapper.messageToMap(
           messages.items.firstWhere((element) => element.index == index));
     } catch (e) {
-      print('error: sendMessage ${e}');
+      TwilioConversationsClient.log('error: sendMessage ${e}');
     }
   }
 
@@ -96,7 +98,7 @@ class MessagesMethods {
           .firstWhere((element) => element.sid == _channel.sid)
           .setAllMessagesRead());
     } catch (e) {
-      print('error: setAllMessagesReadWithResult ${e}');
+      TwilioConversationsClient.log('error: setAllMessagesReadWithResult ${e}');
       return 0;
     }
   }
@@ -122,7 +124,7 @@ class MessagesMethods {
       return await Future.wait(
           messages.items.map((message) => Mapper.messageToMap(message)));
     } catch (e) {
-      print('error: getMessagesDirection ${e}');
+      TwilioConversationsClient.log('error: getMessagesDirection ${e}');
       return null;
     }
   }

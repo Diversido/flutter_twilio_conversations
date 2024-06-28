@@ -77,7 +77,9 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
       chatClient = ChatClient._fromMap(chatClientMap);
       return chatClient;
     } on PlatformException catch (err) {
-      print('TwilioConversationsPlugin.create => failed in Dart');
+      TwilioConversationsClient.log(
+        'TwilioConversationsPlugin.create => failed in Dart',
+      );
       throw TwilioConversationsClient._convertException(err);
     }
   }

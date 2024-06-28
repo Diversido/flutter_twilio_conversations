@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:js_util';
+import 'dart:js_util' as js_util;
 import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
@@ -39,12 +39,12 @@ class ChatClientEventListener extends BaseListener {
 
   void _on(String eventName, Function eventHandler) => _client.on(
         eventName,
-        allowInterop(eventHandler),
+        js_util.allowInterop(eventHandler),
       );
 
   void _off(String eventName, Function eventHandler) => _client.off(
         eventName,
-        allowInterop(eventHandler),
+        js_util.allowInterop(eventHandler),
       );
 
   void connectionStateChange(String connectionState) {
@@ -81,7 +81,8 @@ class ChatClientEventListener extends BaseListener {
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
 
-      channels = await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
+      channels = await js_util
+          .promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
         _client.getSubscribedConversations(),
       );
     }
@@ -94,10 +95,13 @@ class ChatClientEventListener extends BaseListener {
   }
 
   void conversationUpdated(dynamic data) async {
-    debug('Conversation Updated ChatClient Event ${data.updateReasons}');
-
     late String reason;
-    switch (data.updateReasons[0]) {
+    //TODO
+    final updateReason = js_util.getProperty(data, 'updateReasons');
+    print('testing: ${updateReason[0]}');
+    debug('Conversation Updated ChatClient Event ${updateReason}');
+
+    switch (updateReason[0]) {
       case 'friendlyName':
         reason = 'FRIENDLY_NAME';
         break;
@@ -111,7 +115,7 @@ class ChatClientEventListener extends BaseListener {
         reason = 'NOTIFICATION_LEVEL';
         break;
       default:
-        reason = data.updateReasons[0];
+        return;
     }
 
     sendEvent(
@@ -197,7 +201,7 @@ class ChatClientEventListener extends BaseListener {
   Future<void> userSubscribed(dynamic data) async {
     debug('User Subscribed ChatClient Event');
     sendEvent(
-      'userSubsubscribed',
+      'userSubscribed',
       {
         "user": await Mapper.userToMap(data, _client),
       },
@@ -208,7 +212,7 @@ class ChatClientEventListener extends BaseListener {
     debug('User Unsubscribed ChatClient Event');
 
     sendEvent(
-      'userUnsubsubscribed',
+      'userUnsubscribed',
       {
         "user": await Mapper.userToMap(data, _client),
       },

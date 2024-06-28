@@ -283,25 +283,35 @@ class ChatClient {
 
       try {
         if (_chatStream != null) {
-          print('ChatClient => TwilioLog shutdown chatStream');
+          TwilioConversationsClient.log(
+            'ChatClient => TwilioLog shutdown chatStream',
+          );
           await _chatStream?.cancel();
         }
       } catch (e) {
-        print('ChatClient => TwilioLog failed to cancel chat stream');
+        TwilioConversationsClient.log(
+          'ChatClient => TwilioLog failed to cancel chat stream',
+        );
       }
 
       try {
         if (_notificationStream != null) {
-          print('ChatClient => TwilioLog shutdown notificationStream');
+          TwilioConversationsClient.log(
+            'ChatClient => TwilioLog shutdown notificationStream',
+          );
           await _notificationStream?.cancel();
         }
       } catch (e) {
-        print('ChatClient => TwilioLog failed to cancel notifications stream');
+        TwilioConversationsClient.log(
+          'ChatClient => TwilioLog failed to cancel notifications stream',
+        );
       }
       TwilioConversationsClient.chatClient = null;
       return await FlutterTwilioConversationsPlatform.instance.shutdown();
     } on PlatformException catch (err) {
-      print('ChatClient => TwilioLog shutdown error: $err');
+      TwilioConversationsClient.log(
+        'ChatClient => TwilioLog shutdown error: $err',
+      );
       throw TwilioConversationsClient._convertException(err);
     }
   }
@@ -449,12 +459,15 @@ class ChatClient {
         var synchronizationStatus = EnumToString.fromString(
             ChatClientSynchronizationStatus.values,
             data['synchronizationStatus']);
-        print('TwilioConversationsPlugin.clientSynchronization => data: $data');
+        TwilioConversationsClient.log(
+          'TwilioConversationsPlugin.clientSynchronization => data: $data',
+        );
         if (synchronizationStatus != null) {
           _onClientSynchronizationCtrl.add(synchronizationStatus);
         } else {
-          print(
-              "ChatClient => TwilioLog got empty syncStatus: ${data['synchronizationStatus']}");
+          TwilioConversationsClient.log(
+            "ChatClient => TwilioLog got empty syncStatus: ${data['synchronizationStatus']}",
+          );
         }
         break;
       case 'connectionStateChange':
