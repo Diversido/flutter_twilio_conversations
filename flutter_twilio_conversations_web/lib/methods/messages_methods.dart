@@ -45,7 +45,7 @@ class MessagesMethods {
 
       final optionsMapped = options.toMap();
 
-      dynamic messagePreparator = await channel.prepareMessage();
+      final messagePreparator = await channel.prepareMessage();
 
       if ((optionsMapped["body"]) != null) {
         messagePreparator.setBody(optionsMapped["body"]);

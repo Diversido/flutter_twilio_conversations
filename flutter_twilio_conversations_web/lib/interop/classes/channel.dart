@@ -2,6 +2,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/conversation_st
 import 'package:flutter_twilio_conversations_web/interop/classes/event_emitter.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/last_message.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/message_builder.dart';
 import 'package:js/js.dart';
 
 @JS('Twilio.Conversations.Conversation')
@@ -21,7 +22,7 @@ class TwilioConversationsChannel extends EventEmitter {
   external String? uniqueName;
 
   external dynamic getMessages(int? pageSize, int? anchor, String? direction);
-  external dynamic prepareMessage();
+  external MessageBuilder prepareMessage();
   external dynamic setAllMessagesRead();
   external dynamic getMessagesCount();
   external dynamic getUnreadMessagesCount();
