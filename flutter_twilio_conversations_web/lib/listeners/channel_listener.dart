@@ -56,22 +56,20 @@ class ChannelEventListener extends BaseListener {
     });
   }
 
-  onTypingEnded(TwilioConversationsChannel channel,
-      TwilioConversationsMember member) async {
+  onTypingEnded(TwilioConversationsMember member) async {
     debug(
-        "ChannelListener.onTypingEnded => channelSid = ${channel.sid}, memberSid = ${member.sid}");
+        "ChannelListener.onTypingEnded => channelSid = ${_channel.sid}, memberSid = ${member.sid}");
     sendEvent("typingEnded", {
-      "channel": await Mapper.channelToMap(pluginInstance, channel),
+      "channel": await Mapper.channelToMap(pluginInstance, _channel),
       "member": Mapper.memberToMap(member)
     });
   }
 
-  onTypingStarted(TwilioConversationsChannel channel,
-      TwilioConversationsMember member) async {
+  onTypingStarted(TwilioConversationsMember member) async {
     debug(
-        "ChannelListener.onTypingStarted => channelSid = ${channel.sid}, memberSid = ${member.sid}");
+        "ChannelListener.onTypingStarted => channelSid = ${_channel.sid}, memberSid = ${member.sid}");
     sendEvent("typingStarted", {
-      "channel": await Mapper.channelToMap(pluginInstance, channel),
+      "channel": await Mapper.channelToMap(pluginInstance, _channel),
       "member": Mapper.memberToMap(member)
     });
   }

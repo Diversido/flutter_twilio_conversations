@@ -68,14 +68,16 @@ class MessagesMethods {
 
         messagePreparator.addMedia(media);
       }
-      final index =
-          await promiseToFuture<int>(messagePreparator.build().send());
+      final index = await promiseToFuture<int>(
+        messagePreparator.build().send(),
+      );
 
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
-              channels.items
-                  .firstWhere((element) => element.sid == _channel.sid)
-                  .getMessages(50, 0, "forward"));
+        channels.items
+            .firstWhere((element) => element.sid == _channel.sid)
+            .getMessages(50, 0, "forward"),
+      );
 
       return await Mapper.messageToMap(
           messages.items.firstWhere((element) => element.index == index));

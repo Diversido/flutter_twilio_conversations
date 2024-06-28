@@ -232,6 +232,7 @@ class Mapper {
       );
       return messageMapped(message, member);
     } catch (e) {
+      TwilioConversationsClient.log("error mapping messageToMap: $e");
       return messageMapped(message, null);
     }
   }
