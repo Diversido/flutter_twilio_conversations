@@ -96,9 +96,7 @@ class ChatClientEventListener extends BaseListener {
 
   void conversationUpdated(dynamic data) async {
     late String reason;
-    //TODO
     final updateReason = js_util.getProperty(data, 'updateReasons');
-    print('testing: ${updateReason[0]}');
     debug('Conversation Updated ChatClient Event ${updateReason}');
 
     switch (updateReason[0]) {
