@@ -27,7 +27,7 @@ class MessagesMethods {
           messages.items.map((message) => Mapper.messageToMap(message)));
       return messageList;
     } catch (e) {
-      print('error: getLastMessages ${e}');
+      TwilioConversationsClient.log('error: getLastMessages ${e}');
       return null;
     }
   }
@@ -80,7 +80,7 @@ class MessagesMethods {
       return await Mapper.messageToMap(
           messages.items.firstWhere((element) => element.index == index));
     } catch (e) {
-      print('error: sendMessage ${e}');
+      TwilioConversationsClient.log('error: sendMessage ${e}');
     }
   }
 
@@ -96,7 +96,7 @@ class MessagesMethods {
           .firstWhere((element) => element.sid == _channel.sid)
           .setAllMessagesRead());
     } catch (e) {
-      print('error: setAllMessagesReadWithResult ${e}');
+      TwilioConversationsClient.log('error: setAllMessagesReadWithResult ${e}');
       return 0;
     }
   }
@@ -122,7 +122,7 @@ class MessagesMethods {
       return await Future.wait(
           messages.items.map((message) => Mapper.messageToMap(message)));
     } catch (e) {
-      print('error: getMessagesDirection ${e}');
+      TwilioConversationsClient.log('error: getMessagesDirection ${e}');
       return null;
     }
   }

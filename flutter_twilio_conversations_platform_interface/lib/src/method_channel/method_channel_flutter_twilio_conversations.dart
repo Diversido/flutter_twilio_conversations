@@ -371,7 +371,7 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      print('chatClientStream error: $e');
+      TwilioConversationsClient.log('chatClientStream error: $e');
       return null;
     }
   }
@@ -384,7 +384,7 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      print('chatClientStream error: $e');
+      TwilioConversationsClient.log('chatClientStream error: $e');
       return null;
     }
   }
@@ -397,7 +397,7 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      print('notificationStream error: $e');
+      TwilioConversationsClient.log('notificationStream error: $e');
       return null;
     }
   }

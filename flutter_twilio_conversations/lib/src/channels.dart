@@ -128,7 +128,9 @@ class Channels {
         await channel?._dispose();
         _channelsMap.remove(key);
       } catch (e) {
-        print('ChatClient => TwilioLog failed to shutdown channels');
+        TwilioConversationsClient.log(
+          'ChatClient => TwilioLog failed to shutdown channels',
+        );
       }
     });
   }
