@@ -1,10 +1,10 @@
 import 'dart:js_util';
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
+import 'package:flutter_twilio_conversations_web/logging.dart';
 
 class MessageMethods {
   void getChannel() {}
@@ -20,7 +20,7 @@ class MessageMethods {
           message!.attachedMedia[0].getContentTemporaryUrl());
       return contentUrl;
     } catch (e) {
-      TwilioConversationsClient.log('error: getLastMessages ${e}');
+      Logging.debug('error: getLastMessages ${e}');
       return null;
     }
   }
@@ -43,7 +43,7 @@ class MessageMethods {
 
       return messages.items[0];
     } catch (e) {
-      TwilioConversationsClient.log('error: getMessageByIndex ${e}');
+      Logging.debug('error: getMessageByIndex ${e}');
       return null;
     }
   }

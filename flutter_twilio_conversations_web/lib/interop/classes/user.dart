@@ -1,4 +1,4 @@
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter_twilio_conversations_web/types/attributes.dart';
 import 'package:js/js.dart';
 
 @JS('Twilio.Conversations.User')

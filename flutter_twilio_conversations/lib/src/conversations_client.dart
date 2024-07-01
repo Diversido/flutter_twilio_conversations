@@ -31,7 +31,7 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
   }
 
   /// Internal logging method for dart.
-  static void log(dynamic msg) {
+  static void _log(dynamic msg) {
     if (_dartDebug) {
       print('[   DART   ] $msg');
     }
@@ -66,18 +66,18 @@ class TwilioConversationsClient extends FlutterTwilioConversationsPlatform {
     assert(token != '');
 
     try {
-      TwilioConversationsClient.log(
+      TwilioConversationsClient._log(
           'TwilioConversationsPlugin.create => starting request in Dart');
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .createChatClient(token, properties);
+          .createChatClient(token, properties.toMap());
 
-      TwilioConversationsClient.log(
+      TwilioConversationsClient._log(
           'TwilioConversationsPlugin.create => finished request in Dart');
       final chatClientMap = Map<String, dynamic>.from(methodData as Map);
       chatClient = ChatClient._fromMap(chatClientMap);
       return chatClient;
     } on PlatformException catch (err) {
-      TwilioConversationsClient.log(
+      TwilioConversationsClient._log(
         'TwilioConversationsPlugin.create => failed in Dart',
       );
       throw TwilioConversationsClient._convertException(err);

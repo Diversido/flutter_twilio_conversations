@@ -283,33 +283,33 @@ class ChatClient {
 
       try {
         if (_chatStream != null) {
-          TwilioConversationsClient.log(
+          TwilioConversationsClient._log(
             'ChatClient => TwilioLog shutdown chatStream',
           );
           await _chatStream?.cancel();
         }
       } catch (e) {
-        TwilioConversationsClient.log(
+        TwilioConversationsClient._log(
           'ChatClient => TwilioLog failed to cancel chat stream',
         );
       }
 
       try {
         if (_notificationStream != null) {
-          TwilioConversationsClient.log(
+          TwilioConversationsClient._log(
             'ChatClient => TwilioLog shutdown notificationStream',
           );
           await _notificationStream?.cancel();
         }
       } catch (e) {
-        TwilioConversationsClient.log(
+        TwilioConversationsClient._log(
           'ChatClient => TwilioLog failed to cancel notifications stream',
         );
       }
       TwilioConversationsClient.chatClient = null;
       return await FlutterTwilioConversationsPlatform.instance.shutdown();
     } on PlatformException catch (err) {
-      TwilioConversationsClient.log(
+      TwilioConversationsClient._log(
         'ChatClient => TwilioLog shutdown error: $err',
       );
       throw TwilioConversationsClient._convertException(err);
@@ -377,7 +377,7 @@ class ChatClient {
   /// Parse native chat client events to the right event streams.
   void _parseEvents(dynamic event) {
     final String eventName = event['name'];
-    TwilioConversationsClient.log(
+    TwilioConversationsClient._log(
         "ChatClient => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
     final data = Map<String, dynamic>.from(event['data'] ?? {});
     if (data['chatClient'] != null) {
@@ -459,13 +459,13 @@ class ChatClient {
         var synchronizationStatus = EnumToString.fromString(
             ChatClientSynchronizationStatus.values,
             data['synchronizationStatus']);
-        TwilioConversationsClient.log(
+        TwilioConversationsClient._log(
           'TwilioConversationsPlugin.clientSynchronization => data: $data',
         );
         if (synchronizationStatus != null) {
           _onClientSynchronizationCtrl.add(synchronizationStatus);
         } else {
-          TwilioConversationsClient.log(
+          TwilioConversationsClient._log(
             "ChatClient => TwilioLog got empty syncStatus: ${data['synchronizationStatus']}",
           );
         }
@@ -529,7 +529,7 @@ class ChatClient {
             users!.getUserById(userMap?['identity'])!, reason));
         break;
       default:
-        TwilioConversationsClient.log("Event '$eventName' not yet implemented");
+        TwilioConversationsClient._log("Event '$eventName' not yet implemented");
         break;
     }
   }
@@ -537,7 +537,7 @@ class ChatClient {
   /// Parse native chat client events to the right event streams.
   void _parseNotificationEvents(dynamic event) {
     final String eventName = event['name'];
-    TwilioConversationsClient.log(
+    TwilioConversationsClient._log(
         "ChatClient => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
     final data = Map<String, dynamic>.from(event['data']);
 
@@ -561,7 +561,7 @@ class ChatClient {
             .add(NotificationRegistrationEvent(data['result'], exception));
         break;
       default:
-        TwilioConversationsClient.log(
+        TwilioConversationsClient._log(
             "Notification event '$eventName' not yet implemented");
         break;
     }

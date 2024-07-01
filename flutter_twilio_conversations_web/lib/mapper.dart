@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:js_util' as js_util;
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
@@ -10,6 +9,9 @@ import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioClient;
 import 'package:flutter_twilio_conversations_web/listeners/channel_listener.dart';
+import 'package:flutter_twilio_conversations_web/logging.dart';
+import 'package:flutter_twilio_conversations_web/types/connection_state.dart';
+import 'package:flutter_twilio_conversations_web/types/error_info.dart';
 import 'package:intl/intl.dart';
 
 final emptyUser = {
@@ -118,26 +120,19 @@ class Mapper {
         chatClient.getSubscribedUsers(),
       );
     } catch (e) {
-      TwilioConversationsClient.log('error getting users: $e');
+      Logging.debug('error getting users: $e');
     }
 
     if (users!.isEmpty) return {};
 
-    var myUser = null;
-    try {
-      if (TwilioConversationsClient.chatClient!.users!.myUser != null) {
-        myUser = TwilioConversationsClient.chatClient!.users!.myUser!;
-      }
-    } catch (e) {
-      myUser = {
-        "friendlyName": "",
-        "attributes": {},
-        "identity": chatClient.user.identity,
-        "isOnline": "",
-        "isNotifiable": "",
-        "isSubscribed": ""
-      };
-    }
+    var myUser = {
+      "friendlyName": "",
+      "attributes": {},
+      "identity": chatClient.user.identity,
+      "isOnline": "",
+      "isNotifiable": "",
+      "isSubscribed": ""
+    };
 
     late final subscribedUsersMap;
     try {
@@ -150,7 +145,7 @@ class Mapper {
             .toList(),
       );
     } catch (e) {
-      TwilioConversationsClient.log("error in userToMap: $e");
+      Logging.debug("error in userToMap: $e");
     }
     try {
       return {
@@ -158,7 +153,7 @@ class Mapper {
         "myUser": await userToMap(myUser, chatClient)
       };
     } catch (e) {
-      TwilioConversationsClient.log("error mapping myUser: $e");
+      Logging.debug("error mapping myUser: $e");
       return {"subscribedUsers": subscribedUsersMap ?? {}, "myUser": emptyUser};
     }
   }
@@ -219,7 +214,7 @@ class Mapper {
       final dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       return dateFormat.format(dateTime);
     } catch (e) {
-      TwilioConversationsClient.log("error mapping dateToString: $e");
+      Logging.debug("error mapping dateToString: $e");
       return null;
     }
   }
@@ -232,7 +227,7 @@ class Mapper {
       );
       return messageMapped(message, member);
     } catch (e) {
-      TwilioConversationsClient.log("error mapping messageToMap: $e");
+      Logging.debug("error mapping messageToMap: $e");
       return messageMapped(message, null);
     }
   }

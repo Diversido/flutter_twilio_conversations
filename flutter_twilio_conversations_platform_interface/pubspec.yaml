@@ -9,8 +9,6 @@ dependencies:
     sdk: flutter
   meta: ^1.0.5
   plugin_platform_interface: ^2.1.7
-  flutter_twilio_conversations: 
-    path: ../flutter_twilio_conversations
 
 dev_dependencies:
   flutter_test:

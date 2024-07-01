@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:js_util' as js_util;
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
@@ -8,6 +7,8 @@ import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
+import 'package:flutter_twilio_conversations_web/types/connection_state.dart';
+import 'package:flutter_twilio_conversations_web/types/error_info.dart';
 
 class ChatClientEventListener extends BaseListener {
   final TwilioChatClient.TwilioConversationsClient _client;

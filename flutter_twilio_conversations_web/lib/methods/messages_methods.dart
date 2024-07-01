@@ -1,15 +1,15 @@
 import 'dart:js_util';
 import 'package:dio/dio.dart';
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
+import 'package:flutter_twilio_conversations_web/logging.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 
 class MessagesMethods {
-  Future<dynamic> getLastMessages(int count, Channel _channel,
+  Future<dynamic> getLastMessages(int count, String channelSid,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
     try {
       final channels =
@@ -20,19 +20,21 @@ class MessagesMethods {
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
               channels.items
-                  .firstWhere((element) => element.sid == _channel.sid)
+                  .firstWhere((element) => element.sid == channelSid)
                   .getMessages(50, 0, "forward"));
 
       final messageList = await Future.wait(
           messages.items.map((message) => Mapper.messageToMap(message)));
       return messageList;
     } catch (e) {
-      TwilioConversationsClient.log('error: getLastMessages ${e}');
+      Logging.debug('error: getLastMessages ${e}');
       return null;
     }
   }
 
-  Future<dynamic> sendMessage(MessageOptions options, Channel _channel,
+  Future<dynamic> sendMessage(
+      Map<String, dynamic> messageOptions,
+      String channelSid,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
     try {
       final channels =
@@ -41,24 +43,22 @@ class MessagesMethods {
       );
 
       final channel =
-          channels.items.firstWhere((element) => element.sid == _channel.sid);
-
-      final optionsMapped = options.toMap();
+          channels.items.firstWhere((element) => element.sid == channelSid);
 
       final messagePreparator = await channel.prepareMessage();
 
-      if ((optionsMapped["body"]) != null) {
-        messagePreparator.setBody(optionsMapped["body"]);
+      if ((messageOptions["body"]) != null) {
+        messagePreparator.setBody(messageOptions["body"]);
       }
 
-      if (optionsMapped["attributes"] != null) {
-        messagePreparator.setAttributes(jsify(optionsMapped["attributes"]));
+      if (messageOptions["attributes"] != null) {
+        messagePreparator.setAttributes(jsify(messageOptions["attributes"]));
       }
 
-      if (optionsMapped["input"] != null &&
-          (optionsMapped["mimeType"] as String?) != null) {
-        final input = optionsMapped["input"] as String;
-        final mimeType = optionsMapped["mimeType"] as String?;
+      if (messageOptions["input"] != null &&
+          (messageOptions["mimeType"] as String?) != null) {
+        final input = messageOptions["input"] as String;
+        final mimeType = messageOptions["mimeType"] as String?;
 
         final media = FormData.fromMap({
           'contentType': mimeType,
@@ -75,18 +75,18 @@ class MessagesMethods {
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
         channels.items
-            .firstWhere((element) => element.sid == _channel.sid)
+            .firstWhere((element) => element.sid == channelSid)
             .getMessages(50, 0, "forward"),
       );
 
       return await Mapper.messageToMap(
           messages.items.firstWhere((element) => element.index == index));
     } catch (e) {
-      TwilioConversationsClient.log('error: sendMessage ${e}');
+      Logging.debug('error: sendMessage ${e}');
     }
   }
 
-  Future<int?> setAllMessagesReadWithResult(Channel _channel,
+  Future<int?> setAllMessagesReadWithResult(String channelSid,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
     try {
       final channels =
@@ -95,10 +95,10 @@ class MessagesMethods {
       );
 
       return await promiseToFuture<int>(channels.items
-          .firstWhere((element) => element.sid == _channel.sid)
+          .firstWhere((element) => element.sid == channelSid)
           .setAllMessagesRead());
     } catch (e) {
-      TwilioConversationsClient.log('error: setAllMessagesReadWithResult ${e}');
+      Logging.debug('error: setAllMessagesReadWithResult ${e}');
       return 0;
     }
   }
@@ -106,7 +106,7 @@ class MessagesMethods {
   Future<dynamic> getMessagesDirection(
       int index,
       int count,
-      Channel _channel,
+      String channelSid,
       TwilioWebClient.TwilioConversationsClient? _chatClient,
       String direction) async {
     try {
@@ -118,13 +118,13 @@ class MessagesMethods {
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
               channels.items
-                  .firstWhere((element) => element.sid == _channel.sid)
+                  .firstWhere((element) => element.sid == channelSid)
                   .getMessages(count, index, direction));
 
       return await Future.wait(
           messages.items.map((message) => Mapper.messageToMap(message)));
     } catch (e) {
-      TwilioConversationsClient.log('error: getMessagesDirection ${e}');
+      Logging.debug('error: getMessagesDirection ${e}');
       return null;
     }
   }

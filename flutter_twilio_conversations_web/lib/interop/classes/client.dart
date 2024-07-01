@@ -1,7 +1,7 @@
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/event_emitter.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/user.dart';
+import 'package:flutter_twilio_conversations_web/types/connection_state.dart';
 import 'package:js/js.dart';
 import 'channel.dart';
 

@@ -58,9 +58,9 @@ class User {
     try {
       attributes =
           Attributes.fromMap(map['attributes'].cast<String, dynamic>());
-      TwilioConversationsClient.log('Map for Twilio user is: $map');
+      TwilioConversationsClient._log('Map for Twilio user is: $map');
     } catch (e) {
-      TwilioConversationsClient.log(
+      TwilioConversationsClient._log(
         'Failed to map Twilio user from map $map: $e',
       );
       attributes = Attributes(AttributesType.STRING, '{}');

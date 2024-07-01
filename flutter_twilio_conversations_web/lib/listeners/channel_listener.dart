@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:js_util';
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
@@ -9,6 +8,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/message.dart';
 import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
+import 'package:flutter_twilio_conversations_web/types/error_info.dart';
 import 'package:js/js.dart';
 
 class ChannelEventListener extends BaseListener {

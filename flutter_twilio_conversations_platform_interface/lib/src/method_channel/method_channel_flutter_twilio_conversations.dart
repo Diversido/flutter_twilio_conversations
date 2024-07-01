@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter_twilio_conversations_platform_interface/src/logging.dart';
 import 'package:meta/meta.dart';
 import '../platform_interface/flutter_twilio_conversations_platform.dart';
 
@@ -25,9 +25,10 @@ class MethodChannelFlutterTwilioConversations
   );
 
   @override
-  Future<dynamic> createChatClient(String token, Properties properties) async {
-    return _methodChannel.invokeMethod('create',
-        <String, Object>{'token': token, 'properties': properties.toMap()});
+  Future<dynamic> createChatClient(
+      String token, Map<String, Object> properties) async {
+    return _methodChannel.invokeMethod(
+        'create', <String, Object>{'token': token, 'properties': properties});
   }
 
   @override
@@ -55,7 +56,7 @@ class MethodChannelFlutterTwilioConversations
         'Users#getChannelUserDescriptors', {'channelSid': channelSid});
   }
 
-  Future<UserDescriptor?> getUserDescriptor(String identity) async {
+  Future<dynamic> getUserDescriptor(String identity) async {
     return await _methodChannel
         .invokeMethod('Users#getUserDescriptor', {'identity': identity});
   }
@@ -180,9 +181,9 @@ class MethodChannelFlutterTwilioConversations
         .invokeMethod('Channel#getUniqueName', {'channelSid': channelSid});
   }
 
-  Future<void> removeMessage(Channel channel, Message message) async {
+  Future<void> removeMessage(String channelSid, int messageIndex) async {
     await _methodChannel.invokeMethod('Messages#removeMessage',
-        {'channelSid': channel.sid, 'messageIndex': message.messageIndex});
+        {'channelSid': channelSid, 'messageIndex': messageIndex});
   }
 
   @override
@@ -193,27 +194,27 @@ class MethodChannelFlutterTwilioConversations
 
   @override
   Future<int?> setLastReadMessageIndexWithResult(
-      Channel channel, int lastReadMessageIndex) async {
+      String channelSid, int lastReadMessageIndex) async {
     return await _methodChannel.invokeMethod(
         'Messages#setLastReadMessageIndexWithResult', {
-      'channelSid': channel.sid,
+      'channelSid': channelSid,
       'lastReadMessageIndex': lastReadMessageIndex
     });
   }
 
   @override
   Future<int?> advanceLastReadMessageIndexWithResult(
-      Channel channel, int lastReadMessageIndex) async {
+      String channelSid, int lastReadMessageIndex) async {
     return await _methodChannel.invokeMethod(
         'Messages#advanceLastReadMessageIndexWithResult', {
-      'channelSid': channel.sid,
+      'channelSid': channelSid,
       'lastReadMessageIndex': lastReadMessageIndex
     });
   }
 
-  Future<int?> setNoMessagesReadWithResult(Channel channel) async {
+  Future<int?> setNoMessagesReadWithResult(String channelSid) async {
     return _methodChannel.invokeMethod(
-        'Messages#setNoMessagesReadWithResult', {'channelSid': channel.sid});
+        'Messages#setNoMessagesReadWithResult', {'channelSid': channelSid});
   }
 
   @override
@@ -312,49 +313,50 @@ class MethodChannelFlutterTwilioConversations
   }
 
   @override
-  Future<dynamic> getMessageByIndex(Channel channel, int messageIndex) async {
+  Future<dynamic> getMessageByIndex(String channelSid, int messageIndex) async {
     return await _methodChannel.invokeMethod('Messages#getMessageByIndex',
-        {'channelSid': channel.sid, 'messageIndex': messageIndex});
+        {'channelSid': channelSid, 'messageIndex': messageIndex});
   }
 
   @override
-  Future<dynamic> getLastMessages(int count, Channel channel) async {
+  Future<dynamic> getLastMessages(int count, String channelSid) async {
     return await _methodChannel.invokeMethod('Messages#getLastMessages', {
       'count': count,
-      'channelSid': channel.sid,
+      'channelSid': channelSid,
     });
   }
 
   @override
   Future<dynamic> getMessagesAfter(
-      int index, int count, Channel channel) async {
+      int index, int count, String channelSid) async {
     return await _methodChannel.invokeMethod('Messages#getMessagesAfter', {
       'index': index,
       'count': count,
-      'channelSid': channel.sid,
+      'channelSid': channelSid,
     });
   }
 
   @override
   Future<dynamic> getMessagesBefore(
-      int index, int count, Channel channel) async {
+      int index, int count, String channelSid) async {
     return await _methodChannel.invokeMethod('Messages#getMessagesBefore', {
       'index': index,
       'count': count,
-      'channelSid': channel.sid,
+      'channelSid': channelSid,
     });
   }
 
-  Future<int?> setAllMessagesReadWithResult(Channel channel) async {
+  Future<int?> setAllMessagesReadWithResult(String channelSid) async {
     return await _methodChannel.invokeMethod(
-        'Messages#setAllMessagesReadWithResult', {'channelSid': channel.sid});
+        'Messages#setAllMessagesReadWithResult', {'channelSid': channelSid});
   }
 
   @override
-  Future<dynamic> sendMessage(MessageOptions options, Channel channel) async {
+  Future<dynamic> sendMessage(
+      Map<String, dynamic> messageOptions, String channelSid) async {
     return await _methodChannel.invokeMethod('Messages#sendMessage', {
-      'options': options.toMap(),
-      'channelSid': channel.sid,
+      'options': messageOptions,
+      'channelSid': channelSid,
     });
   }
 
@@ -371,7 +373,7 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      TwilioConversationsClient.log('chatClientStream error: $e');
+      Logging.debug('chatClientStream error: $e');
       return null;
     }
   }
@@ -384,7 +386,7 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      TwilioConversationsClient.log('chatClientStream error: $e');
+      Logging.debug('chatClientStream error: $e');
       return null;
     }
   }
@@ -397,7 +399,7 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      TwilioConversationsClient.log('notificationStream error: $e');
+      Logging.debug('notificationStream error: $e');
       return null;
     }
   }

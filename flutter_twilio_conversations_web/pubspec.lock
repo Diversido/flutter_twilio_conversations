@@ -50,7 +50,7 @@ packages:
     source: hosted
     version: "5.4.3+1"
   enum_to_string:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: enum_to_string
       sha256: bd9e83a33b754cb43a75b36a9af2a0b92a757bfd9847d2621ca0b1bed45f8e7a
@@ -75,13 +75,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_twilio_conversations:
-    dependency: "direct main"
-    description:
-      path: "../flutter_twilio_conversations"
-      relative: true
-    source: path
-    version: "2.0.0+10"
   flutter_twilio_conversations_platform_interface:
     dependency: "direct main"
     description:

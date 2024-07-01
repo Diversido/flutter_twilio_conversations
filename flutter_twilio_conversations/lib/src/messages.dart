@@ -21,7 +21,7 @@ class Messages {
   Future<Message> sendMessage(MessageOptions options) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .sendMessage(options, _channel);
+          .sendMessage(options.toMap(), _channel.sid);
       final messageMap = Map<String, dynamic>.from(methodData);
       return Message._fromMap(messageMap, this);
     } on PlatformException catch (err) {
@@ -33,7 +33,7 @@ class Messages {
   Future<void> removeMessage(Message message) async {
     try {
       await FlutterTwilioConversationsPlatform.instance
-          .removeMessage(_channel, message);
+          .removeMessage(_channel.sid, message.messageIndex!);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -43,7 +43,7 @@ class Messages {
   Future<List<Message>> getMessagesBefore(int index, int count) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .getMessagesBefore(index, count, _channel);
+          .getMessagesBefore(index, count, _channel.sid);
       final List<Map<String, dynamic>> messageMapList = methodData
           .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
           .toList();
@@ -62,7 +62,7 @@ class Messages {
   Future<List<Message>> getMessagesAfter(int index, int count) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .getMessagesAfter(index, count, _channel);
+          .getMessagesAfter(index, count, _channel.sid);
       final List<Map<String, dynamic>> messageMapList = methodData
           .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
           .toList();
@@ -80,7 +80,7 @@ class Messages {
   Future<List<Message>> getLastMessages(int count) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .getLastMessages(count, _channel);
+          .getLastMessages(count, _channel.sid);
       final List<Map<String, dynamic>> messageMapList = methodData
           .map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r))
           .toList();
@@ -99,7 +99,7 @@ class Messages {
   Future<Message> getMessageByIndex(int messageIndex) async {
     try {
       final methodData = await FlutterTwilioConversationsPlatform.instance
-          .getMessageByIndex(_channel, messageIndex);
+          .getMessageByIndex(_channel.sid, messageIndex);
 
       final messageMap = Map<String, dynamic>.from(methodData);
       return Message._fromMap(messageMap, this);
@@ -114,7 +114,7 @@ class Messages {
     try {
       return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
           .instance
-          .setLastReadMessageIndexWithResult(_channel, lastReadMessageIndex);
+          .setLastReadMessageIndexWithResult(_channel.sid, lastReadMessageIndex);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -129,7 +129,7 @@ class Messages {
       return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
           .instance
           .advanceLastReadMessageIndexWithResult(
-              _channel, lastReadMessageIndex);
+              _channel.sid, lastReadMessageIndex);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -140,7 +140,7 @@ class Messages {
     try {
       return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
           .instance
-          .setAllMessagesReadWithResult(_channel);
+          .setAllMessagesReadWithResult(_channel.sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }
@@ -151,7 +151,7 @@ class Messages {
     try {
       return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
           .instance
-          .setNoMessagesReadWithResult(_channel);
+          .setNoMessagesReadWithResult(_channel.sid);
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

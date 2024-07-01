@@ -1,9 +1,9 @@
 import 'dart:js_util';
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
+import 'package:flutter_twilio_conversations_web/logging.dart';
 
 class ChannelMethods {
   Future<int> getMessagesCount(String channelSid,
@@ -20,7 +20,7 @@ class ChannelMethods {
 
       return messagesCount;
     } catch (e) {
-      TwilioConversationsClient.log('error: getMessagesCount ${e}');
+      Logging.debug('error: getMessagesCount ${e}');
       return 0;
     }
   }
@@ -39,7 +39,7 @@ class ChannelMethods {
 
       return unreadMessagesCount;
     } catch (e) {
-      TwilioConversationsClient.log('error: getUnreadMessagesCount ${e}');
+      Logging.debug('error: getUnreadMessagesCount ${e}');
       return 0;
     }
   }
@@ -56,7 +56,7 @@ class ChannelMethods {
           .firstWhere((element) => element.sid == channelSid)
           .typing());
     } catch (e) {
-      TwilioConversationsClient.log('error: typing ${e}');
+      Logging.debug('error: typing ${e}');
     }
   }
 }

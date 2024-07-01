@@ -1,8 +1,8 @@
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class BaseListener {
   void debug(String msg) {
-    TwilioConversationsClient.log(('Listener Event: $msg'));
+    if (kDebugMode) print(('Listener Event: $msg'));
   }
 
   String capitalize(String string) {

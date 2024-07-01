@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:js_util';
-import 'package:flutter_twilio_conversations/flutter_twilio_conversations.dart';
 import 'package:flutter_twilio_conversations_platform_interface/flutter_twilio_conversations_platform_interface.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioWebClient;
 import 'package:flutter_twilio_conversations_web/listeners/chat_listener.dart';
+import 'package:flutter_twilio_conversations_web/logging.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 import 'package:flutter_twilio_conversations_web/methods/channel_methods.dart';
 import 'package:flutter_twilio_conversations_web/methods/channels_methods.dart';
@@ -30,7 +30,8 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   @override
-  Future<dynamic> createChatClient(String token, Properties properties) async {
+  Future<dynamic> createChatClient(
+      String token, Map<String, Object> properties) async {
     try {
       _chatClient = await TwilioWebClient.TwilioConversationsClient(token);
 
@@ -44,7 +45,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
       return await Mapper.chatClientToMap(this, _chatClient!, []);
     } catch (e) {
-      TwilioConversationsClient.log('error: createConversation ${e}');
+      Logging.debug('error: createConversation ${e}');
     }
   }
 
@@ -60,7 +61,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   Future<Map<dynamic, dynamic>> createChannel(
       String friendlyName, String channelType) async {
-    TwilioConversationsClient.log('createChannel() has not been implemented.');
+    Logging.debug('createChannel() has not been implemented.');
     return {};
   }
 
@@ -70,142 +71,131 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   Future<dynamic> getPublicChannelsList() async {
-    TwilioConversationsClient.log(
-        'getPublicChannelsList() has not been implemented.');
+    Logging.debug('getPublicChannelsList() has not been implemented.');
     return null;
   }
 
   Future<dynamic> getUserChannelsList() async {
-    TwilioConversationsClient.log(
-        'getUserChannelsList() has not been implemented.');
+    Logging.debug('getUserChannelsList() has not been implemented.');
     return null;
   }
 
   Future<void> unsubscribe(String? identity) async {
-    TwilioConversationsClient.log('unsubscribe() has not been implemented.');
+    Logging.debug('unsubscribe() has not been implemented.');
     return null;
   }
 
   Future<dynamic> getMembersByIdentity(String identity) async {
-    TwilioConversationsClient.log(
-        'getMembersByIdentity() has not been implemented.');
+    Logging.debug('getMembersByIdentity() has not been implemented.');
     return null;
   }
 
   Future<dynamic> getMember(String channelSid, String identity) async {
-    TwilioConversationsClient.log('getMember() has not been implemented');
+    Logging.debug('getMember() has not been implemented');
     return null;
   }
 
   Future<dynamic> getMembersList(String channelSid) async {
-    TwilioConversationsClient.log('getMembersList() has not been implemented');
+    Logging.debug('getMembersList() has not been implemented');
     return null;
   }
 
   Future<bool?> addByIdentity(String channelSid, String identity) async {
-    TwilioConversationsClient.log('addByIdentity() has not been implemented');
+    Logging.debug('addByIdentity() has not been implemented');
     return null;
   }
 
   Future<bool?> removeByIdentity(String channelSid, String identity) async {
-    TwilioConversationsClient.log(
-        'removeByIdentity() has not been implemented');
+    Logging.debug('removeByIdentity() has not been implemented');
     return null;
   }
 
   Future<bool?> inviteByIdentity(String channelSid, String identity) async {
-    TwilioConversationsClient.log(
-        'inviteByIdentity() has not been implemented');
+    Logging.debug('inviteByIdentity() has not been implemented');
     return null;
   }
 
   Future<dynamic> setAttributesMember(
       String sid, String? channelSid, Map<String, dynamic> attributes) async {
-    TwilioConversationsClient.log(
-        'setAttributesMember() has not been implemented');
+    Logging.debug('setAttributesMember() has not been implemented');
     return null;
   }
 
   Future<dynamic> memberGetAndSubscribeUser(
       String? identity, String? sid) async {
-    TwilioConversationsClient.log(
-        'memberGetAndSubscribeUser() has not been implemented');
+    Logging.debug('memberGetAndSubscribeUser() has not been implemented');
     return null;
   }
 
   Future<dynamic> memberGetUserDescriptor(
       String? identity, String? channelSid) async {
-    TwilioConversationsClient.log(
-        'memberGetUserDescriptor() has not been implemented');
+    Logging.debug('memberGetUserDescriptor() has not been implemented');
   }
 
   Future<void> declineInvitationChannel(String channelSid) async {
-    TwilioConversationsClient.log(
-        'declineInvitationChannel() has not been implemented');
+    Logging.debug('declineInvitationChannel() has not been implemented');
     return null;
   }
 
   Future<dynamic> getAndSubscribeUser(String identity) async {
-    TwilioConversationsClient.log(
-        'getAndSubscribeUser() has not been implemented.');
+    Logging.debug('getAndSubscribeUser() has not been implemented.');
   }
 
   Future<dynamic> getUserDescriptor(String identity) async {
-    TwilioConversationsClient.log(
-        'getUserDescriptor() has not been implemented.');
+    Logging.debug('getUserDescriptor() has not been implemented.');
   }
 
   Future<dynamic> getChannelUserDescriptors(String channelSid) async {
-    TwilioConversationsClient.log(
-        'getChannelUserDescriptors() has not been implemented.');
+    Logging.debug('getChannelUserDescriptors() has not been implemented.');
   }
 
   @override
   Future<void> destroyChannel(String channelSid) async {
-    TwilioConversationsClient.log('destroyChannel() has not been implemented.');
+    Logging.debug('destroyChannel() has not been implemented.');
   }
 
   @override
   Future<String> getFriendlyNameChannel(String channelSid) async {
-    TwilioConversationsClient.log(
-        'getUniqueNameChannel() has not been implemented');
+    Logging.debug('getUniqueNameChannel() has not been implemented');
     return '';
   }
 
-  Future<int?> setAllMessagesReadWithResult(Channel channel) async {
+  Future<int?> setAllMessagesReadWithResult(String channelSid) async {
     return await MessagesMethods()
-        .setAllMessagesReadWithResult(channel, _chatClient);
+        .setAllMessagesReadWithResult(channelSid, _chatClient);
   }
 
   @override
   Future<dynamic> getMessagesAfter(
-      int index, int count, Channel channel) async {
+      int index, int count, String channelSid) async {
     return await MessagesMethods()
-        .getMessagesDirection(index, count, channel, _chatClient, "forward");
+        .getMessagesDirection(index, count, channelSid, _chatClient, "forward");
   }
 
   @override
   Future<dynamic> getMessagesBefore(
-      int index, int count, Channel channel) async {
-    return await MessagesMethods()
-        .getMessagesDirection(index, count, channel, _chatClient, "backwards");
+      int index, int count, String channelSid) async {
+    return await MessagesMethods().getMessagesDirection(
+        index, count, channelSid, _chatClient, "backwards");
   }
 
   @override
-  Future<dynamic> getMessageByIndex(Channel channel, int messageIndex) async {
-    TwilioConversationsClient.log(
-        'getMessageByIndex() has not been implemented');
+  Future<dynamic> getMessageByIndex(String channelSid, int messageIndex) async {
+    Logging.debug('getMessageByIndex() has not been implemented');
     return null;
   }
 
   @override
-  Future<dynamic> getLastMessages(int count, Channel channel) async {
-    return await MessagesMethods().getLastMessages(count, channel, _chatClient);
+  Future<dynamic> getLastMessages(int count, String channelSid) async {
+    return await MessagesMethods()
+        .getLastMessages(count, channelSid, _chatClient);
   }
 
   @override
-  Future<dynamic> sendMessage(MessageOptions options, Channel channel) async {
-    return await MessagesMethods().sendMessage(options, channel, _chatClient);
+  Future<dynamic> sendMessage(
+      Map<String, dynamic> messageOptions, String channelSid) async {
+    return await MessagesMethods()
+        .sendMessage(messageOptions, channelSid, _chatClient);
   }
 
   @override
@@ -216,14 +206,13 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   Future<String> updateMessageBody(
       String? channelSid, int? messageIndex, String body) async {
-    TwilioConversationsClient.log(
-        'updateMessageBody() has not been implemented');
+    Logging.debug('updateMessageBody() has not been implemented');
     return '';
   }
 
   Future<dynamic> setAttributes(String? channelSid, int? messageIndex,
       Map<String, dynamic> attributes) async {
-    TwilioConversationsClient.log('setAttributes() has not been implemented');
+    Logging.debug('setAttributes() has not been implemented');
   }
 
   @override
@@ -237,47 +226,44 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   Future<int?> setLastReadMessageIndexWithResult(
-      Channel channel, int lastReadMessageIndex) async {
-    TwilioConversationsClient.log(
+      String channelSid, int lastReadMessageIndex) async {
+    Logging.debug(
         'setLastReadMessageIndexWithResult() has not been implemented');
     return null;
   }
 
   Future<int?> advanceLastReadMessageIndexWithResult(
-      Channel channel, int lastReadMessageIndex) async {
-    TwilioConversationsClient.log(
+      String channelSid, int lastReadMessageIndex) async {
+    Logging.debug(
         'advanceLastReadMessageIndexWithResult() has not been implemented');
     return null;
   }
 
-  Future<int?> setNoMessagesReadWithResult(Channel channel) async {
-    TwilioConversationsClient.log(
-        'setNoMessagesReadWithResult() has not been implemented');
+  Future<int?> setNoMessagesReadWithResult(String channelSid) async {
+    Logging.debug('setNoMessagesReadWithResult() has not been implemented');
     return null;
   }
 
-  Future<void> removeMessage(Channel channel, Message message) async {
-    TwilioConversationsClient.log('removeMessage() has not been implemented');
+  Future<void> removeMessage(String channelSid, int messageIndex) async {
+    Logging.debug('removeMessage() has not been implemented');
     return null;
   }
 
   @override
   Future<String> getNotificationLevelChannel(String channelSid) async {
-    TwilioConversationsClient.log(
-        'getNotificationLevelChannel() has not been implemented');
+    Logging.debug('getNotificationLevelChannel() has not been implemented');
     return '';
   }
 
   @override
   Future<String> getUniqueNameChannel(String channelSid) async {
-    TwilioConversationsClient.log(
-        'getUniqueNameChannel() has not been implemented');
+    Logging.debug('getUniqueNameChannel() has not been implemented');
     return '';
   }
 
   @override
   Future<void> joinChannel(String channelSid) async {
-    TwilioConversationsClient.log('joinChannel() has not been implemented');
+    Logging.debug('joinChannel() has not been implemented');
     return null;
   }
 
@@ -288,69 +274,62 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   @override
   Future<void> leaveChannel(String channelSid) async {
-    TwilioConversationsClient.log('leaveChannel() has not been implemented');
+    Logging.debug('leaveChannel() has not been implemented');
     return null;
   }
 
   @override
   Future<Map<String, dynamic>> setAttributesChannel(
       String channelSid, Map<String, dynamic> attributes) async {
-    TwilioConversationsClient.log(
-        'setAttributesChannel() has not been implemented');
+    Logging.debug('setAttributesChannel() has not been implemented');
     return {};
   }
 
   @override
   Future<String> setFriendlyNameChannel(
       String channelSid, String friendlyName) async {
-    TwilioConversationsClient.log(
-        'setFriendlyNameChannel() has not been implemented');
+    Logging.debug('setFriendlyNameChannel() has not been implemented');
     return '';
   }
 
   @override
   Future<String> setNotificationLevelChannel(
       String channelSid, String notificationLevel) async {
-    TwilioConversationsClient.log(
-        'setNotificationLevelChannel() has not been implemented');
+    Logging.debug('setNotificationLevelChannel() has not been implemented');
     return '';
   }
 
   Future<void> handleReceivedNotification() async {
-    TwilioConversationsClient.log(
-        'handleReceivedNotification() has not been implemented');
+    Logging.debug('handleReceivedNotification() has not been implemented');
     return null;
   }
 
   Future<String> registerForNotification(String token) async {
-    TwilioConversationsClient.log(
-        'registerForNotification() has not been implemented');
+    Logging.debug('registerForNotification() has not been implemented');
     return '';
   }
 
   Future<void> unregisterForNotification(String token) async {
-    TwilioConversationsClient.log(
-        'unregisterForNotification() has not been implemented');
+    Logging.debug('unregisterForNotification() has not been implemented');
     return null;
   }
 
   @override
   Future<String> setUniqueNameChannel(
       String channelSid, String uniqueName) async {
-    TwilioConversationsClient.log(
-        'setUniqueNameChannel() has not been implemented');
+    Logging.debug('setUniqueNameChannel() has not been implemented');
     return '';
   }
 
   @override
   Future<dynamic> requestNextPage(String pageId, String itemType) async {
-    TwilioConversationsClient.log('requestNextPage() has not been implemented');
+    Logging.debug('requestNextPage() has not been implemented');
     return null;
   }
 
   @override
   Stream<Map<String, dynamic>> chatClientStream() {
-    TwilioConversationsClient.log(
+    Logging.debug(
       'TwilioConversationsPlugin.create => starting stream',
     );
     return _chatClientStreamController.stream;
@@ -358,21 +337,20 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   @override
   Stream<Map<String, dynamic>> channelStream(String channelSid) {
-    TwilioConversationsClient.log(
+    Logging.debug(
       'TwilioConversationsPlugin.channel => starting stream',
     );
     return channelListeners[channelSid]!.stream;
   }
 
   Future<void> platformDebug(bool dart, bool native, bool sdk) async {
-    TwilioConversationsClient.log(
-        'getUniqueNameChannel() has not been implemented');
+    Logging.debug('getUniqueNameChannel() has not been implemented');
     return null;
   }
 
   @override
   Stream<Map<dynamic, dynamic>>? notificationStream() {
-    TwilioConversationsClient.log(
+    Logging.debug(
       'notificationStream() has not been implemented',
     );
     return Stream.empty();
