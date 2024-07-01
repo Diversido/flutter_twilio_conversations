@@ -43,6 +43,7 @@ class ChatClientEventListener extends BaseListener {
         js_util.allowInterop(eventHandler),
       );
 
+  // ignore: unused_element
   void _off(String eventName, Function eventHandler) => _client.off(
         eventName,
         js_util.allowInterop(eventHandler),

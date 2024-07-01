@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_twilio_conversations_example/redux/states/app_state.dart
 
 class AuthWidget extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
+
+  AuthWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

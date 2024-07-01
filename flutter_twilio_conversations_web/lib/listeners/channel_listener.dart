@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:js_util';
 import 'package:flutter_twilio_conversations_web/flutter_twilio_conversations_web.dart';
-import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart'
     as TwilioClientConversation;
 import 'package:flutter_twilio_conversations_web/interop/classes/member.dart';
@@ -37,6 +36,7 @@ class ChannelEventListener extends BaseListener {
         allowInterop(eventHandler),
       );
 
+  // ignore: unused_element
   void _off(String eventName, Function eventHandler) => _channel.off(
         eventName,
         allowInterop(eventHandler),

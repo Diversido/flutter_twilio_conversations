@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/init_actions.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/messages_actions.dart';
@@ -27,16 +28,16 @@ class TwilioMiddleware extends EpicMiddleware<AppState> {
               if (chatClient != null) {
                 yield UpdateChatClient(chatClient);
                 yield UpdateTokenAction(action.token);
-                print('Successfully initialized Twilio ChatClient');
+                debugPrint('Successfully initialized Twilio ChatClient');
                 yield UpdateIndicatorsAction(isClientSyncing: true);
                 yield UpdateIndicatorsAction(isTwilioInitializing: false);
                 yield SubscribeToChatClientSyncAction();
               } else {
-                print('ChatClient is null, parsing error');
+                debugPrint('ChatClient is null, parsing error');
                 yield UpdateIndicatorsAction(isTwilioInitializing: false);
               }
             } catch (e) {
-              print('Failed to load chatClient: $e');
+              debugPrint('Failed to load chatClient: $e');
               yield UpdateIndicatorsAction(isTwilioInitializing: false);
             }
           }));
@@ -53,13 +54,14 @@ class TwilioMiddleware extends EpicMiddleware<AppState> {
                     ..withAttributes({'customKey': 'customValue'}));
 
               if (request != null) {
-                print(
-                    'TwilioLog --- message sent to ${action.channel}: ${request.messageBody}');
+                debugPrint(
+                  'TwilioLog --- message sent to ${action.channel}: ${request.messageBody}',
+                );
               } else {
                 yield ShowToastAction('Failed to send message');
               }
             } catch (e) {
-              print('Error while sending message: $e');
+              debugPrint('Error while sending message: $e');
             }
           }));
 
@@ -80,12 +82,12 @@ class TwilioMiddleware extends EpicMiddleware<AppState> {
               );
 
               if (request != null) {
-                print('TwilioLog --- image sent to ${action.channel}');
+                debugPrint('TwilioLog --- image sent to ${action.channel}');
               } else {
                 yield ShowToastAction('Failed to send image');
               }
             } catch (e) {
-              print('Error while sending image: $e');
+              debugPrint('Error while sending image: $e');
             }
           }));
 }

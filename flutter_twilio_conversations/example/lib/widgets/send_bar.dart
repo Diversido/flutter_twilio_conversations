@@ -83,7 +83,7 @@ class _SendBarState extends State<SendBar> {
                               viewModel.sendImage(image);
                             }
                           } catch (e) {
-                            print('Image picker error: $e');
+                            debugPrint('Image picker error: $e');
                           }
                         } else {
                           // no access to photos
@@ -120,7 +120,7 @@ class _SendBarState extends State<SendBar> {
                                 .trim()
                                 .isNotEmpty &&
                             !viewModel.dialog!.channel.hasSynchronized) {
-                          print(
+                          debugPrint(
                               'TwilioLog --- Conversation is not synced, trying to send the message carefully');
                           viewModel.sendTextMessage(
                             messageTextController.text.trim(),
@@ -148,15 +148,15 @@ class _ViewModel with EquatableMixin {
 
   Future<bool> hasGalleryAccess() async {
     if (kIsWeb) {
-      print('Permission: Web');
+      debugPrint('Permission: Web');
       return true;
     } else if (Platform.isIOS) {
       final permission = await Permission.photos.request();
-      print('Permission: $permission');
+      debugPrint('Permission: $permission');
       return permission.isGranted;
     } else if (Platform.isAndroid) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
-      final sdkInt = androidInfo.version.sdkInt ?? 1;
+      final sdkInt = androidInfo.version.sdkInt;
       final response =
           sdkInt > 28 ? await Permission.photos.request().isGranted : true;
       return response;

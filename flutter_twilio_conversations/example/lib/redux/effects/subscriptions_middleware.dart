@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/channel_actions.dart';
 import 'package:flutter_twilio_conversations_example/redux/actions/init_actions.dart';
@@ -78,7 +79,7 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
         store.dispatch(TypingEnded(event));
       });
     } catch (e) {
-      print('Failed to handleTypingStatusSubscription: $e');
+      debugPrint('Failed to handleTypingStatusSubscription: $e');
     }
   }
 
@@ -88,7 +89,7 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
   ) {
     if (store.state.chatClient != null) {
       store.state.chatClient?.onChannelUpdated?.listen((event) async {
-        print('New conversation event: $event');
+        debugPrint('New conversation event: $event');
 
         if (event.reason != ChannelUpdateReason.LAST_CONSUMED_MESSAGE_INDEX) {
           store.dispatch(GetConversationMessagesAction(event.channel));
@@ -108,27 +109,27 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
       try {
         final messages = await action.channel.messages?.getLastMessages(50);
 
-        print('Got messages: $messages');
+        debugPrint('Got messages: $messages');
         if (messages != null) {
           store.dispatch(UpdateChatMessagesAction(messages));
         }
       } catch (e) {
-        print('Failed to get messages: $e');
+        debugPrint('Failed to get messages: $e');
       }
     } else {
-      print('Started listening to an unsynced channel');
+      debugPrint('Started listening to an unsynced channel');
       action.channel.onSynchronizationChanged?.listen((channel) async {
-        print('Channel sync event: ${channel.synchronizationStatus}');
+        debugPrint('Channel sync event: ${channel.synchronizationStatus}');
         if (channel.synchronizationStatus == ChannelSynchronizationStatus.ALL) {
           try {
             final messages = await action.channel.messages?.getLastMessages(50);
 
-            print('Got messages: $messages');
+            debugPrint('Got messages: $messages');
             if (messages != null) {
               store.dispatch(UpdateChatMessagesAction(messages));
             }
           } catch (e) {
-            print('Failed to get messages: $e');
+            debugPrint('Failed to get messages: $e');
           }
         }
       });

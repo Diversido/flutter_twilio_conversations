@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -53,7 +56,7 @@ class UiMiddleware extends EpicMiddleware<AppState> {
                 ),
               );
             } catch (e) {
-              print('Failed to present local notification: $e');
+              debugPrint('Failed to present local notification: $e');
             }
           }));
 }
