@@ -1,3 +1,6 @@
+## 2.0.1+11
+* Fixed dependency implementations for android and ios
+
 ## 2.0.0+10
 * Added web support
 
