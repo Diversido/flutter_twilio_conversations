@@ -44,5 +44,5 @@ class AppRouterDelegate extends RouterDelegate<NavigationState>
   }
 
   @override
-  Future<void> setNewRoutePath(NavigationState navigationState) async {}
+  Future<void> setNewRoutePath(NavigationState configuration) async {}
 }
