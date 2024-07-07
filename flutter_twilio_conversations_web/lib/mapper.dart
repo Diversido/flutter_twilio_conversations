@@ -243,7 +243,7 @@ class Mapper {
       "memberSid": message.participantSid,
       "member": memberToMap(member),
       "messageIndex": message.index,
-      "hasMedia": message.attachedMedia?.isNotEmpty ?? false,
+      "hasMedia": message.attachedMedia.isNotEmpty,
       "media": mediaToMap(message),
       "attributes": attributesToMap(message.attributes),
     };
@@ -252,7 +252,7 @@ class Mapper {
   }
 
   static Map<String, dynamic>? mediaToMap(TwilioConversationsMessage message) {
-    if (message.attachedMedia?.isEmpty ?? true) {
+    if (message.attachedMedia.isEmpty) {
       return null;
     }
 
