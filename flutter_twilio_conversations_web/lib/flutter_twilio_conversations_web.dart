@@ -345,7 +345,6 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   Future<void> platformDebug(bool dart, bool native, bool sdk) {
     Logging.dartDebug = dart;
-    Logging.debug('platformDebug() has not been implemented');
     return Future.value();
   }
 
