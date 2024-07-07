@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_twilio_conversations_platform_interface/src/logging.dart';
 import 'package:meta/meta.dart';
 import '../platform_interface/flutter_twilio_conversations_platform.dart';
 
@@ -373,7 +372,6 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      Logging.debug('chatClientStream error: $e');
       return null;
     }
   }
@@ -386,7 +384,6 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      Logging.debug('chatClientStream error: $e');
       return null;
     }
   }
@@ -399,7 +396,6 @@ class MethodChannelFlutterTwilioConversations
         return event as Map<dynamic, dynamic>;
       });
     } catch (e) {
-      Logging.debug('notificationStream error: $e');
       return null;
     }
   }

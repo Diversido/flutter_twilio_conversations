@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter_twilio_conversations_web/logging.dart';
 
 abstract class BaseListener {
   void debug(String msg) {
-    if (kDebugMode) print(('Listener Event: $msg'));
+    Logging.debug('Listener Event: $msg');
   }
 
   String capitalize(String string) {

@@ -156,7 +156,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   @override
   Future<String> getFriendlyNameChannel(String channelSid) async {
-    Logging.debug('getUniqueNameChannel() has not been implemented');
+    Logging.debug('getFriendlyNameChannel() has not been implemented');
     return '';
   }
 
@@ -343,9 +343,10 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
     return channelListeners[channelSid]!.stream;
   }
 
-  Future<void> platformDebug(bool dart, bool native, bool sdk) async {
-    Logging.debug('getUniqueNameChannel() has not been implemented');
-    return null;
+  Future<void> platformDebug(bool dart, bool native, bool sdk) {
+    Logging.dartDebug = dart;
+    Logging.debug('platformDebug() has not been implemented');
+    return Future.value();
   }
 
   @override
