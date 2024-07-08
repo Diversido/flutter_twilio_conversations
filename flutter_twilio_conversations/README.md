@@ -5,11 +5,9 @@ This package is based on [Twilio Programmable Chat Plugin](https://pub.dev/packa
 
 ## Installing the plugin
 
-📂 **`pubspec.yaml`**:
-
-```yaml
-dependencies:
-  flutter_twilio_conversations: '^1.1.6'
+```sh
+# Run the following command
+$ dart pub add flutter_twilio_conversations
 ```
 
 ## Setup

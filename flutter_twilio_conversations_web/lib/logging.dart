@@ -1,7 +1,9 @@
-import 'package:flutter/foundation.dart';
-
 class Logging {
+  static bool dartDebug = false;
+
   static void debug(dynamic msg) {
-    if (kDebugMode) print(('$msg'));
+    if (dartDebug) {
+      print(('$msg'));
+    }
   }
 }
