@@ -11,8 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_twilio_conversations_platform_interface: ^2.0.1
-  flutter_twilio_conversations_web: ^2.0.0
+  flutter_twilio_conversations_platform_interface: ^2.0.2
+  flutter_twilio_conversations_web: ^2.0.1
   enum_to_string: ^2.0.1
   intl: ^0.19.0
 

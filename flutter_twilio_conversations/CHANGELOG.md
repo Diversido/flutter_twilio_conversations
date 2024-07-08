@@ -1,3 +1,7 @@
+## 2.02+12
+* WEB: Fixed issue with messages containing Media
+* Removed unnecessary logging operations
+
 ## 2.0.1+11
 * Fixed dependency implementations for android and ios
 
