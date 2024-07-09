@@ -1,3 +1,6 @@
+## 2.0.2
+* Removed unnecessary logging operations
+  
 ## 2.0.1
 * Update README, add useful links to pubspec.yaml
 
