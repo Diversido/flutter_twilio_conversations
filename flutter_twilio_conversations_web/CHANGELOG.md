@@ -1,4 +1,4 @@
-## 2.0.1
+## 2.0.2
 * Fixed issue with messages containing Media
 
 ## 2.0.0+10

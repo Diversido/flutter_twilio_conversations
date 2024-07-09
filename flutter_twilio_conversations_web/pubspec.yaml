@@ -1,6 +1,6 @@
 name: flutter_twilio_conversations_web
 description: Web platform implementation of flutter_twilio_conversations_web
-version: 2.0.1
+version: 2.0.2
 repository: https://github.com/Diversido/flutter_twilio_conversations/tree/main/flutter_twilio_conversations_web
 issue_tracker: https://github.com/Diversido/flutter_twilio_conversations/issues
 

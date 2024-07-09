@@ -79,10 +79,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_twilio_conversations_platform_interface
-      sha256: "0f01f6a21d97463057da208f2e329b634e2bb864c4468608c64a3b6698ac5b93"
+      sha256: d80b1b7276d3d255d8fd8699e3bbe501ea1c5d166d24f3ff62789d3e70aaf8d5
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   flutter_web_plugins:
     dependency: "direct main"
     description: flutter

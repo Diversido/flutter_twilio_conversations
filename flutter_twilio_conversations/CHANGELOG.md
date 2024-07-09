@@ -1,4 +1,4 @@
-## 2.02+12
+## 2.0.2+12
 * WEB: Fixed issue with messages containing Media
 * Removed unnecessary logging operations
 
