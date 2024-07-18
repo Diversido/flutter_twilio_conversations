@@ -9,8 +9,13 @@ Map jsToMap(jsObject) {
     return new Map.fromIterable(_getKeysOfObject(jsObject), value: (key) {
       var property = getProperty(jsObject, key);
 
-      if (property is List && property[0] is JSMap) {
-        return [jsToMap(property[0])];
+      if (property is List) {
+        return property.map((element) {
+          if (element is JSMap) {
+            return jsToMap(element);
+          }
+          return element;
+        }).toList();
       } else if (property is JSMap) {
         return jsToMap(property);
       }
