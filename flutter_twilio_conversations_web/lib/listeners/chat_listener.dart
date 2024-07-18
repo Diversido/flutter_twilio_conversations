@@ -80,8 +80,10 @@ class ChatClientEventListener extends BaseListener {
   Future<void> stateChanged(String state) async {
     debug('State Changed ChatClient Event');
     JSPaginator<TwilioConversationsChannel>? channels = null;
+    var initialized = false;
     if (state == 'initialized') {
       state = 'CONVERSATIONS_COMPLETED';
+      initialized = true;
 
       channels = await js_util
           .promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
@@ -91,8 +93,12 @@ class ChatClientEventListener extends BaseListener {
 
     sendEvent('clientSynchronization', {
       "synchronizationStatus": state,
-      "chatClient":
-          await Mapper.chatClientToMap(pluginInstance, _client, channels?.items)
+      "chatClient": await Mapper.chatClientToMap(
+        pluginInstance,
+        _client,
+        channels?.items,
+        initialized,
+      ),
     });
   }
 
@@ -134,8 +140,12 @@ class ChatClientEventListener extends BaseListener {
     debug('Conversation Added ChatClient Event');
     sendEvent('channelAdded', {
       "channel": await Mapper.channelToMap(pluginInstance, channelAdded),
-      "chatClient":
-          await Mapper.chatClientToMap(pluginInstance, _client, [channelAdded])
+      "chatClient": await Mapper.chatClientToMap(
+        pluginInstance,
+        _client,
+        [channelAdded],
+        true,
+      )
     });
   }
 

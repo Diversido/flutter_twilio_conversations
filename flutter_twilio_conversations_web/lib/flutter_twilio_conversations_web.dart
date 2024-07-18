@@ -42,8 +42,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
       );
 
       _chatClientListener!.addListeners();
-
-      return await Mapper.chatClientToMap(this, _chatClient!, []);
+      return await Mapper.chatClientToMap(this, _chatClient!, [], false);
     } catch (e) {
       Logging.debug('error: createConversation ${e}');
     }

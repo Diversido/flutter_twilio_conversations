@@ -48,11 +48,42 @@ class ChannelEventListener extends BaseListener {
   }
 
   messageUpdated(dynamic data) async {
-    debug('Message Updated Channel Event');
+    debug('Message Updated Channel Event $data');
+
+    final updateReasons = getProperty(data, 'updateReasons');
+    debug('Message Updated Channel Event reason ${updateReasons[0]}');
+
+    var type = "unknown";
+    switch (updateReasons[0]) {
+      case "body":
+        type = "BODY";
+        break;
+      case "lastUpdatedBy":
+        type = "LAST_UPDATED_BY";
+        break;
+      case "dateCreated":
+        type = "DATE_CREATED";
+        break;
+      case "dateUpdated":
+        type = "DATE_UPDATED";
+        break;
+      case "attributes":
+        type = "ATTRIBUTES";
+        break;
+      case "author":
+        type = "AUTHOR";
+        break;
+      case "deliveryReceipt":
+        type = "DELIVERY_RECEIPT";
+        break;
+      case "subject":
+        type = "SUBJECT";
+        break;
+    }
 
     sendEvent("messageUpdated", {
       "message": await Mapper.messageToMap(data.message),
-      "reason": {"type": "message", "value": data.reason.toString()}
+      "reason": {"type": "message", "value": type}
     });
   }
 

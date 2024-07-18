@@ -28,6 +28,7 @@ class Mapper {
     TwilioConversationsPlugin pluginInstance,
     TwilioClient.TwilioConversationsClient chatClient,
     List<TwilioConversationsChannel>? channels,
+    bool initialized,
   ) async {
     final channelsMapped = await channelsToMap(pluginInstance, channels);
     final usersMapped = await usersToMap(pluginInstance, chatClient);
@@ -36,7 +37,8 @@ class Mapper {
       "myIdentity": chatClient.user.identity,
       "connectionState": connectionStateToString(chatClient.connectionState),
       "users": usersMapped,
-      "isReachabilityEnabled": chatClient.reachabilityEnabled,
+      "isReachabilityEnabled":
+          initialized ? chatClient.reachabilityEnabled : null,
     };
   }
 
