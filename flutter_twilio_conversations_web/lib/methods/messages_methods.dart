@@ -49,6 +49,8 @@ class MessagesMethods {
 
       if ((messageOptions["body"]) != null) {
         messagePreparator.setBody(messageOptions["body"]);
+      } else {
+        messagePreparator.setBody('');
       }
 
       if (messageOptions["attributes"] != null) {
