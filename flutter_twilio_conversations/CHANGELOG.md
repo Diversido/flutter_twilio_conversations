@@ -1,3 +1,6 @@
+## 2.0.3+13
+* WEB: Fixed JS Mapper - [#35](https://github.com/Diversido/flutter_twilio_conversations/issues/35)
+
 ## 2.0.2+12
 * WEB: Fixed issue with messages containing Media
 * Removed unnecessary logging operations
