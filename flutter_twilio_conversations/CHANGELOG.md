@@ -1,3 +1,8 @@
+## 2.0.4+14
+* INTERFACE: Added optional `webChannel` parameter to `registerForNotification` and `unregisterForNotification` methods
+* WEB: Added implementation for `registerForNotification` and `unregisterForNotification` methods
+* WEB: Update signatures for `tokenExpired` and `tokenAboutToExpire` events
+
 ## 2.0.3+13
 * WEB: Fixed JS Mapper - [#35](https://github.com/Diversido/flutter_twilio_conversations/issues/35)
 
