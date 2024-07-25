@@ -1,3 +1,7 @@
+## 2.0.4
+* Added implementation for `registerForNotification` and `unregisterForNotification` methods
+* Update signatures for `tokenExpired` and `tokenAboutToExpire` events
+
 ## 2.0.3
 * Fixed JS Mapper - [#35](https://github.com/Diversido/flutter_twilio_conversations/issues/35)
 
