@@ -10,6 +10,7 @@ import 'package:flutter_twilio_conversations_web/methods/channel_methods.dart';
 import 'package:flutter_twilio_conversations_web/methods/channels_methods.dart';
 import 'package:flutter_twilio_conversations_web/methods/message_methods.dart';
 import 'package:flutter_twilio_conversations_web/methods/messages_methods.dart';
+import 'package:flutter_twilio_conversations_web/methods/notifications_methods.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'listeners/channel_listener.dart';
@@ -299,18 +300,40 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
   }
 
   Future<void> handleReceivedNotification() async {
+    // This is a no-op for a method needed on iOS
     Logging.debug('handleReceivedNotification() has not been implemented');
     return null;
   }
 
-  Future<String> registerForNotification(String token) async {
-    Logging.debug('registerForNotification() has not been implemented');
-    return '';
+  Future<String> registerForNotification(
+    String token, {
+    String? webChannel,
+  }) async {
+    if (webChannel == null) {
+      Logging.debug(
+          'registerForNotification: webChannel is null, defaulting to fcm');
+    }
+    await NotificationsMethods().registerForNotification(
+      _chatClient,
+      token: token,
+      channel: webChannel ?? 'fcm',
+    );
+    return 'RegisterForNotification in Web';
   }
 
-  Future<void> unregisterForNotification(String token) async {
-    Logging.debug('unregisterForNotification() has not been implemented');
-    return null;
+  Future<void> unregisterForNotification(
+    String token, {
+    String? webChannel,
+  }) async {
+    if (webChannel == null) {
+      Logging.debug(
+          'unregisterForNotification: webChannel is null, defaulting to fcm');
+    }
+    return await NotificationsMethods().unregisterForNotification(
+      _chatClient,
+      token: token,
+      channel: webChannel ?? 'fcm',
+    );
   }
 
   @override
