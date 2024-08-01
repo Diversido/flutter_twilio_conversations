@@ -5,6 +5,7 @@ import 'package:flutter_twilio_conversations_web/interop/classes/channel.dart';
 import 'package:flutter_twilio_conversations_web/interop/classes/client.dart'
     as TwilioChatClient;
 import 'package:flutter_twilio_conversations_web/interop/classes/js_map.dart';
+import 'package:flutter_twilio_conversations_web/interop/classes/push_notification.dart';
 import 'package:flutter_twilio_conversations_web/listeners/base_listener.dart';
 import 'package:flutter_twilio_conversations_web/mapper.dart';
 import 'package:flutter_twilio_conversations_web/types/connection_state.dart';
@@ -36,6 +37,7 @@ class ChatClientEventListener extends BaseListener {
     _on('userSubscribed', userSubscribed);
     _on('userUnsubscribed', userUnsubscribed);
     _on('conversationUpdated', conversationUpdated);
+    _on('pushNotification', pushNotification);
   }
 
   void _on(String eventName, Function eventHandler) => _client.on(
@@ -176,7 +178,7 @@ class ChatClientEventListener extends BaseListener {
     );
   }
 
-  void tokenAboutToExpire(dynamic data) {
+  void tokenAboutToExpire() {
     debug('Token about to Expire ChatClient Event');
     sendEvent(
       'tokenAboutToExpire',
@@ -186,7 +188,7 @@ class ChatClientEventListener extends BaseListener {
     );
   }
 
-  void tokenExpired(dynamic data) {
+  void tokenExpired() {
     debug('Token Expired ChatClient Event');
     sendEvent(
       'tokenExpired',
@@ -236,6 +238,28 @@ class ChatClientEventListener extends BaseListener {
       null,
       e: data,
     );
+  }
+
+  void pushNotification(PushNotification pushNotification) {
+    debug('Push Notification ChatClient Event ${pushNotification.type}');
+
+    if (pushNotification.type == "twilio.conversations.new_message") {
+      sendEvent("newMessageNotification", {
+        "channelSid": pushNotification.data?.conversationSid,
+        "messageSid": pushNotification.data?.messageSid,
+        "messageIndex": pushNotification.data?.messageIndex,
+      });
+    } else if (pushNotification.type ==
+        "twilio.conversations.added_to_conversation") {
+      sendEvent("addedToChannelNotification", {
+        "channelSid": pushNotification.data?.conversationSid,
+      });
+    } else if (pushNotification.type ==
+        "twilio.conversations.removed_from_conversation") {
+      sendEvent("removedFromChannelNotification", {
+        "channelSid": pushNotification.data?.conversationSid,
+      });
+    }
   }
 
   sendEvent(String name, dynamic data, {ErrorInfo? e}) {

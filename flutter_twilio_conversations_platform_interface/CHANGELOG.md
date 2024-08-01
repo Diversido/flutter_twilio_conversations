@@ -1,3 +1,6 @@
+## 2.0.4
+* Added optional `webChannel` parameter to `registerForNotification` and `unregisterForNotification` methods
+
 ## 2.0.2
 * Removed unnecessary logging operations
   

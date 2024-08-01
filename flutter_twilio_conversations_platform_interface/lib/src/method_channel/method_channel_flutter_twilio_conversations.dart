@@ -256,12 +256,18 @@ class MethodChannelFlutterTwilioConversations
     return await _methodChannel.invokeMethod('handleReceivedNotification');
   }
 
-  Future<String> registerForNotification(String token) async {
+  Future<String> registerForNotification(
+    String token, {
+    String? webChannel,
+  }) async {
     return await _methodChannel.invokeMethod(
         'registerForNotification', <String, Object>{'token': token});
   }
 
-  Future<void> unregisterForNotification(String token) async {
+  Future<void> unregisterForNotification(
+    String token, {
+    String? webChannel,
+  }) async {
     return await _methodChannel.invokeMethod(
         'unregisterForNotification', <String, Object>{'token': token});
   }
