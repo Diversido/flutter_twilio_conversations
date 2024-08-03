@@ -22,4 +22,12 @@ class TwilioConversationsClient extends EventEmitter {
   external dynamic shutdown();
   external dynamic getConversationByUniqueName(String UniqueName);
   external dynamic getUser(String identity);
+  external dynamic setPushRegistrationId(
+    String channelType,
+    String registrationId,
+  );
+  external dynamic removePushRegistrations(
+    String channelType,
+    String registrationId,
+  );
 }

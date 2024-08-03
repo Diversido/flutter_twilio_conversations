@@ -39,3 +39,4 @@ part 'user.dart';
 part 'user_descriptor.dart';
 part 'user_update_reason.dart';
 part 'users.dart';
+part 'web_notifications_channel_type.dart';

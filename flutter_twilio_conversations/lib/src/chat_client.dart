@@ -322,10 +322,17 @@ class ChatClient {
   ///
   /// Twilio iOS SDK handles receiving messages when app is in the background and displaying
   /// notifications.
-  Future<String> registerForNotification(String token) async {
+  ///
+  /// [webChannel] is only used for web notifications and it specifies
+  /// the channel type to use for web notifications.
+  Future<String> registerForNotification(
+    String token, {
+    WebNotificationsChannelType? webChannel,
+  }) async {
     try {
       final isInit = await FlutterTwilioConversationsPlatform.instance
-          .registerForNotification(token);
+          .registerForNotification(token,
+              webChannel: getNotificationChannel(webChannel));
       return isInit;
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
@@ -334,13 +341,31 @@ class ChatClient {
 
   /// Unregisters for push notifications.  Uses APNs on iOS and FCM on Android.
   ///
-  /// Token is only used on Android. iOS implementation retrieves APNs token itself.
-  Future<void> unregisterForNotification(String token) async {
+  /// Token is only used on Android/Web. iOS implementation retrieves APNs token itself.
+  ///
+  /// [webChannel] is only used for web notifications and it specifies the
+  /// channel type to use for unregistering web notifications.
+  Future<void> unregisterForNotification(
+    String token, {
+    WebNotificationsChannelType? webChannel,
+  }) async {
     try {
       await FlutterTwilioConversationsPlatform.instance
-          .unregisterForNotification(token);
+          .unregisterForNotification(token,
+              webChannel: getNotificationChannel(webChannel));
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
+    }
+  }
+
+  String? getNotificationChannel(WebNotificationsChannelType? webChannel) {
+    switch (webChannel) {
+      case WebNotificationsChannelType.fcm:
+        return 'fcm';
+      case WebNotificationsChannelType.apn:
+        return 'apn';
+      case null:
+        return null;
     }
   }
 
@@ -529,7 +554,8 @@ class ChatClient {
             users!.getUserById(userMap?['identity'])!, reason));
         break;
       default:
-        TwilioConversationsClient._log("Event '$eventName' not yet implemented");
+        TwilioConversationsClient._log(
+            "Event '$eventName' not yet implemented");
         break;
     }
   }

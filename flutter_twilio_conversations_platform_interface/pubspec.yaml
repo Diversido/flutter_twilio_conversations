@@ -1,6 +1,6 @@
 name: flutter_twilio_conversations_platform_interface
 description: A common platform interface for the flutter_twilio_conversations plugin.
-version: 2.0.2
+version: 2.0.4
 repository: https://github.com/Diversido/flutter_twilio_conversations/tree/main/flutter_twilio_conversations_platform_interface
 issue_tracker: https://github.com/Diversido/flutter_twilio_conversations/issues
 

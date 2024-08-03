@@ -230,12 +230,18 @@ abstract class FlutterTwilioConversationsPlatform extends PlatformInterface {
         'handleReceivedNotification() has not been implemented');
   }
 
-  Future<String> registerForNotification(String token) async {
+  Future<String> registerForNotification(
+    String token, {
+    String? webChannel,
+  }) async {
     throw UnimplementedError(
         'registerForNotification() has not been implemented');
   }
 
-  Future<void> unregisterForNotification(String token) async {
+  Future<void> unregisterForNotification(
+    String token, {
+    String? webChannel,
+  }) async {
     throw UnimplementedError(
         'unregisterForNotification() has not been implemented');
   }
