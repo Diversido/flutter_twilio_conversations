@@ -12,16 +12,13 @@ class MessagesMethods {
   Future<dynamic> getLastMessages(int count, String channelSid,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
     try {
-      final channels =
-          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-        _chatClient!.getSubscribedConversations(),
-      );
+      final channel = await promiseToFuture<TwilioConversationsChannel>(
+          _chatClient!.getConversationBySid(channelSid));
 
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
-              channels.items
-                  .firstWhere((element) => element.sid == channelSid)
-                  .getMessages(50, 0, "forward"));
+              channel.getMessages(
+                  count, channel.lastMessage?.index ?? 0, "backwards"));
 
       final messageList = await Future.wait(
           messages.items.map((message) => Mapper.messageToMap(message)));
