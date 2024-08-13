@@ -1,3 +1,6 @@
+## 2.0.5+15
+* WEB: Update `getLastMessages` to return newest messages first and count backwards
+
 ## 2.0.4+14
 * INTERFACE: Added optional `webChannel` parameter to `registerForNotification` and `unregisterForNotification` methods
 * WEB: Added implementation for `registerForNotification` and `unregisterForNotification` methods
