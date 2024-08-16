@@ -67,7 +67,7 @@ class TwilioConversationsPlugin extends FlutterTwilioConversationsPlatform {
 
   Future<dynamic> getChannel(String channelSidOrUniqueName) async {
     return await ChannelsMethods()
-        .getChannel(channelSidOrUniqueName, _chatClient, this);
+        .getChannel(channelSidOrUniqueName, _chatClient!, this);
   }
 
   Future<dynamic> getPublicChannelsList() async {

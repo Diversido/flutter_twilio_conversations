@@ -1,3 +1,6 @@
+## 2.0.5
+* Update `getLastMessages` to return newest messages first and count backwards
+
 ## 2.0.4
 * Added implementation for `registerForNotification` and `unregisterForNotification` methods
 * Update signatures for `tokenExpired` and `tokenAboutToExpire` events
