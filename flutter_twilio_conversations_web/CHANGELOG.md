@@ -1,3 +1,6 @@
+## 2.0.6
+* Fix crash with `typing` and `getUnreadMessagesCount`
+  
 ## 2.0.5
 * Update `getLastMessages` to return newest messages first and count backwards
 
