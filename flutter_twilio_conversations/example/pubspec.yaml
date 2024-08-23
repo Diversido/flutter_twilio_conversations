@@ -29,7 +29,9 @@ dev_dependencies:
   test: any
   flutter_lints: ^1.0.4
   flutter_twilio_conversations:
-    path: ../
+    path: ../../flutter_twilio_conversations
+  flutter_twilio_conversations_platform_interface:
+    path: ../../flutter_twilio_conversations_platform_interface
 
 flutter:
   uses-material-design: true
