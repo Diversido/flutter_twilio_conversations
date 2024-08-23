@@ -15,6 +15,7 @@ class AppReducer extends ReducerClass<AppState> {
           TypedReducer(_updateIndicators),
           TypedReducer(_updateConversation),
           TypedReducer(_updateChatMessages),
+          TypedReducer(_updateChatUnreadMessagesCount),
           TypedReducer(_openConversation),
           TypedReducer(_closeConversation),
           TypedReducer(_typingStarted),
@@ -72,6 +73,18 @@ class AppReducer extends ReducerClass<AppState> {
                   : Nullable(state.selectedDialog),
             )
           : state;
+
+  AppState _updateChatUnreadMessagesCount(
+    AppState state,
+    UpdateUnreadMessagesCountAction action,
+  ) =>
+      state.copyWith(
+        dialogs: state.dialogs
+            .map((dialog) => dialog.channel.sid == action.channel.sid
+                ? dialog.copyWith(unreadCount: action.unreadMessagesCount)
+                : dialog)
+            .toList(),
+      );
 
   AppState _openConversation(
     AppState state,

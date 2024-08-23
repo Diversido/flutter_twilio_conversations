@@ -33,11 +33,11 @@ class ChannelMethods {
         _chatClient!.getSubscribedConversations(),
       );
 
-      final unreadMessagesCount = await promiseToFuture<int>(channels.items
+      final unreadMessagesCount = await promiseToFuture<int?>(channels.items
           .firstWhere((element) => element.sid == channelSid)
           .getUnreadMessagesCount());
 
-      return unreadMessagesCount;
+      return unreadMessagesCount ?? 0;
     } catch (e) {
       Logging.debug('error: getUnreadMessagesCount ${e}');
       return 0;
@@ -52,7 +52,7 @@ class ChannelMethods {
         _chatClient!.getSubscribedConversations(),
       );
 
-      await promiseToFuture<int>(channels.items
+      await promiseToFuture<void>(channels.items
           .firstWhere((element) => element.sid == channelSid)
           .typing());
     } catch (e) {
