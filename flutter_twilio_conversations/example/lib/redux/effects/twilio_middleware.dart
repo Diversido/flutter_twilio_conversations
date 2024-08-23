@@ -12,6 +12,7 @@ class TwilioMiddleware extends EpicMiddleware<AppState> {
           _initTwilio(),
           _sendTextMessage(),
           _sendImage(),
+          _sendTyping(),
         ]));
 
   static Epic<AppState> _initTwilio() => TypedEpic((
@@ -88,6 +89,18 @@ class TwilioMiddleware extends EpicMiddleware<AppState> {
               }
             } catch (e) {
               debugPrint('Error while sending image: $e');
+            }
+          }));
+
+  static Epic<AppState> _sendTyping() => TypedEpic((
+        Stream<SendTypingAction> stream,
+        EpicStore<AppState> store,
+      ) =>
+          stream.asyncExpand((action) async* {
+            try {
+              await action.channel.typing();
+            } catch (e) {
+              debugPrint('Error while sending typing: $e');
             }
           }));
 }
