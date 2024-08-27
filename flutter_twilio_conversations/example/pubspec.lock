@@ -319,7 +319,6 @@ packages:
       relative: true
     source: path
     version: "2.0.5+15"
-    version: "2.0.5+15"
   flutter_twilio_conversations_platform_interface:
     dependency: "direct dev"
     description:
