@@ -1,5 +1,7 @@
 ## 2.0.6+16
-* WEB: Fix crash with `typing` and `getUnreadMessagesCount`
+* example: Add unread message count, send typing status when typing and added message indexes for debugging
+* WEB: Fix crash with `typing`, `getUnreadMessagesCount`, `connectionStateChanged` and `connectionError` methods
+* WEB: Refactored `sendMessage` to improve stability during conversation creation
 
 ## 2.0.5+15
 * WEB: Update `getLastMessages` to return newest messages first and count backwards

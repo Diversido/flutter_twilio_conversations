@@ -1,6 +1,7 @@
 ## 2.0.6
-* Fix crash with `typing` and `getUnreadMessagesCount`
-  
+* Fix crash with `typing`, `getUnreadMessagesCount`, `connectionStateChanged` and `connectionError` methods
+* Refactored `sendMessage` to improve stability during conversation creation
+    
 ## 2.0.5
 * Update `getLastMessages` to return newest messages first and count backwards
 
