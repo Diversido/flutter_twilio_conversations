@@ -114,7 +114,10 @@ class Messages {
     try {
       return _lastReadMessageIndex = await FlutterTwilioConversationsPlatform
           .instance
-          .setLastReadMessageIndexWithResult(_channel.sid, lastReadMessageIndex);
+          .setLastReadMessageIndexWithResult(
+        _channel.sid,
+        lastReadMessageIndex,
+      );
     } on PlatformException catch (err) {
       throw TwilioConversationsClient._convertException(err);
     }

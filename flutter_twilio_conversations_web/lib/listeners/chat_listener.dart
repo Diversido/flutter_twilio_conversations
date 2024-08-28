@@ -70,13 +70,9 @@ class ChatClientEventListener extends BaseListener {
         _client.connectionState = ConnectionState.UNKNOWN;
         break;
     }
-    sendEvent(
-      'connectionStateChange',
-      {
-        'connectionState',
-        Mapper.connectionStateToString(_client.connectionState),
-      },
-    );
+    sendEvent('connectionStateChange', {
+      'connectionState': Mapper.connectionStateToString(_client.connectionState)
+    });
   }
 
   Future<void> stateChanged(String state) async {
@@ -236,7 +232,11 @@ class ChatClientEventListener extends BaseListener {
     sendEvent(
       'error',
       null,
-      e: data,
+      e: ErrorInfo(
+        data.errorCode ?? 0,
+        data.message ?? 'connectionError',
+        data.httpStatusCode,
+      ),
     );
   }
 

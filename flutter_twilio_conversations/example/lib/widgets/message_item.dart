@@ -29,6 +29,16 @@ class MessageItem extends StatelessWidget {
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: [
+            Row(children: [
+              Expanded(
+                  child: Text(
+                '${message.messageIndex}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ))
+            ]),
             Padding(
               padding: const EdgeInsets.only(
                 bottom: 6,
