@@ -414,8 +414,8 @@ class ChatClient {
     if (event['error'] != null) {
       final errorMap =
           Map<String, dynamic>.from(event['error'] as Map<dynamic, dynamic>);
-      exception = ErrorInfo(errorMap['code'] as int, errorMap['message'],
-          errorMap['status'] as int);
+      exception = ErrorInfo(errorMap['code'] as int?, errorMap['message'],
+          errorMap['status'] as int?);
     }
 
     Map<String, dynamic>? channelMap;

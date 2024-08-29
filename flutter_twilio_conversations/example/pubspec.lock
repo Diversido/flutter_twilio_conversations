@@ -318,23 +318,23 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.2+12"
+    version: "2.0.5+15"
   flutter_twilio_conversations_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: flutter_twilio_conversations_platform_interface
-      sha256: d80b1b7276d3d255d8fd8699e3bbe501ea1c5d166d24f3ff62789d3e70aaf8d5
+      sha256: f2e61066db7e34d45179baca2c0c4a16a06697490f1e08fe73e7f0562c7d1ac8
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.5"
   flutter_twilio_conversations_web:
     dependency: transitive
     description:
       name: flutter_twilio_conversations_web
-      sha256: "85d470f930b201e71916de9f7bf3603fdcb2a1e2f6ad17ecfa4084ca74b94aa3"
+      sha256: a70002bcb69e426ed6d0c3c7890b6d2337af118ddb8ae9c9daa20d1028d69d94
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.5"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

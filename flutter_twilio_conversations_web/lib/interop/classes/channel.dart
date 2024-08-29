@@ -25,8 +25,8 @@ class TwilioConversationsChannel extends EventEmitter {
   external MessageBuilder prepareMessage();
   external dynamic setAllMessagesRead();
   external dynamic getMessagesCount();
-  external dynamic getUnreadMessagesCount();
-  external dynamic typing();
+  external Future<int?> getUnreadMessagesCount();
+  external Future<void> typing();
   external dynamic send();
   external dynamic getAttributes();
 }

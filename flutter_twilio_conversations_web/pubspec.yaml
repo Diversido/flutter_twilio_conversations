@@ -1,6 +1,6 @@
 name: flutter_twilio_conversations_web
 description: Web platform implementation of flutter_twilio_conversations_web
-version: 2.0.5
+version: 2.0.6
 repository: https://github.com/Diversido/flutter_twilio_conversations/tree/main/flutter_twilio_conversations_web
 issue_tracker: https://github.com/Diversido/flutter_twilio_conversations/issues
 
@@ -17,7 +17,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  flutter_twilio_conversations_platform_interface: ^2.0.5
+  flutter_twilio_conversations_platform_interface: ^2.0.6
   meta: ^1.12.0
   js: ^0.6.4
   intl: ^0.19.0

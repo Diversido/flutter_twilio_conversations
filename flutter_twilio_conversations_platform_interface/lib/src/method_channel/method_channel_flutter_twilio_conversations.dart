@@ -188,7 +188,8 @@ class MethodChannelFlutterTwilioConversations
   @override
   Future<int> getUnreadMessagesCount(String channelSid) async {
     return await _methodChannel.invokeMethod(
-        'Channel#getUnreadMessagesCount', {'channelSid': channelSid});
+            'Channel#getUnreadMessagesCount', {'channelSid': channelSid}) ??
+        0;
   }
 
   @override

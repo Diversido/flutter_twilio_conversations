@@ -39,11 +39,24 @@ class DialogsList extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            viewModel.dialogs[index].title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                viewModel.dialogs[index].title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                viewModel.dialogs[index].unreadCount > 0
+                                    ? ' (${viewModel.dialogs[index].unreadCount})'
+                                    : '',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: 10),
                           Text(
