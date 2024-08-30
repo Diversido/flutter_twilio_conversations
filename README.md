@@ -21,11 +21,11 @@ No special setup required, most of the tips on Console setup can be found in [Tw
 ## Tutorial for uploading new versions
 ```sh
 # Start by uploading a new version of the Platform interface
-$ cd flutter_twilio_conversations_platform_interface && flutter pub get && dart pub publish
+$ (cd flutter_twilio_conversations_platform_interface && flutter pub get && dart pub publish)
 # Then wait several minutes and upload the new Web package, which depends on the new version of the interface
-$ cd .. && cd flutter_twilio_conversations_web && flutter pub upgrade && dart pub publish
+$ (cd flutter_twilio_conversations_web && flutter pub upgrade && dart pub publish)
 # Then wait several minutes and upload the new main package, which depends on both other packages
-$ cd .. && cd flutter_twilio_conversations && flutter pub upgrade && dart pub publish
+$ (cd flutter_twilio_conversations && flutter pub upgrade && dart pub publish)
 ```
 
 

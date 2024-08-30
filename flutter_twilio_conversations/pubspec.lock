@@ -95,18 +95,18 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_twilio_conversations_platform_interface
-      sha256: f2e61066db7e34d45179baca2c0c4a16a06697490f1e08fe73e7f0562c7d1ac8
+      sha256: cfc9fcfde097e4b4bd93edd361c46cee655d2d92579388901f51f7f5f565c875
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.6"
   flutter_twilio_conversations_web:
     dependency: "direct main"
     description:
       name: flutter_twilio_conversations_web
-      sha256: a70002bcb69e426ed6d0c3c7890b6d2337af118ddb8ae9c9daa20d1028d69d94
+      sha256: "786af4b0ad35301181343a8de0f3466734ea548857eda43c9bf101c343b78c86"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.6"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

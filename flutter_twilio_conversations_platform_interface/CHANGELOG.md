@@ -1,3 +1,6 @@
+## 2.0.6
+* Minor fixes: [#38](https://github.com/Diversido/flutter_twilio_conversations/issues/38)
+
 ## 2.0.4
 * Added optional `webChannel` parameter to `registerForNotification` and `unregisterForNotification` methods
 
