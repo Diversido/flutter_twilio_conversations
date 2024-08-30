@@ -34,13 +34,8 @@ class MessagesMethods {
       String channelSid,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
     try {
-      final channels =
-          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-        _chatClient!.getSubscribedConversations(),
-      );
-
-      final channel =
-          channels.items.firstWhere((element) => element.sid == channelSid);
+      final channel = await promiseToFuture<TwilioConversationsChannel>(
+          _chatClient!.getConversationBySid(channelSid));
 
       final messagePreparator = await channel.prepareMessage();
 
@@ -73,29 +68,25 @@ class MessagesMethods {
 
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
-        channels.items
-            .firstWhere((element) => element.sid == channelSid)
-            .getMessages(50, 0, "forward"),
+        channel.getMessages(1, index, "forward"),
       );
 
-      return await Mapper.messageToMap(
-          messages.items.firstWhere((element) => element.index == index));
+      if (messages.items.length == 0) {
+        return null;
+      }
+      return Mapper.messageToMap(messages.items[0]);
     } catch (e) {
       Logging.debug('error: sendMessage ${e}');
+      return null;
     }
   }
 
   Future<int?> setAllMessagesReadWithResult(String channelSid,
       TwilioWebClient.TwilioConversationsClient? _chatClient) async {
     try {
-      final channels =
-          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-        _chatClient!.getSubscribedConversations(),
-      );
-
-      return await promiseToFuture<int>(channels.items
-          .firstWhere((element) => element.sid == channelSid)
-          .setAllMessagesRead());
+      final channel = await promiseToFuture<TwilioConversationsChannel>(
+          _chatClient!.getConversationBySid(channelSid));
+      return await promiseToFuture<int>(channel.setAllMessagesRead());
     } catch (e) {
       Logging.debug('error: setAllMessagesReadWithResult ${e}');
       return 0;
@@ -109,17 +100,11 @@ class MessagesMethods {
       TwilioWebClient.TwilioConversationsClient? _chatClient,
       String direction) async {
     try {
-      final channels =
-          await promiseToFuture<JSPaginator<TwilioConversationsChannel>>(
-        _chatClient!.getSubscribedConversations(),
-      );
-
+      final channel = await promiseToFuture<TwilioConversationsChannel>(
+          _chatClient!.getConversationBySid(channelSid));
       final messages =
           await promiseToFuture<JSPaginator<TwilioConversationsMessage>>(
-              channels.items
-                  .firstWhere((element) => element.sid == channelSid)
-                  .getMessages(count, index, direction));
-
+              channel.getMessages(count, index, direction));
       return await Future.wait(
           messages.items.map((message) => Mapper.messageToMap(message)));
     } catch (e) {

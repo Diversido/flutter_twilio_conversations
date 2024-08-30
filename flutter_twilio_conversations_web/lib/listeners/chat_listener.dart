@@ -24,7 +24,7 @@ class ChatClientEventListener extends BaseListener {
 
   void addListeners() {
     debug('Adding chatClientEventListeners for ${_client.connectionState}');
-    _on('connectionStateChanged', connectionStateChange);
+    _on('connectionStateChanged', connectionStateChanged);
     _on('stateChanged', stateChanged);
     _on('connectionError', connectionError);
     _on('conversationAdded', conversationAdded);
@@ -51,9 +51,9 @@ class ChatClientEventListener extends BaseListener {
         js_util.allowInterop(eventHandler),
       );
 
-  void connectionStateChange(String connectionState) {
-    debug('Connection State Change ChatClient Event $connectionState');
-    switch (connectionState) {
+  void connectionStateChanged(String state) {
+    debug('Connection State Change ChatClient Event $state');
+    switch (state) {
       case "connecting":
         _client.connectionState = ConnectionState.CONNECTING;
         break;
@@ -70,13 +70,9 @@ class ChatClientEventListener extends BaseListener {
         _client.connectionState = ConnectionState.UNKNOWN;
         break;
     }
-    sendEvent(
-      'connectionStateChange',
-      {
-        'connectionState',
-        Mapper.connectionStateToString(_client.connectionState),
-      },
-    );
+    sendEvent('connectionStateChange', {
+      'connectionState': Mapper.connectionStateToString(_client.connectionState)
+    });
   }
 
   Future<void> stateChanged(String state) async {
@@ -236,7 +232,11 @@ class ChatClientEventListener extends BaseListener {
     sendEvent(
       'error',
       null,
-      e: data,
+      e: ErrorInfo(
+        data.errorCode ?? 0,
+        data.message ?? 'connectionError',
+        data.httpStatusCode,
+      ),
     );
   }
 

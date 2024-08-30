@@ -32,111 +32,117 @@ class _SendBarState extends State<SendBar> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-      distinct: true,
-      converter: (store) => _ViewModel(store),
-      builder: (context, viewModel) => Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 56,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
+        distinct: true,
+        converter: (store) => _ViewModel(store),
+        builder: (context, viewModel) {
+          messageTextController.addListener(() {
+            viewModel.typing();
+          });
+          return Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 56,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.grey,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 26),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          child: const Icon(
+                            Icons.image_sharp,
+                            size: 24,
+                          ),
+                          onTap: () async {
+                            if (await viewModel.hasGalleryAccess()) {
+                              try {
+                                final pickedImage =
+                                    await ImagePicker().pickImage(
+                                  source: ImageSource.gallery,
+                                  imageQuality: 60,
+                                  maxHeight: 1000,
+                                  maxWidth: 1000,
+                                );
+
+                                if (pickedImage != null) {
+                                  dynamic image;
+                                  if (kIsWeb) {
+                                    image = Image.network(pickedImage.path);
+                                  } else {
+                                    image = Image.file(File(pickedImage.path));
+                                  }
+                                  // send picked file
+                                  viewModel.sendImage(image);
+                                }
+                              } catch (e) {
+                                debugPrint('Image picker error: $e');
+                              }
+                            } else {
+                              // no access to photos
+                              viewModel.showNoPhotoAccessToast();
+                            }
+                          },
+                        ),
+                        SizedBox(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width - 140,
+                          child: TextField(
+                            maxLength: 300,
+                            controller: messageTextController,
+                            textCapitalization: TextCapitalization.sentences,
+                            decoration: const InputDecoration(
+                              counterText: '',
+                              hintText: 'Type message…',
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 8),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          child: const Icon(
+                            Icons.send_rounded,
+                            size: 24,
+                          ),
+                          onTap: () {
+                            if (messageTextController.text.trim().isNotEmpty &&
+                                viewModel.dialog!.channel.hasSynchronized) {
+                              viewModel.sendTextMessage(
+                                  messageTextController.text.trim());
+                              messageTextController.clear();
+                            } else if (messageTextController.text
+                                    .trim()
+                                    .isNotEmpty &&
+                                !viewModel.dialog!.channel.hasSynchronized) {
+                              debugPrint(
+                                  'TwilioLog --- Conversation is not synced, trying to send the message carefully');
+                              viewModel.sendTextMessage(
+                                messageTextController.text.trim(),
+                              );
+                              messageTextController.clear();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      child: const Icon(
-                        Icons.image_sharp,
-                        size: 24,
-                      ),
-                      onTap: () async {
-                        if (await viewModel.hasGalleryAccess()) {
-                          try {
-                            final pickedImage = await ImagePicker().pickImage(
-                              source: ImageSource.gallery,
-                              imageQuality: 60,
-                              maxHeight: 1000,
-                              maxWidth: 1000,
-                            );
-
-                            if (pickedImage != null) {
-                              dynamic image;
-                              if (kIsWeb) {
-                                image = Image.network(pickedImage.path);
-                              } else {
-                                image = Image.file(File(pickedImage.path));
-                              }
-                              // send picked file
-                              viewModel.sendImage(image);
-                            }
-                          } catch (e) {
-                            debugPrint('Image picker error: $e');
-                          }
-                        } else {
-                          // no access to photos
-                          viewModel.showNoPhotoAccessToast();
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width - 140,
-                      child: TextField(
-                        maxLength: 300,
-                        controller: messageTextController,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: const InputDecoration(
-                          counterText: '',
-                          hintText: 'Type message…',
-                          contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      child: const Icon(
-                        Icons.send_rounded,
-                        size: 24,
-                      ),
-                      onTap: () {
-                        if (messageTextController.text.trim().isNotEmpty &&
-                            viewModel.dialog!.channel.hasSynchronized) {
-                          viewModel.sendTextMessage(
-                              messageTextController.text.trim());
-                          messageTextController.clear();
-                        } else if (messageTextController.text
-                                .trim()
-                                .isNotEmpty &&
-                            !viewModel.dialog!.channel.hasSynchronized) {
-                          debugPrint(
-                              'TwilioLog --- Conversation is not synced, trying to send the message carefully');
-                          viewModel.sendTextMessage(
-                            messageTextController.text.trim(),
-                          );
-                          messageTextController.clear();
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }
 
@@ -171,6 +177,10 @@ class _ViewModel with EquatableMixin {
     _store.dispatch(
       SendTextMessageAction(dialog!.channel, text),
     );
+  }
+
+  void typing() {
+    _store.dispatch(SendTypingAction(dialog!.channel));
   }
 
   void showNoPhotoAccessToast() => _store.dispatch(

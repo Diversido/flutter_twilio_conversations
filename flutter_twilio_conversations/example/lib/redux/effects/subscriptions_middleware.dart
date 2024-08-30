@@ -15,6 +15,8 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
       handleChatSyncSubscription(store, action);
     } else if (action is GetConversationMessagesAction) {
       getConversationMessages(store, action);
+    } else if (action is GetConversationUnreadMessagesCountAction) {
+      getConversationUnreadMessagesCountAction(store, action);
     } else if (action is SubscribeToConversationsUpdatesAction) {
       handleNewMessagesSubscription(store, action);
     } else if (action is SubscribeToMembersTypingStatus) {
@@ -37,8 +39,10 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
                 store.state.chatClient?.channels != null)) {
           final dialogs = store.state.chatClient!.channels!.subscribedChannels
               .map(
-                (channel) =>
-                    ConversationDialog(channel: channel, name: channel.sid),
+                (channel) => ConversationDialog(
+                  channel: channel,
+                  name: channel.sid,
+                ),
               )
               .toList();
 
@@ -51,6 +55,8 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
           for (var conversation
               in store.state.chatClient!.channels!.subscribedChannels) {
             store.dispatch(GetConversationMessagesAction(conversation));
+            store.dispatch(
+                GetConversationUnreadMessagesCountAction(conversation));
             store.dispatch(SubscribeToMembersTypingStatus(conversation));
           }
 
@@ -133,6 +139,25 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
           }
         }
       });
+    }
+  }
+
+  void getConversationUnreadMessagesCountAction(
+    Store<AppState> store,
+    GetConversationUnreadMessagesCountAction action,
+  ) async {
+    if (action.channel.synchronizationStatus ==
+        ChannelSynchronizationStatus.ALL) {
+      try {
+        final count = await action.channel.getUnreadMessagesCount();
+        if (count != null) {
+          store.dispatch(
+            UpdateUnreadMessagesCountAction(action.channel, count),
+          );
+        }
+      } catch (e) {
+        debugPrint('Failed to get messages: $e');
+      }
     }
   }
 }

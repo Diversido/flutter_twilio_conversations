@@ -5,6 +5,7 @@ class ConversationDialog {
   final String? name;
   final List<Message> messages;
   final bool isConversationSyncing;
+  final int unreadCount;
   final List<String> typingMembers;
 
   ConversationDialog({
@@ -12,6 +13,7 @@ class ConversationDialog {
     this.name,
     this.messages = const [],
     this.isConversationSyncing = false,
+    this.unreadCount = 0,
     this.typingMembers = const [],
   });
 
@@ -39,6 +41,7 @@ class ConversationDialog {
     Channel? channel,
     List<Message>? messages,
     bool? isConversationSyncing,
+    int? unreadCount,
     List<String>? typingMembers,
   }) =>
       ConversationDialog(
@@ -46,6 +49,7 @@ class ConversationDialog {
         messages: messages ?? this.messages,
         isConversationSyncing:
             isConversationSyncing ?? this.isConversationSyncing,
+        unreadCount: unreadCount ?? this.unreadCount,
         typingMembers: typingMembers ?? this.typingMembers,
       );
 

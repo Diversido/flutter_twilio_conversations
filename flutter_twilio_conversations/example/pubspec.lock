@@ -328,7 +328,7 @@ packages:
     source: path
     version: "2.0.5+15"
   flutter_twilio_conversations_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: flutter_twilio_conversations_platform_interface
       sha256: f2e61066db7e34d45179baca2c0c4a16a06697490f1e08fe73e7f0562c7d1ac8
