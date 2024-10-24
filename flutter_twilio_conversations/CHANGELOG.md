@@ -1,3 +1,6 @@
+## 2.0.7+17
+* Android: Fixed issue [#39](https://github.com/Diversido/flutter_twilio_conversations/issues/39)
+
 ## 2.0.6+16
 * example: Add unread message count, send typing status when typing and added message indexes for debugging
 * WEB: Fix crash with `typing`, `getUnreadMessagesCount`, `connectionStateChanged` and `connectionError` methods
