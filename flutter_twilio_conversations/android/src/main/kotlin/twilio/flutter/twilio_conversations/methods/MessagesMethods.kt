@@ -299,7 +299,7 @@ object MessagesMethods {
     fun advanceLastReadMessageIndexWithResult(call: MethodCall, result: MethodChannel.Result) {
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)
-        val lastReadMessageIndex = call.argument<Long>("lastReadMessageIndex")
+        val lastReadMessageIndex = call.argument<Int>("lastReadMessageIndex")?.toLong()
                 ?: return result.error("ERROR", "Missing 'lastReadMessageIndex'", null)
 
         TwilioConversationsPlugin.chatClient?.getConversation(channelSid, object : CallbackListener<Conversation> {
