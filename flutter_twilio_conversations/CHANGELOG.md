@@ -1,3 +1,6 @@
+## 2.0.8+18
+* Fixed issue [#41](https://github.com/Diversido/flutter_twilio_conversations/issues/41)
+ 
 ## 2.0.7+17
 * Android: Fixed issue [#39](https://github.com/Diversido/flutter_twilio_conversations/issues/39)
 

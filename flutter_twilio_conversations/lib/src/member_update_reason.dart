@@ -7,4 +7,7 @@ enum MemberUpdateReason {
 
   /// This update will be documented in the next SDK version.
   ATTRIBUTES,
+  // Requested in https://github.com/Diversido/flutter_twilio_conversations/issues/41
+  LAST_READ_TIMESTAMP,
+  LAST_READ_MESSAGE_INDEX,
 }
