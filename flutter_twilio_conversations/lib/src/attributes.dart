@@ -12,11 +12,11 @@ class Attributes {
 
   Attributes(this._type, this._json);
 
-  factory Attributes.fromMap(Map<String, dynamic> map) {
-    final type =
-        EnumToString.fromString(AttributesType.values, map['type'] ?? 'null') ??
-            AttributesType.NULL;
-    return Attributes(type, map['data'] ?? '');
+  factory Attributes.fromMap(Map<String, dynamic>? map) {
+    final type = EnumToString.fromString(
+            AttributesType.values, map?['type'] ?? 'null') ??
+        AttributesType.NULL;
+    return Attributes(type, map?['data'] ?? '');
   }
 
   Map<String, dynamic>? getJSONObject() {

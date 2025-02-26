@@ -38,19 +38,14 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
             (event == ChatClientSynchronizationStatus.COMPLETED &&
                 store.state.chatClient?.channels != null)) {
           final dialogs = store.state.chatClient!.channels!.subscribedChannels
-              .map(
-                (channel) => ConversationDialog(
-                  channel: channel,
-                  name: channel.sid,
-                ),
-              )
-              .toList();
+              .map((channel) {
+            return ConversationDialog(
+              channel: channel,
+              name: channel.sid,
+            );
+          }).toList();
 
-          store.dispatch(
-            UpdateDialogsAction(
-              dialogs,
-            ),
-          );
+          store.dispatch(UpdateDialogsAction(dialogs));
 
           for (var conversation
               in store.state.chatClient!.channels!.subscribedChannels) {
@@ -58,6 +53,10 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
             store.dispatch(
                 GetConversationUnreadMessagesCountAction(conversation));
             store.dispatch(SubscribeToMembersTypingStatus(conversation));
+
+            //Only for example purposes, print members
+            final members = await conversation.members?.getMembersList();
+            debugPrint('Got members: ${members?.length}');
           }
 
           store.dispatch(

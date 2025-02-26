@@ -68,7 +68,7 @@ class Member {
       map['sid'],
       EnumToString.fromString(MemberType.values, map['type'])!,
       map['channelSid'],
-      Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
+      Attributes.fromMap(map['attributes']?.cast<String, dynamic>()),
     );
     member._updateFromMap(map);
     return member;
