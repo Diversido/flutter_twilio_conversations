@@ -52,8 +52,6 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
             ),
           );
 
-          store.dispatch(UpdateDialogsAction(dialogs));
-
           for (var conversation
               in store.state.chatClient!.channels!.subscribedChannels) {
             store.dispatch(GetConversationMessagesAction(conversation));
