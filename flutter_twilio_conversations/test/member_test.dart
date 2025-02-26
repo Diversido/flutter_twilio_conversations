@@ -31,7 +31,7 @@ void main() {
       expect(member.identity, equals('user1'));
     });
 
-    test('should create a valid Member from with no attributes', () {
+    test('should create a valid Member from a map with no attributes', () {
       final input = {
         'sid': 'SM123',
         'type': 'chat',

@@ -38,12 +38,19 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
             (event == ChatClientSynchronizationStatus.COMPLETED &&
                 store.state.chatClient?.channels != null)) {
           final dialogs = store.state.chatClient!.channels!.subscribedChannels
-              .map((channel) {
-            return ConversationDialog(
-              channel: channel,
-              name: channel.sid,
-            );
-          }).toList();
+              .map(
+                (channel) => ConversationDialog(
+                  channel: channel,
+                  name: channel.sid,
+                ),
+              )
+              .toList();
+
+          store.dispatch(
+            UpdateDialogsAction(
+              dialogs,
+            ),
+          );
 
           store.dispatch(UpdateDialogsAction(dialogs));
 
