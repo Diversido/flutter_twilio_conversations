@@ -362,10 +362,10 @@ object MessagesMethods {
             override fun onSuccess(channel: Conversation) {
                 Log.d("TwilioInfo", "MessagesMethods.setNoMessagesReadWithResult (Channels.getChannel) => onSuccess")
 
-                channel.setAllMessagesUnread(object : CallbackListener<Long> {
-                    override fun onSuccess(index: Long) {
+                channel.setAllMessagesUnread(object : CallbackListener<Long?> {
+                    override fun onSuccess(index: Long?) {
                         Log.d("TwilioInfo", "MessagesMethods.setNoMessagesReadWithResult (Message.setNoMessagesReadWithResult) => onSuccess: $index")
-                        result.success(index)
+                        result.success(index ?: 0L)
                     }
 
                     override fun onError(errorInfo: ErrorInfo) {
