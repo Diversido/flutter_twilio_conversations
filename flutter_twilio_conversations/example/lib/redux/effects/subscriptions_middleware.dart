@@ -58,6 +58,10 @@ class MessengerSubscriptionsMiddleware extends MiddlewareClass<AppState> {
             store.dispatch(
                 GetConversationUnreadMessagesCountAction(conversation));
             store.dispatch(SubscribeToMembersTypingStatus(conversation));
+
+            //Only for example purposes, print members
+            final members = await conversation.members?.getMembersList();
+            debugPrint('Got members: ${members?.length}');
           }
 
           store.dispatch(

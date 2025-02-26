@@ -1,3 +1,17 @@
+## 2.0.9+19
+
+### Android
+* Fixed issue [#42](https://github.com/Diversido/flutter_twilio_conversations/issues/42) related to `setNoMessagesReadWithResult`
+* Fixed issue [#45](https://github.com/Diversido/flutter_twilio_conversations/issues/45) related to the namespace in Gradle builds
+* Updated Twilio Conversations Android SDK to [6.1.1](https://www.twilio.com/docs/conversations/android/changelog#conversations-611-september-2-2024)
+
+### Web
+* Fixed crash in `unregisterForNotification` if the token is empty
+* example: Updated index.html to use the latest Twilio Conversations JavaScript SDK [2.6.1](https://www.twilio.com/docs/conversations/javascript/changelog#conversations-261-february-17-2025)
+
+### General
+* Fixed issue [#44](https://github.com/Diversido/flutter_twilio_conversations/issues/44) related to `getMembersList`
+
 ## 2.0.8+18
 * Fixed issue [#41](https://github.com/Diversido/flutter_twilio_conversations/issues/41)
  

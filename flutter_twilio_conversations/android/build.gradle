@@ -2,7 +2,7 @@ group 'twilio.flutter.flutter_twilio_conversations'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.8.0'
+    ext.kotlin_version = '1.9.10'
     repositories {
         google()
         mavenCentral()
@@ -25,6 +25,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    namespace 'twilio.flutter.flutter_twilio_conversations'
+
     compileSdkVersion 33
 
     sourceSets {
@@ -45,5 +47,5 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation 'com.twilio:conversations-android:6.0.3'
+    implementation 'com.twilio:conversations-android:6.1.1'
 }

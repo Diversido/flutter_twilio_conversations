@@ -1,3 +1,7 @@
+## 2.0.9
+* Fix crash with `unregisterForNotification` if the token is empty
+* Update example to use the latest Twilio Conversations JavaScript SDK [2.6.1](https://sdk.twilio.com/js/conversations/releases/2.6.1/docs/index.html)
+
 ## 2.0.6
 * Fix crash with `typing`, `getUnreadMessagesCount`, `connectionStateChanged` and `connectionError` methods
 * Refactored `sendMessage` to improve stability during conversation creation

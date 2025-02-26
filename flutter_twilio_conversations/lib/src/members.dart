@@ -19,7 +19,7 @@ class Members {
   Future<List<Member>?> getMembersList() async {
     final membersListData = await FlutterTwilioConversationsPlatform.instance
         .getMembersList(_channelSid);
-    if (membersListData['membersList'] != null) {
+    if (membersListData?['membersList'] != null) {
       return membersListData['membersList']
           .map<Member>((m) => Member._fromMap(m.cast<String, dynamic>()))
           .toList();
